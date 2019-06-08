@@ -20,7 +20,7 @@ export default class LevelSelectScene extends Phaser.Scene {
         const { width, height } = this.sys.game.config;
 
         this.add
-            .text(width / 2, height * 0.1, "Level Select", {
+            .text(width / 2, height * 0.2, "Level Select", {
                 font: "64px monospace",
                 color: "white"
             })
@@ -30,7 +30,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 
         //add level select buttons
         this.level1Button = new TextButton(this,
-            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.25,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.35,
             'Level 1: XXXX',
             { fill: '#0f0', align: 'center' },
             //key:'game' = platformer-scene.js
@@ -38,25 +38,25 @@ export default class LevelSelectScene extends Phaser.Scene {
             () => this.scene.start("game", { level: 1 }));
 
         this.level2Button = new TextButton(this,
-            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.3,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.40,
             'Level 2: XXXX',
             { fill: '#0f0', align: 'center' },
             () => this.scene.start("game", { level: 2 }));
 
         this.level3Button = new TextButton(this,
-            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.35,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
             'Level 3: XXXX',
             { fill: '#0f0', align: 'center' },
             () => this.scene.start("game", { level: 3 }));
 
         this.level4Button = new TextButton(this,
-            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.40,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.50,
             'Level 4: XXXX',
             { fill: '#0f0', align: 'center' },
             () => this.scene.start("game", { level: 4 }));
 
         this.level5Button = new TextButton(this,
-            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.55,
             'Level 5: XXXX',
             { fill: '#0f0', align: 'center' },
             () => this.scene.start("game", { level: 5 }));
