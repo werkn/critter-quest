@@ -9,8 +9,18 @@ export default class PlatformerScene extends Phaser.Scene {
   constructor(config) {
     if (config) {
       super(config);
+      console.log(config);
     } else {
       super({ key: 'game' });
+    }
+  }
+
+  //get scene init data
+  init(data) {
+    if (data) {
+        this.currentLevel = data.level;
+    } else {
+        console.log("Must provide level when loading platformer-scene.js.");
     }
   }
 
@@ -22,7 +32,7 @@ export default class PlatformerScene extends Phaser.Scene {
     this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
 
     //load tilemap
-    this.load.tilemapTiledJSON("map", "./assets/tilemaps/default.json");
+    this.load.tilemapTiledJSON("map", "./assets/tilemaps/level"+ this.currentLevel + ".json");
 
     //note if using a Multi-packed atlas we need to modify our load method to use Multipack
     this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");

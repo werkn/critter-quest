@@ -1,5 +1,7 @@
+import TextButton from "../ui/button.js";
+
 /**
- * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
+ * A class that extends Phaser.Scene and provides our level selection screen.
  *
  */
 export default class LevelSelectScene extends Phaser.Scene {
@@ -17,7 +19,6 @@ export default class LevelSelectScene extends Phaser.Scene {
         // You can access the game's config to read the width & height
         const { width, height } = this.sys.game.config;
 
-        // In v3, you can chain many methods, so you can create text and configure it in one "line"
         this.add
             .text(width / 2, height * 0.1, "Level Select", {
                 font: "64px monospace",
@@ -26,19 +27,46 @@ export default class LevelSelectScene extends Phaser.Scene {
             .setOrigin(0.5, 0.5)
             .setShadow(5, 5, "#5588EE", 0, true, true);
 
-        // Help text that has a "fixed" position on the screen
-        this.add
-            .text(16, 16, 'Press enter to go to Test Level.', {
-                font: "18px monospace",
-                fill: "#ffffff",
-                padding: { x: 20, y: 10 },
-                backgroundColor: "#000000"
-            })
-            .setScrollFactor(0);
 
-        this.input.keyboard.on("keydown_ENTER", event => {
-            this.scene.start("game");
-        });
+        //add level select buttons
+        this.level1Button = new TextButton(this,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.25,
+            'Level 1: XXXX',
+            { fill: '#0f0', align: 'center' },
+            //key:'game' = platformer-scene.js
+            //we provide scene data (level to load) that can be read from init(data) { ... }
+            () => this.scene.start("game", { level: 1 }));
+
+        this.level2Button = new TextButton(this,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.3,
+            'Level 2: XXXX',
+            { fill: '#0f0', align: 'center' },
+            () => this.scene.start("game", { level: 2 }));
+
+        this.level3Button = new TextButton(this,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.35,
+            'Level 3: XXXX',
+            { fill: '#0f0', align: 'center' },
+            () => this.scene.start("game", { level: 3 }));
+
+        this.level4Button = new TextButton(this,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.40,
+            'Level 4: XXXX',
+            { fill: '#0f0', align: 'center' },
+            () => this.scene.start("game", { level: 4 }));
+
+        this.level5Button = new TextButton(this,
+            this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
+            'Level 5: XXXX',
+            { fill: '#0f0', align: 'center' },
+            () => this.scene.start("game", { level: 5 }));
+
+        //add buttons to scene
+        this.add.existing(this.level1Button);
+        this.add.existing(this.level2Button);
+        this.add.existing(this.level3Button);
+        this.add.existing(this.level4Button);
+        this.add.existing(this.level5Button);
     }
 
     update(time, delta) { }
