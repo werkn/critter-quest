@@ -9,6 +9,15 @@ export default class InGameMenuScene extends Phaser.Scene {
         }
     }
 
+    //get scene init data
+    init(data) {
+        if (data) {
+            this.currentScene = data.sceneName;
+        } else {
+            console.log("Must provide level when loading platformer-scene.js.");
+        }
+    }
+
     preload() {}
 
     create() {
@@ -49,8 +58,8 @@ export default class InGameMenuScene extends Phaser.Scene {
         this.add.existing(this.exitToLevelSelectButton);
 
         //pause the game scene, and move this scene above it in render order
-        this.scene.pause('game');
-        this.scene.moveAbove('game');
+        this.scene.pause(this.currentScene);
+        this.scene.moveAbove(this.currentScene);
 
         // Help text that has a "fixed" position on the screen
         this.add
@@ -81,14 +90,14 @@ export default class InGameMenuScene extends Phaser.Scene {
 
     returnToGame() {
         //stop the in-game menu scene
-        this.scene.resume('game');
+        this.scene.resume(this.currentScene);
         this.scene.stop();
     }
 
     returnToLevelSelect() {
         //end current game scene
         this.scene.stop('in_game_menu');
-        this.scene.stop('game');
+        this.scene.stop(this.currentScene);
 
         //launch level select
         this.scene.start("level_select")
