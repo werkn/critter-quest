@@ -6,21 +6,17 @@ import SpringBoard from "../physicsObjects/springBoard.js";
  */
 export default class PlatformerScene extends Phaser.Scene {
 
-  constructor(config) {
-    if (config) {
-      super(config);
-      console.log(config);
+  constructor(level) {
+    if (level) {
+      console.log("Using provided level for PlatformerScene constructor...");
+      console.log("Creating level:" + level.key + " with map: map" + level.key);
+      super({ key: level.key });
+      this.currentLevel = level.key;
     } else {
-      super({ key: 'game' });
-    }
-  }
-
-  //get scene init data
-  init(data) {
-    if (data) {
-        this.currentLevel = data.level;
-    } else {
-        console.log("Must provide level when loading platformer-scene.js.");
+      console.log("Using default PlatformerScene constructor...");
+      //always load level 1 by default
+      super({ key: 'level1' });
+      this.currentLevel = 1;
     }
   }
 
@@ -32,7 +28,7 @@ export default class PlatformerScene extends Phaser.Scene {
     this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
 
     //load tilemap
-    this.load.tilemapTiledJSON("map", "./assets/tilemaps/level"+ this.currentLevel + ".json");
+    this.load.tilemapTiledJSON("map"+this.currentLevel, "./assets/tilemaps/level"+ this.currentLevel + ".json");
 
     //note if using a Multi-packed atlas we need to modify our load method to use Multipack
     this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
@@ -71,7 +67,7 @@ export default class PlatformerScene extends Phaser.Scene {
       .setShadow(5, 5, "#5588EE", 0, true, true);
 
     //setup tilemap
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: "map"+this.currentLevel });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -133,7 +129,8 @@ export default class PlatformerScene extends Phaser.Scene {
       .setScrollFactor(0);
 
     this.input.keyboard.on("keydown_ESC", event => {
-      this.scene.launch("in_game_menu");
+      console.log("Launching in_game_menu...");
+      this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
     });
 
     // Debug graphics

@@ -35,31 +35,31 @@ export default class LevelSelectScene extends Phaser.Scene {
             { fill: '#0f0', align: 'center' },
             //key:'game' = platformer-scene.js
             //we provide scene data (level to load) that can be read from init(data) { ... }
-            () => this.scene.start("game", { level: 1 }));
+            () => this.scene.start("level1"));
 
         this.level2Button = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.40,
             '(2) Level 2: XXXX',
             { fill: '#0f0', align: 'center' },
-            () => this.scene.start("game", { level: 2 }));
+            () => this.scene.start("level2"));
 
         this.level3Button = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
             '(3) Level 3: XXXX',
             { fill: '#0f0', align: 'center' },
-            () => this.scene.start("game", { level: 3 }));
+            () => this.scene.start("level3"));
 
         this.level4Button = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.50,
             '(4) Level 4: XXXX',
             { fill: '#0f0', align: 'center' },
-            () => this.scene.start("game", { level: 4 }));
+            () => this.scene.start("level4"));
 
         this.level5Button = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.55,
             '(5) Level 5: XXXX',
             { fill: '#0f0', align: 'center' },
-            () => this.scene.start("game", { level: 5 }));
+            () => this.scene.start("level5"));
 
         //add buttons to scene
         this.add.existing(this.level1Button);
@@ -73,19 +73,19 @@ export default class LevelSelectScene extends Phaser.Scene {
             this.scene.start("title_screen");
         });
         this.input.keyboard.on("keydown_ONE", event => {
-            this.scene.start("game", { level: 1 });
+            this.scene.start("level1");
         });
         this.input.keyboard.on("keydown_TWO", event => {
-            this.scene.start("game", { level: 2 });
+            this.scene.start("level2");
         });
         this.input.keyboard.on("keydown_THREE", event => {
-            this.scene.start("game", { level: 3 });
+            this.scene.start("level3");
         });
         this.input.keyboard.on("keydown_FOUR", event => {
-            this.scene.start("game", { level: 4 });
+            this.scene.start("level4");
         });
         this.input.keyboard.on("keydown_FIVE", event => {
-            this.scene.start("game", { level: 5 });
+            this.scene.start("level5");
         });
     }
 
