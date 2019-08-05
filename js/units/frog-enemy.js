@@ -37,10 +37,23 @@ export default class FrogEnemy {
     const onGround = sprite.body.blocked.down;
     const acceleration = onGround ? 600 : 300;
 
-	//TODO: Add enemy movement logic here
-	if (onGround) {
-	    sprite.anims.play("frog-idle", true);
-	}
+    //TODO: Add enemy movement logic here
+    if (onGround) {
+      sprite.anims.play("frog-idle", true);
+    } else {
+      //start of jump is one sprite, once @ apex of jump switch to falling sprite.
+      if (sprite.body.velocity.y < 0) {
+        sprite.setTexture("atlas", "jump/frog-jump-1.png");
+      } else {
+        sprite.setTexture("atlas", "jump/frog-jump-2.png");
+      }
+    }
+
+	
+    if (onGround) {
+      sprite.setVelocityY(-500);
+      this.scene.sys.game.soundManager.sfx.jump.play();
+    }
 
   }
 
