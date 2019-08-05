@@ -93,7 +93,10 @@ export default class PlatformerScene extends Phaser.Scene {
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
-    this.aboveLayer.setDepth(10);
+    this.belowLayer.setDepth(0);
+    this.collectableLayer.setDepth(2);
+    this.worldLayer.setDepth(3);
+    this.aboveLayer.setDepth(4);
 
     // Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map.
     // Note: instead of storing the player in a global variable, it's stored as a property of the
