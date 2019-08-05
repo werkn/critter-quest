@@ -1,4 +1,5 @@
 import Player from "../units/player.js";
+import FrogEnemy from "../units/frog-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 
 /**
@@ -103,6 +104,10 @@ export default class PlatformerScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+
+    //test initial enemy spawn
+    this.testEnemy = new FrogEnemy(this, spawnPoint.x, spawnPoint.y);
+
     //check that we haven't already set these stats
     this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
     this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
@@ -118,6 +123,10 @@ export default class PlatformerScene extends Phaser.Scene {
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     this.physics.world.addCollider(this.player.sprite, this.worldLayer);
+    
+    //add enemy to collide with worldLayer
+    this.physics.world.addCollider(this.testEnemy.sprite, this.worldLayer);
+    
     this.physics.world.addOverlap(this.player.sprite, this.collectableLayer);
 
     // This will set Tile ID 262 (the coin tile) to call the function "hitCoin" when collided with
@@ -179,7 +188,7 @@ export default class PlatformerScene extends Phaser.Scene {
     // Allow the player to respond to key presses and move itself
     if (this.inGame === true) {
       this.player.update();
-
+      this.testEnemy.update();
       //collidable test
       this.collidableTest.update();
 
