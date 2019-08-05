@@ -27,9 +27,25 @@ export default class FrogEnemy {
       .sprite(x, y, "idle/player-idle-1.png", 0)
       .setDrag(1000, 0)
       .setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
+
+    // Frog jump timer
+    this.jumpTimer = scene.time.addEvent({
+	        delay:2750,                // ms
+	        callback: this.jump,
+	        //args: [],
+	        callbackScope: this,
+	        loop: true
+     });
   }
 
   die(context) {
+  }
+
+  jump() {
+    const onGround = this.sprite.body.blocked.down;
+    if (onGround) {
+      this.sprite.setVelocityY(-500);
+    }
   }
 
   update() {
@@ -37,7 +53,6 @@ export default class FrogEnemy {
     const onGround = sprite.body.blocked.down;
     const acceleration = onGround ? 600 : 300;
 
-    //TODO: Add enemy movement logic here
     if (onGround) {
       sprite.anims.play("frog-idle", true);
     } else {
@@ -47,12 +62,6 @@ export default class FrogEnemy {
       } else {
         sprite.setTexture("atlas", "jump/frog-jump-2.png");
       }
-    }
-
-	
-    if (onGround) {
-      sprite.setVelocityY(-500);
-      this.scene.sys.game.soundManager.sfx.jump.play();
     }
 
   }
