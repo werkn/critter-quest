@@ -99,9 +99,10 @@ export default class PlatformerScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
-    this.sys.game.hp = 1;
-    this.sys.game.gems = 5;
-    this.sys.game.lives = 5;
+    //check that we haven't already set these stats
+    this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
+    this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
+    this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
 
     /**TODO: REMOVE WHEN DONE */
     this.collidableTest = new SpringBoard(this, spawnPoint.x + 400, spawnPoint.y - 100);
@@ -175,8 +176,7 @@ export default class PlatformerScene extends Phaser.Scene {
       this.collidableTest.update();
 
       if (this.player.sprite.y > this.worldLayer.height) {
-        //this.player.destroy();
-        //this.scene.restart();
+	this.player.die(this);
         this.scene.start('game_over');
       }
     }

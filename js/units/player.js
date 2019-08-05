@@ -79,6 +79,10 @@ export default class Player {
     //method is provided context from the calling scene
     this.sys.game.soundManager.sfx.jump.play();
   }
+ 
+  die(context) {
+    context.sys.game.lives -= 1;
+  }
 
   update() {
     const keys = this.keys;
