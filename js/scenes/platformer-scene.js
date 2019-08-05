@@ -97,6 +97,9 @@ export default class PlatformerScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+    this.sys.game.hp = 1;
+    this.sys.game.gems = 5;
+    this.sys.game.lives = 5;
 
     /**TODO: REMOVE WHEN DONE */
     this.collidableTest = new SpringBoard(this, spawnPoint.x + 400, spawnPoint.y - 100);
