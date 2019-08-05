@@ -126,8 +126,8 @@ export default class PlatformerScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes\nPress ESC to show in-game menu.', {
+    this.tipText = this.add
+      .text(width * 0.05, height * 0.1, 'Arrow keys to move\nPress D to show hitboxes\nPress ESC to show in-game menu.\nPress C to hide tips', {
         font: "18px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
@@ -156,6 +156,10 @@ export default class PlatformerScene extends Phaser.Scene {
         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
       });
+    });
+
+    this.input.keyboard.once("keydown_C", event => {
+	//this.tipText.setText("");
     });
 
     this.inGame = true;

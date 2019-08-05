@@ -49,7 +49,7 @@ export default class HudOverlayScene extends Phaser.Scene {
                 color: "white"
             })
             .setOrigin(0.5, 0.5)
-            .setShadow(5, 5, "#5588EE", 0, true, true);
+            .setShadow(1, 1, "#5588EE", 0, true, true);
 
         //add hud text for gems 
 	this.gemsText = this.add
@@ -58,7 +58,7 @@ export default class HudOverlayScene extends Phaser.Scene {
                 color: "white"
             })
             .setOrigin(0.5, 0.5)
-            .setShadow(5, 5, "#5588EE", 0, true, true);
+            .setShadow(1, 1, "#5588EE", 0, true, true);
 
 	//move the HudOverlayScene over top of the currentScene (likely platformer-scene)
         this.scene.moveAbove(this.currentScene);
