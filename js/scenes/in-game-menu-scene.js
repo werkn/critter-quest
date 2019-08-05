@@ -97,7 +97,8 @@ export default class InGameMenuScene extends Phaser.Scene {
     returnToLevelSelect() {
         //end current game scene
         this.scene.stop('in_game_menu');
-        this.scene.stop('hud_overlay');
+        //remove HUD overlay
+	this.scene.stop('hud_overlay');
         this.scene.stop(this.currentScene);
 
 

@@ -177,6 +177,8 @@ export default class PlatformerScene extends Phaser.Scene {
 
       if (this.player.sprite.y > this.worldLayer.height) {
 	this.player.die(this);
+        //remove hud overlay
+        this.scene.stop('hud_overlay');
         this.scene.start('game_over');
       }
     }
