@@ -152,6 +152,13 @@ export default class PlatformerScene extends Phaser.Scene {
     });
 
     this.inGame = true;
+    
+    //start hud-overlay
+    //we control our hud as a standalone scene and simply draw it overtop of the platformer scene,
+    //this seems to be the easiest way to abstract out the hud and not clutter up
+    //the platformer scene	  
+    console.log("Launching HudOverlayScene...");
+    this.scene.launch("hud_overlay", { sceneName: "level"+this.currentLevel});
   }
 
   update(time, delta) {

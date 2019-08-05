@@ -6,6 +6,7 @@ import Level3 from "./scenes/levels/level3.js";
 import Level4 from "./scenes/levels/level4.js";
 import Level5 from "./scenes/levels/level5.js";
 import InGameMenuScene from "./scenes/in-game-menu-scene.js";
+import HudOverlayScene from "./scenes/hud-overlay-scene.js";
 import GameOverScene from "./scenes/game-over-scene.js";
 
 const config = {
@@ -29,6 +30,7 @@ const config = {
 		TitleScreenScene,
 		LevelSelectScene,
 		InGameMenuScene,
+		HudOverlayScene,
 		Level1,
 		Level2,
 		Level3,
