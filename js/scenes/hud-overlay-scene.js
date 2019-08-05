@@ -44,7 +44,7 @@ export default class HudOverlayScene extends Phaser.Scene {
 
         //add hud text for lives
 	this.add
-            .text(width * 0.1, height * 0.05, "Kit x 5", {
+            .text(width * 0.1, height * 0.05, "Kit x " + this.sys.game.lives, {
                 font: "16px monospace",
                 color: "white"
             })
@@ -53,7 +53,7 @@ export default class HudOverlayScene extends Phaser.Scene {
 
         //add hud text for gems 
 	this.add
-            .text(width * 0.9, height * 0.05, "99 x Gem(s)", {
+            .text(width * 0.9, height * 0.05, this.sys.game.gems + " x Gem(s)", {
                 font: "16px monospace",
                 color: "white"
             })
