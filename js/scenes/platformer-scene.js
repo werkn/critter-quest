@@ -34,6 +34,7 @@ export default class PlatformerScene extends Phaser.Scene {
     this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
 
     //load audio
+
     this.load.audio("jump", "./assets/audio/jump.wav");
     this.load.audio("coinCollected", "./assets/audio/coin_collected.wav");
     this.load.audio("music", "./assets/audio/music.ogg");
@@ -42,6 +43,11 @@ export default class PlatformerScene extends Phaser.Scene {
   hitCollectable(sprite, tile) {
     this.collectableLayer.removeTileAt(tile.x, tile.y);
     this.sys.game.soundManager.sfx.coinCollected.play();
+    //update player gem count and add a new life every 100 gems
+    if (++this.sys.game.gems == 100) {
+	    this.sys.game.lives += 1;
+	    this.sys.game.gems = 0;
+    }
     console.log("Collected tile id: " + tile.index);
 
     // Return true to exit processing collision of this tile vs the sprite - in this case, it
@@ -97,6 +103,10 @@ export default class PlatformerScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+    //check that we haven't already set these stats
+    this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
+    this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
+    this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
 
     /**TODO: REMOVE WHEN DONE */
     this.collidableTest = new SpringBoard(this, spawnPoint.x + 400, spawnPoint.y - 100);
@@ -119,8 +129,8 @@ export default class PlatformerScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes\nPress ESC to show in-game menu.', {
+    this.tipText = this.add
+      .text(width * 0.05, height * 0.1, 'Arrow keys to move\nPress D to show hitboxes\nPress ESC to show in-game menu.\nPress C to hide tips', {
         font: "18px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
@@ -151,7 +161,18 @@ export default class PlatformerScene extends Phaser.Scene {
       });
     });
 
+    this.input.keyboard.once("keydown_C", event => {
+	//this.tipText.setText("");
+    });
+
     this.inGame = true;
+    
+    //start hud-overlay
+    //we control our hud as a standalone scene and simply draw it overtop of the platformer scene,
+    //this seems to be the easiest way to abstract out the hud and not clutter up
+    //the platformer scene	  
+    console.log("Launching HudOverlayScene...");
+    this.scene.launch("hud_overlay", { sceneName: "level"+this.currentLevel});
   }
 
   update(time, delta) {
@@ -163,9 +184,16 @@ export default class PlatformerScene extends Phaser.Scene {
       this.collidableTest.update();
 
       if (this.player.sprite.y > this.worldLayer.height) {
-        //this.player.destroy();
-        //this.scene.restart();
-        this.scene.start('game_over');
+        
+        //remove hud overlay
+        this.scene.stop('hud_overlay');
+        this.player.die(this);
+
+        if (this.sys.game.lives > 0) {
+            this.scene.start("level"+this.currentLevel);
+        } else {
+            this.scene.start('game_over');
+        }
       }
     }
   }
