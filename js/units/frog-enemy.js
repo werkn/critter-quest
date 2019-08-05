@@ -22,6 +22,19 @@ export default class FrogEnemy {
       repeat: -1
     });
 
+    //FROG DEATH ANIMATION
+    anims.create({
+      key: "enemy-die",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "enemy-death-",
+        suffix: '.png',
+        start: 1,
+        end: 6
+      }),
+      frameRate: 10,
+      repeat: 0 
+    });
+
     // Create the physics-based sprite that we will move around and animate
     this.sprite = scene.physics.add
       .sprite(x, y, "idle/player-idle-1.png", 0)
@@ -36,9 +49,14 @@ export default class FrogEnemy {
 	        callbackScope: this,
 	        loop: true
      });
+
+	this.dead = false;
   }
 
-  die(context) {
+  die() {
+    this.dead = true;
+    this.sprite.anims.play("enemy-die", true);
+    //TODO: Add more complex death logic when adding EnemyManager
   }
 
   jump() {
@@ -52,18 +70,18 @@ export default class FrogEnemy {
     const sprite = this.sprite;
     const onGround = sprite.body.blocked.down;
     const acceleration = onGround ? 600 : 300;
-
-    if (onGround) {
-      sprite.anims.play("frog-idle", true);
-    } else {
-      //start of jump is one sprite, once @ apex of jump switch to falling sprite.
-      if (sprite.body.velocity.y < 0) {
-        sprite.setTexture("atlas", "jump/frog-jump-1.png");
+    if (!this.dead) {
+      if (onGround) {
+        sprite.anims.play("frog-idle", true);
       } else {
-        sprite.setTexture("atlas", "jump/frog-jump-2.png");
+        //start of jump is one sprite, once @ apex of jump switch to falling sprite.
+        if (sprite.body.velocity.y < 0) {
+          sprite.setTexture("atlas", "jump/frog-jump-1.png");
+        } else {
+          sprite.setTexture("atlas", "jump/frog-jump-2.png");
+        }
       }
     }
-
   }
 
   destroy() {
