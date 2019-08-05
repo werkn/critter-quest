@@ -34,6 +34,7 @@ export default class PlatformerScene extends Phaser.Scene {
     this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
 
     //load audio
+
     this.load.audio("jump", "./assets/audio/jump.wav");
     this.load.audio("coinCollected", "./assets/audio/coin_collected.wav");
     this.load.audio("music", "./assets/audio/music.ogg");
@@ -43,7 +44,7 @@ export default class PlatformerScene extends Phaser.Scene {
     this.collectableLayer.removeTileAt(tile.x, tile.y);
     this.sys.game.soundManager.sfx.coinCollected.play();
     //update player gem count
-    this.sys.game.gems += 1;	  
+    this.sys.game.gems += 1;
     console.log("Collected tile id: " + tile.index);
 
     // Return true to exit processing collision of this tile vs the sprite - in this case, it
@@ -176,10 +177,16 @@ export default class PlatformerScene extends Phaser.Scene {
       this.collidableTest.update();
 
       if (this.player.sprite.y > this.worldLayer.height) {
-	this.player.die(this);
+        
         //remove hud overlay
         this.scene.stop('hud_overlay');
-        this.scene.start('game_over');
+        this.player.die(this);
+
+        if (this.sys.game.lives > 0) {
+            this.scene.start("level"+this.currentLevel);
+        } else {
+            this.scene.start('game_over');
+        }
       }
     }
   }

@@ -43,9 +43,19 @@ export default class GameOverScene extends Phaser.Scene {
             //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scenemanager/#start-scene
             //scene.scene.start will launch new scene and shutdown
             //current scene
-            this.scene.start('level_select');
+
+            //player has died, return to title screen and reset their game
+			this.resetGame();
+            this.scene.start('title_screen');
         });
     }
+
+	resetGame() {
+	    //TODO: clear level states
+		this.sys.game.lives = undefined;
+		this.sys.game.gems = undefined;
+		this.sys.game.hp = undefined;
+	}
 
     update(time, delta) {
     }
