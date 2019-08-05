@@ -42,6 +42,8 @@ export default class PlatformerScene extends Phaser.Scene {
   hitCollectable(sprite, tile) {
     this.collectableLayer.removeTileAt(tile.x, tile.y);
     this.sys.game.soundManager.sfx.coinCollected.play();
+    //update player gem count
+    this.sys.game.gems += 1;	  
     console.log("Collected tile id: " + tile.index);
 
     // Return true to exit processing collision of this tile vs the sprite - in this case, it

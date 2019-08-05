@@ -43,7 +43,7 @@ export default class HudOverlayScene extends Phaser.Scene {
         const { width, height } = this.sys.game.config;
 
         //add hud text for lives
-	this.add
+	this.livesText = this.add
             .text(width * 0.1, height * 0.05, "Kit x " + this.sys.game.lives, {
                 font: "16px monospace",
                 color: "white"
@@ -52,8 +52,8 @@ export default class HudOverlayScene extends Phaser.Scene {
             .setShadow(5, 5, "#5588EE", 0, true, true);
 
         //add hud text for gems 
-	this.add
-            .text(width * 0.9, height * 0.05, this.sys.game.gems + " x Gem(s)", {
+	this.gemsText = this.add
+            .text(width * 0.9, height * 0.05, this.sys.game.gems + " x Gem", {
                 font: "16px monospace",
                 color: "white"
             })
@@ -64,6 +64,9 @@ export default class HudOverlayScene extends Phaser.Scene {
         this.scene.moveAbove(this.currentScene);
     }
 
-    update(time, delta) {}
+    update(time, delta) {
+        this.livesText.setText("Kit x " + this.sys.game.lives);
+        this.gemsText.setText(this.sys.game.gems + " x Gem");
+    }
 
 }
