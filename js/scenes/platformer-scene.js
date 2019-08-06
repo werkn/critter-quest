@@ -108,6 +108,31 @@ export default class PlatformerScene extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
 
+    const anims = this.anims;
+
+    //GEM ANIMATION
+    anims.create({
+      key: "gem-spin",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "gem-",
+        suffix: '.png',
+        start: 1,
+        end: 5
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    //get an array of sprite objects based on the position of objects named 'Gem' from the Objects layer of the tilemap
+    this.gems = map.createFromObjects("Objects", "Gem", { key: "gem-spin" });
+
+    //ensure tile scale is set to 1 (for some reason this is being set to 0.5), likely
+    //because we are providing a scale when we create the sprites
+    for(var i = 0; i < this.gems.length; i++) {
+      this.gems[i].setScale(1);
+    }
+    anims.play('gem-spin', this.gems); 
+
     //test initial enemy spawn
     this.testEnemy = new FrogEnemy(this, spawnPoint.x, spawnPoint.y);
 
