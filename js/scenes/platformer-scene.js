@@ -1,6 +1,7 @@
 import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
+import Gem from "../collectables/gem.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -108,30 +109,24 @@ export default class PlatformerScene extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
 
-    const anims = this.anims;
+    var tileMapObjects = map.objects[0].objects;
+    this.gems = [];
 
-    //GEM ANIMATION
-    anims.create({
-      key: "gem-spin",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "gem-",
-        suffix: '.png',
-        start: 1,
-        end: 5
-      }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    //get an array of sprite objects based on the position of objects named 'Gem' from the Objects layer of the tilemap
-    this.gems = map.createFromObjects("Objects", "Gem", { key: "gem-spin" });
-
-    //ensure tile scale is set to 1 (for some reason this is being set to 0.5), likely
-    //because we are providing a scale when we create the sprites
-    for(var i = 0; i < this.gems.length; i++) {
-      this.gems[i].setScale(1);
+    // Setup all gems for the current level
+    for (var i = 0; i < tileMapObjects.length; i++) {
+      if (tileMapObjects[i].name == "Gem") {
+        this.gems.push(new Gem(this, 
+		tileMapObjects[i].x + tileMapObjects[i].width/2, 
+		tileMapObjects[i].y - tileMapObjects[i].height/2));
+        this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
+          this.player.sprite, this.player.jumpSpringBoard, null, this);
+      }
     }
-    anims.play('gem-spin', this.gems); 
+    /**TODO: REMOVE WHEN DONE */
+    this.collidableTest = this.gems[0];
+
+    this.physics.world.addOverlap(this.collidableTest.sprite,
+      this.player.sprite, this.player.jumpSpringBoard, null, this);
 
     //test initial enemy spawn
     this.testEnemy = new FrogEnemy(this, spawnPoint.x, spawnPoint.y);
@@ -140,12 +135,6 @@ export default class PlatformerScene extends Phaser.Scene {
     this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
     this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
     this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
-
-    /**TODO: REMOVE WHEN DONE */
-    this.collidableTest = new SpringBoard(this, spawnPoint.x + 400, spawnPoint.y - 100);
-
-    this.physics.world.addOverlap(this.collidableTest.sprite,
-      this.player.sprite, this.player.jumpSpringBoard, null, this);
 
     this.physics.world.addCollider(this.collidableTest.sprite, this.worldLayer);
 
@@ -219,6 +208,11 @@ export default class PlatformerScene extends Phaser.Scene {
       this.testEnemy.update();
       //collidable test
       this.collidableTest.update();
+
+      var i;
+      for (i = 0; i < this.gems.length; i++) {
+	this.gems[i].update();
+      }
 
       if (this.player.sprite.y > this.worldLayer.height) {
         
