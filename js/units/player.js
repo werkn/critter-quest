@@ -53,7 +53,7 @@ export default class Player {
 
     // Create the physics-based sprite that we will move around and animate
     this.sprite = scene.physics.add
-      .sprite(x, y, "idle/player-idle-1.png", 0)
+      .sprite(x, y, "atlas", "idle/player-idle-1.png")
       .setDrag(1000, 0)
       .setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
 

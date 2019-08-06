@@ -1,6 +1,7 @@
 import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
+import Gem from "../collectables/gem.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -41,15 +42,17 @@ export default class PlatformerScene extends Phaser.Scene {
     this.load.audio("music", "./assets/audio/music.ogg");
   }
 
-  hitCollectable(sprite, tile) {
-    this.collectableLayer.removeTileAt(tile.x, tile.y);
+  hitCollectable(sprite) {
     this.sys.game.soundManager.sfx.coinCollected.play();
     //update player gem count and add a new life every 100 gems
     if (++this.sys.game.gems == 100) {
 	    this.sys.game.lives += 1;
 	    this.sys.game.gems = 0;
     }
-    console.log("Collected tile id: " + tile.index);
+
+    //change the sprite name to collected, this flag allows us to
+    //delete collected gems on the next pass through of scene.update()
+    sprite.name = "collected";
 
     // Return true to exit processing collision of this tile vs the sprite - in this case, it
     // doesn't matter since the coin tiles are not set to collide.
@@ -84,16 +87,16 @@ export default class PlatformerScene extends Phaser.Scene {
     this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);
     this.worldLayer = map.createStaticLayer("Collision", tileset, 0, 0);
     this.aboveLayer = map.createStaticLayer("ForegroundDecorator", tileset, 0, 0);
-    this.collectableLayer = map.createDynamicLayer('Collectables', tileset, 0, 0);
 
     //property is set internal to the Tiled tilemap (In Tiled, Edit Tileset, Set Custom Properties).
-    this.collectableLayer.setCollisionByProperty({ collides: true });
     this.worldLayer.setCollisionByProperty({ collides: true });
 
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
-    this.aboveLayer.setDepth(10);
+    this.belowLayer.setDepth(0);
+    this.worldLayer.setDepth(2);
+    this.aboveLayer.setDepth(3);
 
     // Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map.
     // Note: instead of storing the player in a global variable, it's stored as a property of the
@@ -105,6 +108,22 @@ export default class PlatformerScene extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
 
+    //get a list of all Objects from the Objects Layer of our Tiled map(s) 
+    var tileMapObjects = map.objects[0].objects;
+    this.gems = [];
+
+    // Setup all gems for the current level
+    for (var i = 0; i < tileMapObjects.length; i++) {
+      if (tileMapObjects[i].name == "Gem") {
+        this.gems.push(new Gem(this, 
+		tileMapObjects[i].x + tileMapObjects[i].width/2, 
+		tileMapObjects[i].y - tileMapObjects[i].height/2));
+        this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
+          this.player.sprite, this.hitCollectable, null, this);
+      }
+    }
+
+
     //test initial enemy spawn
     this.testEnemy = new FrogEnemy(this, spawnPoint.x, spawnPoint.y);
 
@@ -113,13 +132,6 @@ export default class PlatformerScene extends Phaser.Scene {
     this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
     this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
 
-    /**TODO: REMOVE WHEN DONE */
-    this.collidableTest = new SpringBoard(this, spawnPoint.x + 400, spawnPoint.y - 100);
-
-    this.physics.world.addOverlap(this.collidableTest.sprite,
-      this.player.sprite, this.player.jumpSpringBoard, null, this);
-
-    this.physics.world.addCollider(this.collidableTest.sprite, this.worldLayer);
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     this.physics.world.addCollider(this.player.sprite, this.worldLayer);
@@ -127,11 +139,6 @@ export default class PlatformerScene extends Phaser.Scene {
     //add enemy to collide with worldLayer
     this.physics.world.addCollider(this.testEnemy.sprite, this.worldLayer);
     
-    this.physics.world.addOverlap(this.player.sprite, this.collectableLayer);
-
-    // This will set Tile ID 262 (the coin tile) to call the function "hitCoin" when collided with
-    this.collectableLayer.setTileIndexCallback(262, this.hitCollectable, this);
-
     // Phaser supports multiple cameras, but you can access the default camera like this:
     this.cameras.main.startFollow(this.player.sprite);
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
@@ -189,9 +196,20 @@ export default class PlatformerScene extends Phaser.Scene {
     if (this.inGame === true) {
       this.player.update();
       this.testEnemy.update();
-      //collidable test
-      this.collidableTest.update();
 
+      //update all gems in scene, we iterate backwards so we can do
+      //live removal from array (this.gems)
+      var i;
+      for (i = this.gems.length-1; i >= 0; i--) {
+	if (this.gems[i].sprite.name === "collected") {
+          console.log("Destroying gem");
+          this.gems[i].destroy();
+
+	  //remove the gem from the array, its been collected/destroyed
+          this.gems.splice(i,1);
+	}
+      }
+      
       if (this.player.sprite.y > this.worldLayer.height) {
         
         //remove hud overlay
