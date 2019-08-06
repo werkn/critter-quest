@@ -22,14 +22,15 @@ export default class Gem {
             .sprite(x, y, "atlas", "gem-1.png")
             .setDrag(1000, 0)
             .setMaxVelocity(0, 0);
-    }
-
-    update() {
-        this.sprite.anims.play("gem-spin", true);
+        
+	this.sprite.anims.play("gem-spin", true);
         this.sprite.body.debugBodyColor = this.sprite.body.touching.none ? 0x0099ff : 0xff9900;
     }
+
+    update() {}
 
     destroy() {
         this.sprite.destroy();
     }
+
 }
