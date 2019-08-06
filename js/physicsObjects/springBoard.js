@@ -19,7 +19,7 @@ export default class SpringBoard {
 
         // Create the physics-based sprite that we will move around and animate
         this.sprite = scene.physics.add
-            .sprite(x, y, "gem-1.png", 0)
+            .sprite(x, y, "atlas", "gem-1.png")
             .setDrag(1000, 0)
             .setMaxVelocity(0, 0);
     }
