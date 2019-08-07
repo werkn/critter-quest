@@ -197,6 +197,15 @@ export default class PlatformerScene extends Phaser.Scene {
       this.player.update();
       this.testEnemy.update();
 
+      //manually check for player and enemy collisions
+      this.physics.world.collide(this.player.sprite, this.testEnemy.sprite, function(player, enemy){
+        if(enemy.body.touching.up && player.body.touching.down) {	
+         console.log("Player jumped on enemy!"); 
+	} else {
+         console.log("Player was killed by enemy!"); 
+        }
+      }, null, this);
+
       //update all gems in scene, we iterate backwards so we can do
       //live removal from array (this.gems)
       var i;
