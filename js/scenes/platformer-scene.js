@@ -194,20 +194,30 @@ export default class PlatformerScene extends Phaser.Scene {
 	update(time, delta) {
 		// Allow the player to respond to key presses and move itself
 		if (this.inGame === true) {
+
 			this.player.update();
-			this.testEnemy.update();
 
-			//manually check for player and enemy collisions
-			this.physics.world.collide(this.player.sprite, this.testEnemy.sprite, function(player, enemy){
-				if(enemy.body.touching.up && player.body.touching.down) {	
-					console.log("Player jumped on enemy!"); 
-					//TODO: Add enemy.die();
-				} else {
-					console.log("Player was killed by enemy!"); 
-					//TODO: Add player.die();
-				}
-			}, null, this);
+			if (this.testEnemy != null && this.testEnemy.dead){
+				this.testEnemy.destroy();
+				this.testEnemy = null;
+			} else if (this.testEnemy != null) {
+				this.testEnemy.update();
+				//manually check for player and enemy collisions
+				this.physics.world.overlap(this.player.sprite, this.testEnemy.sprite, function(player, enemy){
+					if(enemy.body.touching.up && player.body.touching.down) {	
+						console.log("Player jumped on enemy!"); 
+						enemy.name = "dead"; 
+						//disable enemy body so we don't hit it again
+						enemy.body.setEnable(false);
+						player.setVelocityY(-350);
+						//TODO: Add enemy.die();
+					} else  {
+						console.log("Player was killed by enemy!"); 
+						//TODO: Add player.die();
+					}
+				}, null, this);
 
+			}
 			//update all gems in scene, we iterate backwards so we can do
 			//live removal from array (this.gems)
 			var i;
