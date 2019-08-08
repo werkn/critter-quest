@@ -201,8 +201,10 @@ export default class PlatformerScene extends Phaser.Scene {
       this.physics.world.collide(this.player.sprite, this.testEnemy.sprite, function(player, enemy){
         if(enemy.body.touching.up && player.body.touching.down) {	
          console.log("Player jumped on enemy!"); 
+         //TODO: Add enemy.die();
 	} else {
          console.log("Player was killed by enemy!"); 
+         //TODO: Add player.die();
         }
       }, null, this);
 
