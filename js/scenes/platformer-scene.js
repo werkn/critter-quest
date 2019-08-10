@@ -112,7 +112,10 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileMapObjects = map.objects[0].objects;
 		this.gems = [];
 
-		// Setup all gems for the current level
+		this.enemyManager = new EnemyManager(this);
+
+		// Setup all objects from our tilemap for the current level
+		var tempEnemy;
 		for (var i = 0; i < tileMapObjects.length; i++) {
 			if (tileMapObjects[i].name == "Gem") {
 				this.gems.push(new Gem(this, 
@@ -120,12 +123,15 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].y - tileMapObjects[i].height/2));
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
+			} else if (tileMapObjects[i].name == "Enemy") {
+				tempEnemy = new FrogEnemy(this, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"enemy"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
 			}
 		}
-
-		//test initial enemy spawn
-		this.enemyManager = new EnemyManager(this);
-		this.enemyManager.add(new FrogEnemy(this, spawnPoint.x, spawnPoint.y, "frog1"));
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
@@ -134,12 +140,6 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		// Watch the player and worldLayer for collisions, for the duration of the scene:
 		this.physics.world.addCollider(this.player.sprite, this.worldLayer);
-
-		//add enemy to collide with worldLayer
-		var i;
-		for (i = 0; i < this.enemyManager.enemies.length; i++) {
-			this.physics.world.addCollider(this.enemyManager.enemies[i].sprite, this.worldLayer);
-		}
 
 		// Phaser supports multiple cameras, but you can access the default camera like this:
 		this.cameras.main.startFollow(this.player.sprite);
