@@ -2,6 +2,7 @@ import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
+import EnemyManager from "../managers/enemy-manager.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -36,7 +37,6 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
 
 		//load audio
-
 		this.load.audio("jump", "./assets/audio/jump.wav");
 		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav");
 		this.load.audio("music", "./assets/audio/music.ogg");
@@ -123,21 +123,23 @@ export default class PlatformerScene extends Phaser.Scene {
 			}
 		}
 
-
 		//test initial enemy spawn
-		this.testEnemy = new FrogEnemy(this, spawnPoint.x, spawnPoint.y);
+		this.enemyManager = new EnemyManager(this);
+		this.enemyManager.add(new FrogEnemy(this, spawnPoint.x, spawnPoint.y, "frog1"));
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
 		this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
 		this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
 
-
 		// Watch the player and worldLayer for collisions, for the duration of the scene:
 		this.physics.world.addCollider(this.player.sprite, this.worldLayer);
 
 		//add enemy to collide with worldLayer
-		this.physics.world.addCollider(this.testEnemy.sprite, this.worldLayer);
+		var i;
+		for (i = 0; i < this.enemyManager.enemies.length; i++) {
+			this.physics.world.addCollider(this.enemyManager.enemies[i].sprite, this.worldLayer);
+		}
 
 		// Phaser supports multiple cameras, but you can access the default camera like this:
 		this.cameras.main.startFollow(this.player.sprite);
@@ -196,28 +198,8 @@ export default class PlatformerScene extends Phaser.Scene {
 		if (this.inGame === true) {
 
 			this.player.update();
+			this.enemyManager.update();
 
-			if (this.testEnemy != null && this.testEnemy.dead){
-				this.testEnemy.destroy();
-				this.testEnemy = null;
-			} else if (this.testEnemy != null) {
-				this.testEnemy.update();
-				//manually check for player and enemy collisions
-				this.physics.world.overlap(this.player.sprite, this.testEnemy.sprite, function(player, enemy){
-					if(enemy.body.touching.up && player.body.touching.down) {	
-						console.log("Player jumped on enemy!"); 
-						enemy.name = "dead"; 
-						//disable enemy body so we don't hit it again
-						enemy.body.setEnable(false);
-						player.setVelocityY(-350);
-						//TODO: Add enemy.die();
-					} else  {
-						console.log("Player was killed by enemy!"); 
-						//TODO: Add player.die();
-					}
-				}, null, this);
-
-			}
 			//update all gems in scene, we iterate backwards so we can do
 			//live removal from array (this.gems)
 			var i;

@@ -3,7 +3,7 @@
  */
 export default class FrogEnemy {
 
-	constructor(scene, x, y) {
+	constructor(scene, x, y, name) {
 		this.scene = scene;
 
 		// Create the enemy's idle animations from the texture atlas. These are stored in the global
@@ -74,7 +74,7 @@ export default class FrogEnemy {
 		//class instances, and check this.sprite.name to call methods.  This is how we handle 
 		//it in PlatformerScene.  Hacky, less then ideal technique but Phaser3 documentation and
 		//examples don't really show a nicer way to do this.
-		this.sprite.name = "frog";
+		this.sprite.name = name;
 		this.dead = false;
 	}
 
