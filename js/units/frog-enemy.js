@@ -22,7 +22,7 @@ export default class FrogEnemy {
 			repeat: -1
 		});
 
-		//FROG DEATH ANIMATION
+		//DEATH ANIMATION
 		anims.create({
 			key: "enemy-die",
 			frames: anims.generateFrameNames("atlas", {
@@ -41,7 +41,9 @@ export default class FrogEnemy {
 			.setDrag(1000, 0)
 			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
 
-		//listen for animation complete callback
+		//listen for animation complete callback on enemy death animation,
+		//as soon as the animation completes kill the enemy and allow it to be 
+		//removed from EnemyManager
 		this.sprite.on('animationcomplete', function (animation, frame) {
 			console.log(this);
 			console.log(animation);
@@ -50,7 +52,7 @@ export default class FrogEnemy {
 			}
 		}, this);
 
-		// Frog jump timer
+		//frog jump timer
 		this.jumpTimer = scene.time.addEvent({
 			delay:2750,                // ms
 			callback: this.jump,
@@ -75,6 +77,7 @@ export default class FrogEnemy {
 		//it in PlatformerScene.  Hacky, less then ideal technique but Phaser3 documentation and
 		//examples don't really show a nicer way to do this.
 		this.sprite.name = name;
+		this.sprite.state = "normal";
 		this.dead = false;
 	}
 
@@ -90,7 +93,7 @@ export default class FrogEnemy {
 	}
 
 	update() {
-		if (this.sprite.name != "dead") {
+		if (this.sprite.state != "dying") {
 			const sprite = this.sprite;
 			const onGround = sprite.body.blocked.down;
 			const acceleration = onGround ? 600 : 300;

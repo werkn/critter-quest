@@ -2958,7 +2958,5 @@
   <object id="172" name="Enemy" gid="262" x="339.5" y="254" width="16" height="16"/>
   <object id="173" name="Enemy" gid="262" x="272" y="160" width="16" height="16"/>
   <object id="174" name="Enemy" gid="262" x="208" y="160" width="16" height="16"/>
-  <object id="175" name="Enemy" gid="262" x="64" y="64" width="16" height="16"/>
-  <object id="176" name="Enemy" gid="262" x="32" y="64" width="16" height="16"/>
  </objectgroup>
 </map>

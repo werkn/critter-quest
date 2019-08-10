@@ -50,6 +50,18 @@ export default class Player {
 			repeat: -1
 		});
 
+		//PLAYER DEATH ANIMATION
+		anims.create({
+			key: "player-die",
+			frames: anims.generateFrameNames("atlas", {
+				prefix: "hurt/player-hurt-",
+				suffix: '.png',
+				start: 1,
+				end: 2
+			}),
+			frameRate: 10,
+			repeat: -1
+		});
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
@@ -69,6 +81,9 @@ export default class Player {
 			s: S,
 			d: D
 		});
+
+		this.sprite.name = "player";
+		this.sprite.state = "normal";
 	}
 
 	/**TODO: REMOVE WHEN DONE */
@@ -80,49 +95,73 @@ export default class Player {
 		this.sys.game.soundManager.sfx.jump.play();
 	}
 
-	die(context) {
-		context.sys.game.lives -= 1;
+	update() {
+
+		if (this.sprite.state == "normal") {
+			const sprite = this.sprite;
+			const onGround = sprite.body.blocked.down;
+			const acceleration = onGround ? 600 : 300;
+
+
+			// Apply horizontal acceleration when left/a or right/d are applied
+			if (this.keys.left.isDown || this.keys.a.isDown) {
+				sprite.setAccelerationX(-acceleration);
+				// No need to have a separate set of graphics for running to the left & to the right. Instead
+				// we can just mirror the sprite.
+				sprite.setFlipX(true);
+			} else if (this.keys.right.isDown || this.keys.d.isDown) {
+				sprite.setAccelerationX(acceleration);
+				sprite.setFlipX(false);
+			} else {
+				sprite.setAccelerationX(0);
+			}
+
+			// Only allow the player to jump if they are on the ground
+			if (onGround && (this.keys.up.isDown || this.keys.w.isDown)) {
+				sprite.setVelocityY(-500);
+				this.scene.sys.game.soundManager.sfx.jump.play();
+			}
+
+			// Update the animation/texture based on the state of the player
+			if (onGround) {
+
+				if (this.keys.down.isDown || this.keys.s.isDown) { 
+					sprite.anims.play("player-crouch", true);
+				} else if (sprite.body.velocity.x !== 0) {
+					sprite.anims.play("player-run", true);
+				} else {
+					sprite.anims.play("player-idle", true);
+				}
+				
+			} else {
+				sprite.anims.stop();
+				//start of jump is one sprite, once @ apex of jump switch to falling sprite.
+				if (sprite.body.velocity.y < 0) {
+					sprite.setTexture("atlas", "jump/player-jump-1.png");
+				} else {
+					sprite.setTexture("atlas", "jump/player-jump-2.png");
+				}
+			}
+		} else if (this.sprite.state == "dying") {
+			this.die();
+		} 
 	}
 
-	update() {
-		const keys = this.keys;
-		const sprite = this.sprite;
-		const onGround = sprite.body.blocked.down;
-		const acceleration = onGround ? 600 : 300;
-
-		// Apply horizontal acceleration when left/a or right/d are applied
-		if (keys.left.isDown || keys.a.isDown) {
-			sprite.setAccelerationX(-acceleration);
-			// No need to have a separate set of graphics for running to the left & to the right. Instead
-			// we can just mirror the sprite.
-			sprite.setFlipX(true);
-		} else if (keys.right.isDown || keys.d.isDown) {
-			sprite.setAccelerationX(acceleration);
-			sprite.setFlipX(false);
-		} else {
-			sprite.setAccelerationX(0);
-		}
-
-		// Only allow the player to jump if they are on the ground
-		if (onGround && (keys.up.isDown || keys.w.isDown)) {
-			sprite.setVelocityY(-500);
-			this.scene.sys.game.soundManager.sfx.jump.play();
-		}
-
-		// Update the animation/texture based on the state of the player
-		if (onGround) {
-			if (keys.down.isDown || keys.s.isDown) { sprite.anims.play("player-crouch", true); }
-			else if (sprite.body.velocity.x !== 0) sprite.anims.play("player-run", true);
-			else sprite.anims.play("player-idle", true);
-		} else {
-			sprite.anims.stop();
-			//start of jump is one sprite, once @ apex of jump switch to falling sprite.
-			if (sprite.body.velocity.y < 0) {
-				sprite.setTexture("atlas", "jump/player-jump-1.png");
-			} else {
-				sprite.setTexture("atlas", "jump/player-jump-2.png");
-			}
-		}
+	die() {
+		//disable player body so we don't participate in collisions
+		console.log(this);
+		this.sprite.anims.play("player-die", true);
+		this.sprite.body.stop();
+		this.sprite.body.setVelocityY(-500);
+		this.sprite.state = "dead";
+		
+		//remove collisions (note: if we manually handle collisions in update() or 
+		//another class we need to also check in that class whether collision has
+		//been disabled.  For instance, refer to update() in EnemyManager
+		this.sprite.body.checkCollision.up= false;
+		this.sprite.body.checkCollision.down = false;
+		this.sprite.body.checkCollision.left= false;
+		this.sprite.body.checkCollision.right = false;
 	}
 
 	destroy() {

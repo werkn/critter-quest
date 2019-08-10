@@ -217,9 +217,7 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				//remove hud overlay
 				this.scene.stop('hud_overlay');
-				this.player.die(this);
-
-				if (this.sys.game.lives > 0) {
+				if (--this.sys.game.lives > 0) {
 					this.scene.start("level"+this.currentLevel);
 				} else {
 					this.scene.start('game_over');
