@@ -38,6 +38,13 @@ export default class Exit {
 
 		if (sprite.state == "normal") {
 			sprite.anims.play("door-idle", true);
+			this.scene.physics.world.overlap(this.scene.player.sprite, this.sprite, function(player, door) {
+				//player is alive and well, call exit level
+				if (player.state == "normal") {
+					console.log("Exit!");
+					door.state = "exit_touched";
+				}
+			}, null, this);
 		} 
 	}
 

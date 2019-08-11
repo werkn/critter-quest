@@ -208,6 +208,12 @@ export default class PlatformerScene extends Phaser.Scene {
 			this.enemyManager.update();
 			this.levelExit.update();
 
+			//check if player has made it to the exit yet
+			if (this.levelExit.sprite.state == "exit_touched") {
+				this.scene.stop("hud_overlay");
+				this.scene.start("level" + ++this.currentLevel)
+			}
+
 			//update all gems in scene, we iterate backwards so we can do
 			//live removal from array (this.gems)
 			var i;
