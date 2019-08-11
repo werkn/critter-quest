@@ -3,7 +3,7 @@ import FrogEnemy from "../units/frog-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
 import EnemyManager from "../managers/enemy-manager.js";
-
+import Exit from "../objects/exit.js";
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
  */
@@ -113,7 +113,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.gems = [];
 
 		this.enemyManager = new EnemyManager(this);
-
+		
 		// Setup all objects from our tilemap for the current level
 		var tempEnemy;
 		for (var i = 0; i < tileMapObjects.length; i++) {
@@ -130,6 +130,13 @@ export default class PlatformerScene extends Phaser.Scene {
 					"enemy"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
+			} else if (tileMapObjects[i].name == "Exit") {
+
+				this.levelExit = new Exit(this,
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"exit"+i);
+				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
 			}
 		}
 
@@ -199,6 +206,13 @@ export default class PlatformerScene extends Phaser.Scene {
 
 			this.player.update();
 			this.enemyManager.update();
+			this.levelExit.update();
+
+			//check if player has made it to the exit yet
+			if (this.levelExit.sprite.state == "exit_touched") {
+				this.scene.stop("hud_overlay");
+				this.scene.start("level" + ++this.currentLevel)
+			}
 
 			//update all gems in scene, we iterate backwards so we can do
 			//live removal from array (this.gems)
