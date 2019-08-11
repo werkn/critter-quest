@@ -29,6 +29,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.load.image("background-repeat", "./assets/tilesets/environment/back.png");
 		//load tileset image
 		this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
+		this.load.image("props", "./assets/tilesets/environment/props.png");
 
 		//load tilemap
 		this.load.tilemapTiledJSON("map"+this.currentLevel, "./assets/tilemaps/level"+ this.currentLevel + ".json");
@@ -81,7 +82,9 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		// Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
 		// Phaser's cache (i.e. the name you used in preload)
-		const tileset = map.addTilesetImage("tileset", "tiles");
+		var tileset = [];
+		tileset.push(map.addTilesetImage("tileset", "tiles"));
+		tileset.push(map.addTilesetImage("props", "props"));
 
 		// Parameters: layer name (or index) from Tiled, tileset, x, y
 		this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);
