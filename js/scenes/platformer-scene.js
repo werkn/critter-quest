@@ -150,15 +150,27 @@ export default class PlatformerScene extends Phaser.Scene {
 		//turn all tiles with custom property collide_top_only 
 		//(Set in Tiled editor for Tileset) into collision top only
 		//allowing the player to jump through these tiles 
+		this.tileIdsWithCollideDmg = [];
 		this.worldLayer.layer.data.forEach((row) => { // here we are iterating through each tile.
 			row.forEach((Tile) => {
 				if (Tile.properties.collide_top_only) { 
 						Tile.collideDown = false;
 						Tile.collideLeft = false;
 						Tile.collideRight = false;
+				} else if (Tile.properties.collide_dmg) {
+					// This will add Tile ID XX to list tileIdsWithCollideDmg
+					// where we will then call:
+					//     this.collectableLayer.setTileIndexCallback(tileIdsWithCollideDmg[i], 
+					//         this.methodToCall(), this);
+					if (this.tileIdsWithCollideDmg.indexOf(Tile.index) == -1) {
+						this.tileIdsWithCollideDmg.push(Tile.index);
+					}
 				}
 			})
 		});
+
+		//add callbacks for each tile.id in tileIdsWithCollideDmg
+		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function() { this.player.sprite.state = "dying"; }, this); 
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
@@ -247,7 +259,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				}
 			}
 
-			if (this.player.sprite.y > this.worldLayer.height) {
+			if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
 
 				//remove hud overlay
 				this.scene.stop('hud_overlay');
