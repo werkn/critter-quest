@@ -140,7 +140,9 @@ export default class PlatformerScene extends Phaser.Scene {
 			}
 		}
 
-		//turn all log tiles into collision top only
+		//turn all tiles with custom property collide_top_only 
+		//(Set in Tiled editor for Tileset) into collision top only
+		//allowing the player to jump through these tiles 
 		this.worldLayer.layer.data.forEach((row) => { // here we are iterating through each tile.
 			row.forEach((Tile) => {
 				if (Tile.properties.collide_top_only) { 
