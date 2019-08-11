@@ -100,7 +100,7 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		// Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map.
 		// Note: instead of storing the player in a global variable, it's stored as a property of the
-		// scene.
+		// scene	var logTiles = map..
 		const spawnPoint = map.findObject(
 			"Objects",
 			obj => obj.name === "Spawn Point"
@@ -139,6 +139,17 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
 			}
 		}
+
+		//turn all log tiles into collision top only
+		this.worldLayer.layer.data.forEach((row) => { // here we are iterating through each tile.
+			row.forEach((Tile) => {
+				if (Tile.properties.collide_top_only) { 
+						Tile.collideDown = false;
+						Tile.collideLeft = false;
+						Tile.collideRight = false;
+				}
+			})
+		});
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
