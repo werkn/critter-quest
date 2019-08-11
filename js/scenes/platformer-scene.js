@@ -170,7 +170,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		});
 
 		//add callbacks for each tile.id in tileIdsWithCollideDmg
-		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function() { this.player.sprite.state = "dying" }, this); 
+		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function() { this.player.sprite.state = "dying"; }, this); 
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
@@ -259,7 +259,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				}
 			}
 
-			if (this.player.sprite.y > this.worldLayer.height) {
+			if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
 
 				//remove hud overlay
 				this.scene.stop('hud_overlay');

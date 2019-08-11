@@ -149,11 +149,14 @@ export default class Player {
 
 	die() {
 		//disable player body so we don't participate in collisions
-		console.log(this);
 		this.sprite.anims.play("player-die", true);
 		this.sprite.body.stop();
 		this.sprite.body.setVelocityY(-500);
-		this.sprite.state = "dead";
+		this.sprite.state = "death_animation";
+		//wait 1 second before totally killing player (allows animation to run)
+		this.scene.time.delayedCall(850, function() { 
+			this.sprite.state = "dead"; 
+		}, null, this);
 		
 		//remove collisions (note: if we manually handle collisions in update() or 
 		//another class we need to also check in that class whether collision has
