@@ -27,8 +27,10 @@ export default class PlatformerScene extends Phaser.Scene {
 		//"this" === Phaser.Scene
 		//load repeating background image
 		this.load.image("background-repeat", "./assets/tilesets/environment/back.png");
+		this.load.image("middleground-repeat", "./assets/tilesets/environment/middle.png");
 		//load tileset image
 		this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
+		this.load.image("props", "./assets/tilesets/environment/props.png");
 
 		//load tilemap
 		this.load.tilemapTiledJSON("map"+this.currentLevel, "./assets/tilemaps/level"+ this.currentLevel + ".json");
@@ -63,9 +65,6 @@ export default class PlatformerScene extends Phaser.Scene {
 		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
 
-		// Creating a repeating background sprite
-		const bg = this.add.tileSprite(0, 0, width, height, "background-repeat");
-		bg.setOrigin(0, 0);
 
 		// In v3, you can chain many methods, so you can create text and configure it in one "line"
 		this.add
@@ -79,9 +78,17 @@ export default class PlatformerScene extends Phaser.Scene {
 		//setup tilemap
 		const map = this.make.tilemap({ key: "map"+this.currentLevel });
 
+		// Creating a repeating background sprite
+		const bg = this.add.tileSprite(0, 0, map.widthInPixels, height/2, "background-repeat");
+		bg.setOrigin(0, 0);
+		const mg = this.add.tileSprite(0, height/4, map.widthInPixels, height/2, "middleground-repeat");
+		mg.setOrigin(0, 0);
+
 		// Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
 		// Phaser's cache (i.e. the name you used in preload)
-		const tileset = map.addTilesetImage("tileset", "tiles");
+		var tileset = [];
+		tileset.push(map.addTilesetImage("tileset", "tiles"));
+		tileset.push(map.addTilesetImage("props", "props"));
 
 		// Parameters: layer name (or index) from Tiled, tileset, x, y
 		this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);

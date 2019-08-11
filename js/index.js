@@ -16,7 +16,7 @@ const config = {
 	height: 480,
 	parent: "game-container",
 	pixelArt: true,
-	backgroundColor: "#1d212d",
+	backgroundColor: "#325762",
 	audio: {
     	disableWebAudio: true
 	},
