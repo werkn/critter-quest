@@ -40,7 +40,7 @@ export default class TitleScreenScene extends Phaser.Scene {
 
         // In v3, you can chain many methods, so you can create text and configure it in one "line"
         this.add
-            .text(width / 2, height / 2, "Title Screen", {
+            .text(width / 2, height / 2, "Critter Quest v1.0", {
                 font: "64px monospace",
                 color: "white"
             })
