@@ -32,6 +32,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		//load tileset image
 		this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
 		this.load.image("props", "./assets/tilesets/environment/props.png");
+		this.load.image("widgets", "./assets/tilesets/widgets/widgets.png");
 
 		//load tilemap
 		this.load.tilemapTiledJSON("map"+this.currentLevel, "./assets/tilemaps/level"+ this.currentLevel + ".json");
@@ -80,6 +81,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileset = [];
 		tileset.push(map.addTilesetImage("tileset", "tiles"));
 		tileset.push(map.addTilesetImage("props", "props"));
+		tileset.push(map.addTilesetImage("widgets", "widgets"));
 
 		// Parameters: layer name (or index) from Tiled, tileset, x, y
 		this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);
