@@ -69,6 +69,27 @@ export default class Player {
 			.setDrag(1000, 0)
 			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
 
+		//we need to capture the original normal body because we modify it
+		//when crouching the player (so they can move into smaller spaces)
+		this.normalBody = { 
+			"width": this.sprite.body.width,
+			"height": this.sprite.body.height,
+			"useGameObjectCenter":true,  //this is true by default
+			"offsetX": this.sprite.body.offset.x,
+			"offsetY": this.sprite.body.offset.y
+		}
+
+		this.crouchedBody = {
+			"width": this.normalBody.width,
+			"height": this.normalBody.height,
+			"useGameObjectCenter": false, //we customize our offset when crouching, don't use GameObjects
+			"offsetX": this.normalBody.offsetX,
+			"offsetY": this.normalBody.offsetY + this.normalBody.height / 2,
+		}
+
+		console.log(this.normalBody);
+		console.log(this.crouchedBody);
+
 		// Track the arrow keys & WASD
 		const { LEFT, RIGHT, UP, DOWN, W, A, S, D } = Phaser.Input.Keyboard.KeyCodes;
 		this.keys = scene.input.keyboard.addKeys({
@@ -127,10 +148,20 @@ export default class Player {
 
 				if (this.keys.down.isDown || this.keys.s.isDown) { 
 					sprite.anims.play("player-crouch", true);
+					sprite.body.setSize(this.crouchedBody.width, 
+						this.crouchedBody.height/2, 
+						false); //false indicates we do not want to center on GameObject (owner of this body)
+					sprite.setOffset(this.crouchedBody.offsetX, this.crouchedBody.offsetY);
 				} else if (sprite.body.velocity.x !== 0) {
+					sprite.body.setSize(this.normalBody.width, 
+						this.normalBody.height, 
+						true);
 					sprite.anims.play("player-run", true);
 				} else {
 					sprite.anims.play("player-idle", true);
+					sprite.body.setSize(this.normalBody.width, 
+						this.normalBody.height, 
+						true);
 				}
 				
 			} else {
