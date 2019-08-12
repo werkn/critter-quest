@@ -65,16 +65,6 @@ export default class PlatformerScene extends Phaser.Scene {
 		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
 
-
-		// In v3, you can chain many methods, so you can create text and configure it in one "line"
-		this.add
-			.text(width / 2, height / 2, "Tilemap\nPhaser 3\nDemo!", {
-				font: "64px monospace",
-				color: "white"
-			})
-			.setOrigin(0.5, 0.5)
-			.setShadow(5, 5, "#5588EE", 0, true, true);
-
 		//setup tilemap
 		const map = this.make.tilemap({ key: "map"+this.currentLevel });
 
@@ -186,14 +176,16 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
 		// Help text that has a "fixed" position on the screen
-		this.tipText = this.add
-			.text(width * 0.05, height * 0.1, 'Arrow keys to move\nPress D to show hitboxes\nPress ESC to show in-game menu.\nPress C to hide tips', {
-				font: "18px monospace",
-				fill: "#ffffff",
-				padding: { x: 20, y: 10 },
-				backgroundColor: "#000000"
-			})
-			.setScrollFactor(0);
+		if (this.currentLevel == 1) {
+			this.tipText = this.add
+				.text(width * 0.15, height * 0.1, 'Arrow keys to move\nPress D to show hitboxes\nPress ESC to show in-game menu.\nPress C to hide tips', {
+					font: "18px monospace",
+					fill: "#ffffff",
+					padding: { x: 20, y: 10 },
+					backgroundColor: "#000000"
+				})
+				.setScrollFactor(1);
+		}
 
 		this.input.keyboard.on("keydown_ESC", event => {
 			console.log("Launching in_game_menu...");

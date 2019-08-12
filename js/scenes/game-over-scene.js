@@ -28,7 +28,7 @@ export default class GameOverScene extends Phaser.Scene {
 
         // Help text that has a "fixed" position on the screen
         this.add
-            .text(16, 16, 'Press Enter to return to level select.', {
+            .text(16, 16, 'Press Enter to return to Level Select.', {
                 font: "18px monospace",
                 fill: "#ffffff",
                 padding: { x: 20, y: 10 },
