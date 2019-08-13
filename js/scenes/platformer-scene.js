@@ -150,7 +150,9 @@ export default class PlatformerScene extends Phaser.Scene {
 						Tile.collideDown = false;
 						Tile.collideLeft = false;
 						Tile.collideRight = false;
-				} else if (Tile.properties.collide_dmg) {
+				} 
+				
+				if (Tile.properties.collide_dmg) {
 					// This will add Tile ID XX to list tileIdsWithCollideDmg
 					// where we will then call:
 					//     this.collectableLayer.setTileIndexCallback(tileIdsWithCollideDmg[i], 
@@ -158,6 +160,10 @@ export default class PlatformerScene extends Phaser.Scene {
 					if (this.tileIdsWithCollideDmg.indexOf(Tile.index) == -1) {
 						this.tileIdsWithCollideDmg.push(Tile.index);
 					}
+				} 
+				
+				if (Tile.properties.widget) {
+					Tile.setVisible(false);
 				}
 			})
 		});
