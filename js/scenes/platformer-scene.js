@@ -163,7 +163,14 @@ export default class PlatformerScene extends Phaser.Scene {
 				} 
 				
 				if (Tile.properties.widget) {
-					Tile.setVisible(false);
+					//Tile.setVisible(false);
+					//make a callback to detect when enemy hit the widget tile
+					Tile.setCollisionCallback(function(enemy, tile) { 
+						console.log(enemy);
+						if (enemy.state != "flip_direction") {
+							enemy.state = "flip_direction";
+						}
+					}, this);
 				}
 			})
 		});

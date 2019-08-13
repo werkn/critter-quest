@@ -71,7 +71,10 @@ export default class EagleEnemy {
 		//examples don't really show a nicer way to do this.
 		this.sprite.name = name;
 		this.sprite.state = "normal";
+		this.direction = -1;
 		this.dead = false;
+
+		this.canCollideWithWidget = true;
 	}
 
 	die() {
@@ -82,7 +85,19 @@ export default class EagleEnemy {
 		if (this.sprite.state != "dying") {
 			const sprite = this.sprite;
 
+			this.sprite.x += (1*this.direction);
+
+			if (this.canCollideWithWidget && this.sprite.state == "flip_direction") {
+				sprite.flipX = !sprite.flipX;
+				this.direction *= -1;
+				this.canCollideWithWidget = false;
+	    		this.scene.time.delayedCall(1500, function() { 
+					this.sprite.state = "normal";
+					this.canCollideWithWidget = true; 
+				}, null, this);
+			}
 			sprite.anims.play("eagle-idle", true);
+			
 		} else {
 			this.die();
 		}
