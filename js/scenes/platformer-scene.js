@@ -1,6 +1,7 @@
 import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
+import OpossumEnemy from "../units/opossum-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
 import EnemyManager from "../managers/enemy-manager.js";
@@ -124,7 +125,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
 			} else if (tileMapObjects[i].name == "Enemy") {
-				tempEnemy = new EagleEnemy(this, 
+				tempEnemy = new OpossumEnemy(this, 
 					tileMapObjects[i].x, 
 					tileMapObjects[i].y, 
 					"enemy"+i);
@@ -176,7 +177,12 @@ export default class PlatformerScene extends Phaser.Scene {
 		});
 
 		//add callbacks for each tile.id in tileIdsWithCollideDmg
-		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function() { this.player.sprite.state = "dying"; }, this); 
+		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function(collidingSprite, tile) { 
+			//for now try to kill whatever touches a tile with 'collide_dmg'
+			//this is hacky, but should only kill enemies and the player,
+			//ie: GameObjects that watch for state 'dying'
+			collidingSprite.state = "dying";
+		}, this); 
 
 		//check that we haven't already set these stats
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;

@@ -1,7 +1,7 @@
 /**
- * A class that wraps up our eagle-enemy logic.
+ * A class that wraps up our opossum-enemy logic.
  */
-export default class EagleEnemy {
+export default class OpossumEnemy {
 
 	constructor(scene, x, y, name) {
 		this.scene = scene;
@@ -11,9 +11,9 @@ export default class EagleEnemy {
 		const anims = scene.anims;
 		//FROG IDLE ANIMATION
 		anims.create({
-			key: "eagle-idle",
+			key: "opossum-walk",
 			frames: anims.generateFrameNames("atlas", {
-				prefix: "eagle-attack-",
+				prefix: "opossum-",
 				suffix: '.png',
 				start: 1,
 				end: 4
@@ -37,10 +37,10 @@ export default class EagleEnemy {
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
-			.sprite(x, y, "atlas", "eagle-attack-1.png")
+			.sprite(x, y, "atlas", "opossum-1.png")
 			.setDrag(1000, 0)
 			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
-		this.sprite.body.setAllowGravity(false);	
+//		this.sprite.body.setAllowGravity(false);	
 			
 
 		//listen for animation complete callback on enemy death animation,
@@ -54,21 +54,6 @@ export default class EagleEnemy {
 			}
 		}, this);
 
-		//we use this.sprite.name to check if the class FrogEnemy has been killed
-		//when it changes to 'dead' we know the enemy has been killed
-		//and can be removed from the scene
-		//
-		//~~~Why not just set a field on the FrogEnemy class? ~~~ 
-		//Phaser3 as far as I can tell attaches our physics collider to the 
-		//sprite object and offers no nice built-in way to go from
-		//the sprite collider (provided in collision callbacks) to the
-		//class it is associated with... this essentially means when we use ANY
-		//of the physics callbacks that we cannot get a reference to the class of the
-		//sprite involved in the collision and subsequently have no nice way to call methods
-		//in response.  By change this.sprite.name we can loop through a collection of FrogEnemy
-		//class instances, and check this.sprite.name to call methods.  This is how we handle 
-		//it in PlatformerScene.  Hacky, less then ideal technique but Phaser3 documentation and
-		//examples don't really show a nicer way to do this.
 		this.sprite.name = name;
 		this.sprite.state = "normal";
 		this.direction = -1;
@@ -96,7 +81,7 @@ export default class EagleEnemy {
 					this.canCollideWithWidget = true; 
 				}, null, this);
 			}
-			sprite.anims.play("eagle-idle", true);
+			sprite.anims.play("opossum-walk", true);
 			
 		} else {
 			this.die();
