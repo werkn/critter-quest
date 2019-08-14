@@ -2,6 +2,7 @@ import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
+import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
 import EnemyManager from "../managers/enemy-manager.js";
@@ -125,7 +126,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
 			} else if (tileMapObjects[i].name == "Enemy") {
-				tempEnemy = new OpossumEnemy(this, 
+				tempEnemy = new FrogBossEnemy(this, 
 					tileMapObjects[i].x, 
 					tileMapObjects[i].y, 
 					"enemy"+i);
