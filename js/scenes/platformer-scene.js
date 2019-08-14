@@ -1,5 +1,6 @@
 import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
+import EagleEnemy from "../units/eagle-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
 import EnemyManager from "../managers/enemy-manager.js";
@@ -31,6 +32,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		//load tileset image
 		this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
 		this.load.image("props", "./assets/tilesets/environment/props.png");
+		this.load.image("widgets", "./assets/tilesets/widgets/widgets.png");
 
 		//load tilemap
 		this.load.tilemapTiledJSON("map"+this.currentLevel, "./assets/tilemaps/level"+ this.currentLevel + ".json");
@@ -79,6 +81,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileset = [];
 		tileset.push(map.addTilesetImage("tileset", "tiles"));
 		tileset.push(map.addTilesetImage("props", "props"));
+		tileset.push(map.addTilesetImage("widgets", "widgets"));
 
 		// Parameters: layer name (or index) from Tiled, tileset, x, y
 		this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);
@@ -121,7 +124,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
 			} else if (tileMapObjects[i].name == "Enemy") {
-				tempEnemy = new FrogEnemy(this, 
+				tempEnemy = new EagleEnemy(this, 
 					tileMapObjects[i].x, 
 					tileMapObjects[i].y, 
 					"enemy"+i);
@@ -147,7 +150,9 @@ export default class PlatformerScene extends Phaser.Scene {
 						Tile.collideDown = false;
 						Tile.collideLeft = false;
 						Tile.collideRight = false;
-				} else if (Tile.properties.collide_dmg) {
+				} 
+				
+				if (Tile.properties.collide_dmg) {
 					// This will add Tile ID XX to list tileIdsWithCollideDmg
 					// where we will then call:
 					//     this.collectableLayer.setTileIndexCallback(tileIdsWithCollideDmg[i], 
@@ -155,6 +160,17 @@ export default class PlatformerScene extends Phaser.Scene {
 					if (this.tileIdsWithCollideDmg.indexOf(Tile.index) == -1) {
 						this.tileIdsWithCollideDmg.push(Tile.index);
 					}
+				} 
+				
+				if (Tile.properties.widget) {
+					//Tile.setVisible(false);
+					//make a callback to detect when enemy hit the widget tile
+					Tile.setCollisionCallback(function(collidingSprite, tile) { 
+						if (collidingSprite.name != "player" &&
+								collidingSprite.state != "flip_direction") {
+							collidingSprite.state = "flip_direction";
+						}
+					}, this);
 				}
 			})
 		});
