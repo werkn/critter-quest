@@ -3,7 +3,7 @@
  */
 export default class FrogBossEnemy {
 
-	constructor(scene, x, y, name) {
+	constructor(scene, x, y, name, scale=3) {
 		this.scene = scene;
 
 		// Create the enemy's idle animations from the texture atlas. These are stored in the global
@@ -61,15 +61,34 @@ export default class FrogBossEnemy {
 			loop: true
 		});
 
+		this.count = 2;
+		this.spawnCount = 4;
+		this.enemySpawned = false;
 		this.sprite.name = name;
 		this.sprite.state = "normal";
-		this.sprite.setScale(3);
+		this.sprite.setScale(scale);
 		this.sprite.setTint(0x330000);
 		this.dead = false;
 	}
 
 	die() {
 		this.sprite.anims.play("enemy-die", true);
+		if (!this.enemySpawned) {
+			for (var i = 0; i < this.count; i++) {
+				var { width, height } = this.scene.sys.game.config;
+				var xSpawn = Math.floor(Math.random() * Math.floor(width));
+				var tempEnemy = new FrogBossEnemy(
+					this.scene,
+					xSpawn,
+					125, 
+					"clone",
+					1)
+
+				this.scene.enemyManager.add(tempEnemy);
+				this.scene.physics.world.addCollider(tempEnemy.sprite, this.scene.worldLayer);
+			}
+			this.enemySpawned = true;
+		}
 	}
 
 	jump() {
