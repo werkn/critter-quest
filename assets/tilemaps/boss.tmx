@@ -2955,6 +2955,6 @@
    <point/>
   </object>
   <object id="177" name="Exit" gid="262" x="583" y="60" width="16" height="16"/>
-  <object id="184" name="Enemy" gid="262" x="320" y="208" width="16" height="16"/>
+  <object id="184" name="FrogBossEnemy" gid="262" x="319" y="208" width="16" height="16"/>
  </objectgroup>
 </map>
