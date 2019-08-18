@@ -73,7 +73,7 @@ export default class HudOverlayScene extends Phaser.Scene {
 	}
 
 	update(time, delta) {
-		this.timeRemaining = 180 - Math.floor(this.sys.game.gameTimer.getElapsedSeconds());
+		this.timeRemaining = this.sys.game.maxLevelTime - Math.floor(this.sys.game.gameTimer.getElapsedSeconds());
 
 //		if (this.timeRemaining == 176) {
 //			const { width, height } = this.sys.game.config;

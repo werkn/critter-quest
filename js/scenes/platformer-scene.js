@@ -67,6 +67,9 @@ export default class PlatformerScene extends Phaser.Scene {
 	create() {
 		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
+		
+		//max time before player is killed (in seconds)
+		this.sys.game.maxLevelTime = 180;
 
 		//setup tilemap
 		const map = this.make.tilemap({ key: "map"+this.currentLevel });
@@ -238,7 +241,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		
 		
 		this.sys.game.gameTimer = this.time.addEvent({
-			delay: 180000,                // 3 min 
+			delay: this.sys.game.maxLevelTime * 1000,                // 3 min 
 			callback: function() { this.player.sprite.state = "dying"; },
 			callbackScope: this,
 			loop: false,
