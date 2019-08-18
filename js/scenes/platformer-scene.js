@@ -174,7 +174,7 @@ export default class PlatformerScene extends Phaser.Scene {
 					//make a callback to detect when enemy hit the widget tile
 					Tile.setCollisionCallback(function(collidingSprite, tile) { 
 						if (collidingSprite.name != "player" &&
-								collidingSprite.state != "flip_direction") {
+								collidingSprite.state == "normal") {
 							collidingSprite.state = "flip_direction";
 						}
 					}, this);

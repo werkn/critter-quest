@@ -3,7 +3,7 @@
  */
 export default class FrogBossEnemy {
 
-	constructor(scene, x, y, name, scale=3, health=3) {
+	constructor(scene, x, y, name, scale=3, health=3, direction=1) {
 		this.scene = scene;
 
 		// Create the enemy's idle animations from the texture atlas. These are stored in the global
@@ -54,18 +54,25 @@ export default class FrogBossEnemy {
 		this.jumpTimer = scene.time.addEvent({
 			delay:1750,                // ms
 			callback: this.jump,
-			//args: [],
 			callbackScope: this,
 			loop: true
 		});
 
 		this.health = health;
+		this.enemySpawned = false;
 		this.sprite.name = name;
 		this.sprite.state = "normal";
 		this.sprite.setScale(scale);
-		//this.sprite.setTint(0x330000);
 		this.canCollideWithWidget = true;
-		this.direction = 1;
+
+		//set initial direction (default is 1)
+		//1 - face left
+		//2 - face right
+		this.direction = direction;
+		if (direction == -1) {
+				this.sprite.flipX = !this.sprite.flipX;
+		}
+
 		this.dead = false;
 	}
 
@@ -77,20 +84,27 @@ export default class FrogBossEnemy {
 					var { width, height } = this.scene.sys.game.config;
 					var xSpawn = width / 2;
 
+					//spawn facing different directions
+					var tempDirection = 1;
+					if (i % 2 == 0) {
+						tempDirection = 1; 
+					} else {
+						tempDirection = -1; 
+					}
+
 					var tempEnemy = new FrogBossEnemy(
 						this.scene,
 						xSpawn,
 						height*0.1, 
 						"clone",
 						this.sprite.scaleX-0.5,
-						this.health-1);
+						this.health-1,
+						tempDirection);
 
 					this.scene.enemyManager.add(tempEnemy);
 					this.scene.physics.world.addCollider(tempEnemy.sprite, this.scene.worldLayer);
 				}
 				this.enemySpawned = true;
-			} else if (this.health == 0) {
-				console.log("Totally dead.");
 			}
 		}
 	}
