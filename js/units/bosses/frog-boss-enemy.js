@@ -3,7 +3,7 @@
  */
 export default class FrogBossEnemy {
 
-	constructor(scene, x, y, name, scale=3) {
+	constructor(scene, x, y, name, scale=3, health=3) {
 		this.scene = scene;
 
 		// Create the enemy's idle animations from the texture atlas. These are stored in the global
@@ -39,67 +39,81 @@ export default class FrogBossEnemy {
 		this.sprite = scene.physics.add
 			.sprite(x, y, "atlas", "idle/frog-idle-1.png")
 			.setDrag(1000, 0)
-			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
+			.setMaxVelocity(1000, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
 
 		//listen for animation complete callback on enemy death animation,
 		//as soon as the animation completes kill the enemy and allow it to be 
 		//removed from EnemyManager
 		this.sprite.on('animationcomplete', function (animation, frame) {
-			console.log(this);
-			console.log(animation);
 		    if (animation.key == "enemy-die") {
-				this.dead = true;
+				if (this.health <= 0) {
+					this.dead = true;
+				} else {
+					//re-enable collider
+					this.sprite.body.setEnable(true);
+					this.sprite.state = "normal";
+					
+					//respawn in random location
+					var { width, height } = this.scene.sys.game.config;
+					var xSpawn = Math.floor(Math.random() * Math.floor(width));
+					this.sprite.x = xSpawn;
+//					this.sprite.y = xSpawn;
+
+					//reduce size and increase speed
+					this.sprite.scaleX-=0.5;
+					this.sprite.scaleY-=0.5;
+				}
 			}
 		}, this);
 
 		//frog jump timer
 		this.jumpTimer = scene.time.addEvent({
-			delay:2750,                // ms
+			delay:1750,                // ms
 			callback: this.jump,
 			//args: [],
 			callbackScope: this,
 			loop: true
 		});
 
-		this.count = 2;
-		this.spawnCount = 4;
-		this.enemySpawned = false;
+		this.health = health;
 		this.sprite.name = name;
 		this.sprite.state = "normal";
 		this.sprite.setScale(scale);
-		this.sprite.setTint(0x330000);
+		//this.sprite.setTint(0x330000);
 		this.dead = false;
 	}
 
-	die() {
+	hit() {
 		this.sprite.anims.play("enemy-die", true);
-		if (!this.enemySpawned) {
-			for (var i = 0; i < this.count; i++) {
-				var { width, height } = this.scene.sys.game.config;
-				var xSpawn = Math.floor(Math.random() * Math.floor(width));
-				var tempEnemy = new FrogBossEnemy(
-					this.scene,
-					xSpawn,
-					125, 
-					"clone",
-					1)
-
-				this.scene.enemyManager.add(tempEnemy);
-				this.scene.physics.world.addCollider(tempEnemy.sprite, this.scene.worldLayer);
-			}
-			this.enemySpawned = true;
-		}
+//		if (!this.enemySpawned) {
+//			for (var i = 0; i < this.count; i++) {
+//				var { width, height } = this.scene.sys.game.config;
+//				var xSpawn = Math.floor(Math.random() * Math.floor(width));
+//				var tempEnemy = new FrogBossEnemy(
+//					this.scene,
+//					xSpawn,
+//					125, 
+//					"clone",
+//					2);
+//
+//				this.scene.enemyManager.add(tempEnemy);
+//				this.scene.physics.world.addCollider(tempEnemy.sprite, this.scene.worldLayer);
+//			}
+//			this.enemySpawned = true;
+		    this.health--;
+		    this.sprite.state = "handling-hit";
+//		}
 	}
 
 	jump() {
 		const onGround = this.sprite.body.blocked.down;
 		if (onGround) {
-			this.sprite.setVelocityY(-500);
+			this.scene.physics.moveTo(this.sprite, this.sprite.x - 500, this.sprite.y - 500, 100, 1000);
 		}
 	}
 
 	update() {
-		if (this.sprite.state != "dying") {
+		if (this.sprite.state == "normal") {
 			const sprite = this.sprite;
 			const onGround = sprite.body.blocked.down;
 			const acceleration = onGround ? 600 : 300;
@@ -114,8 +128,8 @@ export default class FrogBossEnemy {
 					sprite.setTexture("atlas", "jump/frog-jump-2.png");
 				}
 			}
-		} else {
-			this.die();
+		} else if (this.sprite.state == "dying") {
+			this.hit();
 		}
 	}
 

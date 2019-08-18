@@ -129,7 +129,9 @@ export default class PlatformerScene extends Phaser.Scene {
 				tempEnemy = new FrogBossEnemy(this, 
 					tileMapObjects[i].x, 
 					tileMapObjects[i].y, 
-					"enemy"+i);
+					"enemy"+i,
+					3, 
+				    6);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "Exit") {

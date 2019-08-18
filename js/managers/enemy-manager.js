@@ -17,6 +17,8 @@ export default class EnemyManager {
 
 	update() {
 		for (var i = this.enemies.length-1; i >= 0; i--) {
+			this.enemies[i].update();
+
 			if (this.enemies[i].dead) {
 
 				console.log("Destroying enemy...");
@@ -25,7 +27,6 @@ export default class EnemyManager {
 				//remove the enemy from the array, its been collected/destroyed
 				this.enemies.splice(i,1);
 			} else {
-				this.enemies[i].update();
 				//manually check for player and enemy collisions
 				this.scene.physics.world.overlap(this.scene.player.sprite, this.enemies[i].sprite, function(player, enemy) {
 					if (player.state == "normal") {
