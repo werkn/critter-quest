@@ -235,6 +235,18 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown_C", event => {
 			//this.tipText.setText("");
 		});
+		
+		
+		this.sys.game.gameTimer = this.time.addEvent({
+			delay: 180000,                // 3 min 
+			callback: function() { this.player.sprite.state = "dying"; },
+			callbackScope: this,
+			loop: false,
+			repeat: 0,
+			startAt: 0,
+			timeScale: 1,
+			paused: false
+		});
 
 		this.inGame = true;
 
