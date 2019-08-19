@@ -5,6 +5,7 @@ import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
+import ExtraLife from "../collectables/extra-life.js";
 import EnemyManager from "../managers/enemy-manager.js";
 import Exit from "../objects/exit.js";
 /**
@@ -50,10 +51,14 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	hitCollectable(sprite) {
 		this.sys.game.soundManager.sfx.coinCollected.play();
-		//update player gem count and add a new life every 100 gems
-		if (++this.sys.game.gems == 100) {
-			this.sys.game.lives += 1;
-			this.sys.game.gems = 0;
+		if (sprite.name == "gem") {
+			//update player gem count and add a new life every 100 gems
+			if (++this.sys.game.gems == 100) {
+				this.sys.game.lives += 1;
+				this.sys.game.gems = 0;
+			}
+		} else if (sprite.name == "extra-life") {
+			this.game.lives += 1;
 		}
 
 		//change the sprite name to collected, this flag allows us to
@@ -68,7 +73,7 @@ export default class PlatformerScene extends Phaser.Scene {
 	create() {
 		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
-		
+
 		//max time before player is killed (in seconds)
 		this.sys.game.maxLevelTime = 180;
 
@@ -116,14 +121,21 @@ export default class PlatformerScene extends Phaser.Scene {
 		//get a list of all Objects from the Objects Layer of our Tiled map(s) 
 		var tileMapObjects = map.objects[0].objects;
 		this.gems = [];
+		this.extraLives = [];
 
 		this.enemyManager = new EnemyManager(this);
 		
 		// Setup all objects from our tilemap for the current level
 		var tempEnemy;
 		for (var i = 0; i < tileMapObjects.length; i++) {
-			if (tileMapObjects[i].name == "Gem") {
-				this.gems.push(new Gem(this, 
+			if (tileMapObjects[i].name == "ExtraLife") {
+				this.extraLives.push(new ExtraLife(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y - tileMapObjects[i].height/2));
+				this.physics.world.addOverlap(this.extraLives[this.extraLives.length-1].sprite,
+					this.player.sprite, this.hitCollectable, null, this);
+			} else if (tileMapObjects[i].name == "Gem") {
+				this.gems.push(new Gem(this,
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
 					tileMapObjects[i].y - tileMapObjects[i].height/2));
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
@@ -301,14 +313,22 @@ export default class PlatformerScene extends Phaser.Scene {
 
 			//update all gems in scene, we iterate backwards so we can do
 			//live removal from array (this.gems)
-			var i;
-			for (i = this.gems.length-1; i >= 0; i--) {
+			for (var i = this.gems.length-1; i >= 0; i--) {
 				if (this.gems[i].sprite.name === "collected") {
 					console.log("Destroying gem");
 					this.gems[i].destroy();
 
 					//remove the gem from the array, its been collected/destroyed
 					this.gems.splice(i,1);
+				}
+			}
+			
+			//update all extra lives in scene, we iterate backwards so we can do
+			//live removal from array (this.gems)
+			for (var i = this.extraLives.length-1; i >= 0; i--) {
+				if (this.extraLives[i].sprite.name === "collected") {
+					this.extraLives[i].destroy();
+					this.extraLives.splice(i,1);
 				}
 			}
 
