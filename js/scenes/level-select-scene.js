@@ -1,4 +1,5 @@
 import TextButton from "../ui/button.js";
+import SaveManager from "../managers/save-manager.js";
 
 /**
  * A class that extends Phaser.Scene and provides our level selection screen.
@@ -74,12 +75,21 @@ export default class LevelSelectScene extends Phaser.Scene {
 			this.sys.game.levelState["5"].unlocked,
 			this.startLevel, "5");
 
+		this.resetButton = new TextButton(this,
+			this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.80,
+			"(r) Reset progress...",
+			unlockedStyle, 
+			lockedStyle, 
+			true,
+			() => { SaveManager.eraseSaveGame; window.location.reload(false); } );
+
 		//add buttons to scene
 		this.add.existing(this.level1Button);
 		this.add.existing(this.level2Button);
 		this.add.existing(this.level3Button);
 		this.add.existing(this.level4Button);
 		this.add.existing(this.level5Button);
+		this.add.existing(this.resetButton);
 
 		// keybindings
 		this.input.keyboard.on("keydown_ESC", event => {
@@ -99,6 +109,10 @@ export default class LevelSelectScene extends Phaser.Scene {
 		});
 		this.input.keyboard.on("keydown_FIVE", event => {
 			this.startLevel(this, "5");
+		});
+		this.input.keyboard.on("keydown_R", event => {
+			SaveManager.eraseSaveGame(); 
+			window.location.reload(false);
 		});
 	}
 
