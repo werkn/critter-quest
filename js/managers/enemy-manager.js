@@ -7,12 +7,17 @@
  */
 
 import FrogEnemy from "../units/frog-enemy.js";
+import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 
 export default class EnemyManager {
 
 	constructor(scene) {
 		this.scene = scene;
 		this.enemies = [];
+
+		//some enemies need to have their static count reset between scenes
+		//do that here
+		FrogBossEnemy.frogsRemaining = 0;
 	}
 
 	update() {

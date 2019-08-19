@@ -122,7 +122,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileMapObjects = map.objects[0].objects;
 		this.gems = [];
 		this.extraLives = [];
-
+		this.exitCoords = {};
 		this.enemyManager = new EnemyManager(this);
 
 		// Setup all objects from our tilemap for the current level
@@ -146,7 +146,7 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].y, 
 					"frog_boss_"+i,
 					2, 
-					3);
+					1);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "EagleEnemy") {
@@ -170,14 +170,18 @@ export default class PlatformerScene extends Phaser.Scene {
 					"frog_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
-			} else if (tileMapObjects[i].name == "Exit" && 
-				!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
+			} else if (tileMapObjects[i].name == "Exit") {
 
-				this.levelExit = new Exit(this,
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
-					"exit"+i);
-				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+				if (!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
+					this.levelExit = new Exit(this,
+						tileMapObjects[i].x, 
+						tileMapObjects[i].y, 
+						"exit"+i);
+					this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+				} else {
+					this.exitCoords.x = tileMapObjects[i].x;
+					this.exitCoords.y = tileMapObjects[i].y;
+				}
 			}
 		}
 
@@ -321,38 +325,46 @@ export default class PlatformerScene extends Phaser.Scene {
 					this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
 					this.scene.start("level" + ++this.currentLevel)
 				}
+			} else if (this.levelExit == undefined && FrogBossEnemy.frogsRemaining == 0) {
+
+				this.levelExit = new Exit(this,
+					this.exitCoords.x, 
+					this.exitCoords.y, 
+					"exit"+i);
+				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+
 			}
+		}
 
-			//update all gems in scene, we iterate backwards so we can do
-			//live removal from array (this.gems)
-			for (var i = this.gems.length-1; i >= 0; i--) {
-				if (this.gems[i].sprite.name === "collected") {
-					console.log("Destroying gem");
-					this.gems[i].destroy();
+		//update all gems in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.gems.length-1; i >= 0; i--) {
+			if (this.gems[i].sprite.name === "collected") {
+				console.log("Destroying gem");
+				this.gems[i].destroy();
 
-					//remove the gem from the array, its been collected/destroyed
-					this.gems.splice(i,1);
-				}
+				//remove the gem from the array, its been collected/destroyed
+				this.gems.splice(i,1);
 			}
+		}
 
-			//update all extra lives in scene, we iterate backwards so we can do
-			//live removal from array (this.gems)
-			for (var i = this.extraLives.length-1; i >= 0; i--) {
-				if (this.extraLives[i].sprite.name === "collected") {
-					this.extraLives[i].destroy();
-					this.extraLives.splice(i,1);
-				}
+		//update all extra lives in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.extraLives.length-1; i >= 0; i--) {
+			if (this.extraLives[i].sprite.name === "collected") {
+				this.extraLives[i].destroy();
+				this.extraLives.splice(i,1);
 			}
+		}
 
-			if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
+		if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
 
-				//remove hud overlay
-				this.scene.stop('hud_overlay');
-				if (--this.sys.game.lives > 0) {
-					this.scene.start("level"+this.currentLevel);
-				} else {
-					this.scene.start('game_over');
-				}
+			//remove hud overlay
+			this.scene.stop('hud_overlay');
+			if (--this.sys.game.lives > 0) {
+				this.scene.start("level"+this.currentLevel);
+			} else {
+				this.scene.start('game_over');
 			}
 		}
 	}

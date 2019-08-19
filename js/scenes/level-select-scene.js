@@ -40,7 +40,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 				"4": { unlocked: false, time: -1, hasEndBoss: false },
 				//end boss levels do not have a prespawned exit, 
 				//the exit is spawned after boss is defeated
-				"5": { unlocked: false, time: -1, hasEndBoss: true }
+				"5": { unlocked: true, time: -1, hasEndBoss: true }
 			};
 		}
 
