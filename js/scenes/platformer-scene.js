@@ -308,6 +308,8 @@ export default class PlatformerScene extends Phaser.Scene {
 			//check if player has made it to the exit yet
 			if (this.levelExit.sprite.state == "exit_touched") {
 				this.scene.stop("hud_overlay");
+				//unlock next level
+				this.sys.game.levelState[this.currentLevel+1+""] = true;
 				this.scene.start("level" + ++this.currentLevel)
 			}
 

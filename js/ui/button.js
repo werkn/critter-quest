@@ -3,7 +3,7 @@
  * Adapted from: https://snowbillr.github.io/blog//2018-07-03-buttons-in-phaser-3/
  */
 export default class TextButton extends Phaser.GameObjects.Text {
-  constructor(scene, x, y, text, style, callback) {
+  constructor(scene, x, y, text, style, callback, arg) {
     super(scene, x, y, text, style);
 
     this.setInteractive({ useHandCursor: true })
@@ -12,7 +12,7 @@ export default class TextButton extends Phaser.GameObjects.Text {
       .on('pointerdown', () => this.enterButtonActiveState())
       .on('pointerup', () => {
         this.enterButtonHoverState();
-        callback();
+        callback(scene, arg);
       });
 
     this.setOrigin(0.5);
@@ -27,6 +27,6 @@ export default class TextButton extends Phaser.GameObjects.Text {
   }
 
   enterButtonActiveState() {
-    this.setStyle({ fill: '#0ff' });
+    this.setStyle({ fill: '#fff' });
   }
 }
