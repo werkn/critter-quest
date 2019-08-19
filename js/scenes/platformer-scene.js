@@ -307,9 +307,12 @@ export default class PlatformerScene extends Phaser.Scene {
 
 			//check if player has made it to the exit yet
 			if (this.levelExit.sprite.state == "exit_touched") {
+				const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
 				this.scene.stop("hud_overlay");
 				//unlock next level
-				this.sys.game.levelState[this.currentLevel+1+""] = true;
+				this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
+				//record the time taken for this level
+				this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
 				this.scene.start("level" + ++this.currentLevel)
 			}
 
