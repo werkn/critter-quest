@@ -28,6 +28,9 @@ export default class InGameMenuScene extends Phaser.Scene {
         // You can access the game's config to read the width & height
         const { width, height } = this.sys.game.config;
 
+		const lockedStyle = { fill: '#f00', align: 'center' };
+		const unlockedStyle = { fill: '#0f0', align: 'center' };
+
         // In v3, you can chain many methods, so you can create text and configure it in one "line"
         this.add
             .text(width / 2, height * 0.2, "In-Game Menu", {
@@ -40,17 +43,23 @@ export default class InGameMenuScene extends Phaser.Scene {
         this.muteButton = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
             (this.sound.mute) ? "(a) Audio: Disabled" : "(a) Audio: Enabled",
-            { fill: '#0f0', align: 'center' },
+            unlockedStyle,
+			lockedStyle,
+			true,
             () => this.updateAudio());
         this.returnToGameButton = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.50,
             '(esc) Return to Game',
-            { fill: '#0f0', align: 'center' },
+            unlockedStyle,
+			lockedStyle,
+			true,
             () => this.returnToGame());
         this.exitToLevelSelectButton = new TextButton(this,
             this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.55,
             '(l) Exit to Level Select',
-            { fill: '#0f0', align: 'center' },
+            unlockedStyle,
+			lockedStyle,
+			true,
             () => this.returnToLevelSelect());
 
         this.add.existing(this.muteButton);
