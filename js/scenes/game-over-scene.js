@@ -1,3 +1,5 @@
+import SaveManager from "../managers/save-manager.js";
+
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
  */
@@ -46,17 +48,20 @@ export default class GameOverScene extends Phaser.Scene {
 
             //player has died, return to title screen and reset their game
 			this.resetGame();
-            this.scene.start('title_screen');
+			window.location.reload(false); 
         });
     }
 
 	resetGame() {
-	    //TODO: clear level states
 		this.sys.game.lives = undefined;
 		this.sys.game.gems = undefined;
-		this.sys.game.hp = undefined;
+		//true = unlocked, false = locked
+		this.sys.game.levelState = undefined; 
+
+		//erase game progress
+		SaveManager.eraseSaveGame();
 	}
 
-    update(time, delta) {
-    }
+	update(time, delta) {
+	}
 }

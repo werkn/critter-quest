@@ -7,6 +7,7 @@ import SpringBoard from "../physicsObjects/springBoard.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
 import EnemyManager from "../managers/enemy-manager.js";
+import SaveManager from "../managers/save-manager.js";
 import Exit from "../objects/exit.js";
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -319,11 +320,29 @@ export default class PlatformerScene extends Phaser.Scene {
 				if (this.levelExit.sprite.state == "exit_touched") {
 					const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
 					this.scene.stop("hud_overlay");
-					//unlock next level
-					this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
-					//record the time taken for this level
-					this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
-					this.scene.start("level" + ++this.currentLevel)
+					//check if there is another level after this one and unlock it
+					if (this.sys.game.levelState[this.currentLevel+1+""] != undefined) {
+
+						this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
+						//record the time taken for this level
+						this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
+
+						//save progress
+						SaveManager.saveGame(this.sys.game.levelState)
+
+						this.scene.start("level" + ++this.currentLevel)
+						
+					//there is no next level, show credits
+					} else {
+						//remove hud overlay
+						this.scene.stop('hud_overlay');
+
+						//record the time taken for this level
+						this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
+						//save progress
+						SaveManager.saveGame(this.sys.game.levelState)
+						this.scene.start('credits');
+					}
 				}
 			} else if (this.levelExit == undefined && FrogBossEnemy.frogsRemaining == 0) {
 
