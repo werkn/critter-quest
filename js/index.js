@@ -8,6 +8,7 @@ import Level5 from "./scenes/levels/level5.js";
 import InGameMenuScene from "./scenes/in-game-menu-scene.js";
 import HudOverlayScene from "./scenes/hud-overlay-scene.js";
 import GameOverScene from "./scenes/game-over-scene.js";
+import CreditsScene from "./scenes/credits-scene.js";
 
 const config = {
 	// eslint-disable-next-line no-undef
@@ -36,7 +37,8 @@ const config = {
 		Level3,
 		Level4,
 		Level5,
-		GameOverScene
+		GameOverScene,
+		CreditsScene
 	]
 };
 

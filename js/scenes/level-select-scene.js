@@ -16,6 +16,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 	preload() { }
 
 	create() {
+		console.log(this.sceneManager);
 		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
 
@@ -29,20 +30,6 @@ export default class LevelSelectScene extends Phaser.Scene {
 			})
 			.setOrigin(0.5, 0.5)
 			.setShadow(5, 5, "#5588EE", 0, true, true);
-
-		//if level(s) state isn't set, initialize it
-		if (this.sys.game.levelState == undefined) {
-			//true = unlocked, false = locked
-			this.sys.game.levelState = {
-				"1": { unlocked: true, time: -1, hasEndBoss: false },
-				"2": { unlocked: false, time: -1, hasEndBoss: false },
-				"3": { unlocked: false, time: -1, hasEndBoss: false },
-				"4": { unlocked: false, time: -1, hasEndBoss: false },
-				//end boss levels do not have a prespawned exit, 
-				//the exit is spawned after boss is defeated
-				"5": { unlocked: true, time: -1, hasEndBoss: true }
-			};
-		}
 
 		//add level select buttons
 		this.level1Button = new TextButton(this,

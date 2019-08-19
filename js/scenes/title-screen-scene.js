@@ -1,4 +1,5 @@
 import ParallaxBackground from "../effects/parallax-background.js";
+import SaveManager from "../managers/save-manager.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -13,8 +14,6 @@ export default class TitleScreenScene extends Phaser.Scene {
     }
 
     preload() {
-        //TODO: add preloader loading-bar here...
-
         //parallax background images
         this.load.image("background-far", "./assets/background/back.png");
         this.load.image("background-middle", "./assets/background/middle.png");
@@ -68,22 +67,47 @@ export default class TitleScreenScene extends Phaser.Scene {
             scene.game.soundManager.sfx.coinCollected.setVolume(scene.game.soundManager.sfxVolume);
         }
 
-        // Help text that has a "fixed" position on the screen
-        this.add
-            .text(16, 16, 'Press Enter to visit Level Select.', {
-                font: "18px monospace",
-                fill: "#ffffff",
-                padding: { x: 20, y: 10 },
-                backgroundColor: "#000000"
-            })
-            .setScrollFactor(0);
+		//if there is local storage saved game load it
+		//if level(s) state isn't set, initialize it
+		if (this.sys.game.levelState == undefined) {
 
-        // Debug graphics
-        this.input.keyboard.once("keydown_ENTER", event => {
+			if (!SaveManager.hasSavedGame()) {
+				//true = unlocked, false = locked
+				this.sys.game.levelState = {
+					"1": { unlocked: true, time: -1, hasEndBoss: false },
+					"2": { unlocked: false, time: -1, hasEndBoss: false },
+					"3": { unlocked: false, time: -1, hasEndBoss: false },
+					"4": { unlocked: false, time: -1, hasEndBoss: false },
+					//end boss levels do not have a prespawned exit, 
+					//the exit is spawned after boss is defeated
+					"5": { unlocked: false, time: -1, hasEndBoss: true }
+				};
 
-            //doc here on scene management:
-            //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scenemanager/#start-scene
-            //scene.scene.start will launch new scene and shutdown
+				//perform initial save
+				SaveManager.saveGame(this.sys.game.levelState);
+			} else {
+				SaveManager.loadGame(this);
+			}
+
+		}
+
+
+		// Help text that has a "fixed" position on the screen
+		this.add
+			.text(16, 16, 'Press Enter to visit Level Select.', {
+				font: "18px monospace",
+				fill: "#ffffff",
+				padding: { x: 20, y: 10 },
+				backgroundColor: "#000000"
+			})
+			.setScrollFactor(0);
+
+		// Debug graphics
+		this.input.keyboard.once("keydown_ENTER", event => {
+
+			//doc here on scene management:
+			//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scenemanager/#start-scene
+			//scene.scene.start will launch new scene and shutdown
             //current scene
             this.scene.start('level_select');
         });
