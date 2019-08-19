@@ -34,11 +34,13 @@ export default class LevelSelectScene extends Phaser.Scene {
 		if (this.sys.game.levelState == undefined) {
 			//true = unlocked, false = locked
 			this.sys.game.levelState = {
-				"1": { unlocked: true, time: -1 },
-				"2": { unlocked: false, time: -1 },
-				"3": { unlocked: false, time: -1 },
-				"4": { unlocked: false, time: -1 },
-				"5": { unlocked: false, time: -1 },
+				"1": { unlocked: true, time: -1, hasEndBoss: false },
+				"2": { unlocked: false, time: -1, hasEndBoss: false },
+				"3": { unlocked: false, time: -1, hasEndBoss: false },
+				"4": { unlocked: false, time: -1, hasEndBoss: false },
+				//end boss levels do not have a prespawned exit, 
+				//the exit is spawned after boss is defeated
+				"5": { unlocked: true, time: -1, hasEndBoss: true }
 			};
 		}
 

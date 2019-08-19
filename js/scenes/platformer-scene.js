@@ -122,9 +122,9 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileMapObjects = map.objects[0].objects;
 		this.gems = [];
 		this.extraLives = [];
-
+		this.exitCoords = {};
 		this.enemyManager = new EnemyManager(this);
-		
+
 		// Setup all objects from our tilemap for the current level
 		var tempEnemy;
 		for (var i = 0; i < tileMapObjects.length; i++) {
@@ -146,7 +146,7 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].y, 
 					"frog_boss_"+i,
 					2, 
-				    3);
+					1);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "EagleEnemy") {
@@ -172,11 +172,16 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "Exit") {
 
-				this.levelExit = new Exit(this,
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
-					"exit"+i);
-				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+				if (!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
+					this.levelExit = new Exit(this,
+						tileMapObjects[i].x, 
+						tileMapObjects[i].y, 
+						"exit"+i);
+					this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+				} else {
+					this.exitCoords.x = tileMapObjects[i].x;
+					this.exitCoords.y = tileMapObjects[i].y;
+				}
 			}
 		}
 
@@ -187,11 +192,11 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.worldLayer.layer.data.forEach((row) => { // here we are iterating through each tile.
 			row.forEach((Tile) => {
 				if (Tile.properties.collide_top_only) { 
-						Tile.collideDown = false;
-						Tile.collideLeft = false;
-						Tile.collideRight = false;
+					Tile.collideDown = false;
+					Tile.collideLeft = false;
+					Tile.collideRight = false;
 				} 
-				
+
 				if (Tile.properties.collide_dmg) {
 					// This will add Tile ID XX to list tileIdsWithCollideDmg
 					// where we will then call:
@@ -201,13 +206,13 @@ export default class PlatformerScene extends Phaser.Scene {
 						this.tileIdsWithCollideDmg.push(Tile.index);
 					}
 				} 
-				
+
 				if (Tile.properties.widget) {
 					//Tile.setVisible(false);
 					//make a callback to detect when enemy hit the widget tile
 					Tile.setCollisionCallback(function(collidingSprite, tile) { 
 						if (collidingSprite.name != "player" &&
-								collidingSprite.state == "normal") {
+							collidingSprite.state == "normal") {
 							collidingSprite.state = "flip_direction";
 						}
 					}, this);
@@ -274,8 +279,8 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown_C", event => {
 			//this.tipText.setText("");
 		});
-		
-		
+
+
 		this.sys.game.gameTimer = this.time.addEvent({
 			delay: this.sys.game.maxLevelTime * 1000,                // 3 min 
 			callback: function() { this.player.sprite.state = "dying"; },
@@ -303,49 +308,63 @@ export default class PlatformerScene extends Phaser.Scene {
 
 			this.player.update();
 			this.enemyManager.update();
-			this.levelExit.update();
 
-			//check if player has made it to the exit yet
-			if (this.levelExit.sprite.state == "exit_touched") {
-				const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
-				this.scene.stop("hud_overlay");
-				//unlock next level
-				this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
-				//record the time taken for this level
-				this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
-				this.scene.start("level" + ++this.currentLevel)
-			}
+			//check if the level has an exit...
+			//for instance levels with end bosses don't have exits spawned until
+			//the boss has been defeated
+			if (this.levelExit != undefined) {
+				this.levelExit.update();
 
-			//update all gems in scene, we iterate backwards so we can do
-			//live removal from array (this.gems)
-			for (var i = this.gems.length-1; i >= 0; i--) {
-				if (this.gems[i].sprite.name === "collected") {
-					console.log("Destroying gem");
-					this.gems[i].destroy();
-
-					//remove the gem from the array, its been collected/destroyed
-					this.gems.splice(i,1);
+				//check if player has made it to the exit yet
+				if (this.levelExit.sprite.state == "exit_touched") {
+					const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
+					this.scene.stop("hud_overlay");
+					//unlock next level
+					this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
+					//record the time taken for this level
+					this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
+					this.scene.start("level" + ++this.currentLevel)
 				}
-			}
-			
-			//update all extra lives in scene, we iterate backwards so we can do
-			//live removal from array (this.gems)
-			for (var i = this.extraLives.length-1; i >= 0; i--) {
-				if (this.extraLives[i].sprite.name === "collected") {
-					this.extraLives[i].destroy();
-					this.extraLives.splice(i,1);
-				}
-			}
+			} else if (this.levelExit == undefined && FrogBossEnemy.frogsRemaining == 0) {
 
-			if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
+				this.levelExit = new Exit(this,
+					this.exitCoords.x, 
+					this.exitCoords.y, 
+					"exit"+i);
+				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
 
-				//remove hud overlay
-				this.scene.stop('hud_overlay');
-				if (--this.sys.game.lives > 0) {
-					this.scene.start("level"+this.currentLevel);
-				} else {
-					this.scene.start('game_over');
-				}
+			}
+		}
+
+		//update all gems in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.gems.length-1; i >= 0; i--) {
+			if (this.gems[i].sprite.name === "collected") {
+				console.log("Destroying gem");
+				this.gems[i].destroy();
+
+				//remove the gem from the array, its been collected/destroyed
+				this.gems.splice(i,1);
+			}
+		}
+
+		//update all extra lives in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.extraLives.length-1; i >= 0; i--) {
+			if (this.extraLives[i].sprite.name === "collected") {
+				this.extraLives[i].destroy();
+				this.extraLives.splice(i,1);
+			}
+		}
+
+		if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
+
+			//remove hud overlay
+			this.scene.stop('hud_overlay');
+			if (--this.sys.game.lives > 0) {
+				this.scene.start("level"+this.currentLevel);
+			} else {
+				this.scene.start('game_over');
 			}
 		}
 	}
