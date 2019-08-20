@@ -34,7 +34,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.load.image("background-repeat", "./assets/tilesets/environment/back.png");
 		this.load.image("middleground-repeat", "./assets/tilesets/environment/middle.png");
 		//load tileset image
-		this.load.image("tiles", "./assets/tilesets/environment/tileset.png");
+		this.load.image("tiles", "./assets/tilesets/environment/tileset-extruded.png");
 		this.load.image("props", "./assets/tilesets/environment/props.png");
 		this.load.image("widgets", "./assets/tilesets/widgets/widgets.png");
 
