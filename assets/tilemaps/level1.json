@@ -76,8 +76,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":176,
-                 "y":160
+                 "x":482,
+                 "y":372.666666666667
                 }, 
                 {
                  "height":16,
@@ -122,6 +122,78 @@
                  "width":16,
                  "x":176,
                  "y":112
+                }, 
+                {
+                 "height":50,
+                 "id":208,
+                 "name":"TutorialText",
+                 "rotation":0,
+                 "text":
+                    {
+                     "color":"#ffffff",
+                     "halign":"center",
+                     "text":"Try jumping on enemies to bridge large gaps.",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":250,
+                 "x":320,
+                 "y":144
+                }, 
+                {
+                 "height":40.6666666666667,
+                 "id":209,
+                 "name":"TutorialText",
+                 "rotation":0,
+                 "text":
+                    {
+                     "color":"#ffffff",
+                     "halign":"center",
+                     "text":"Collect these for extra lives.",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":168,
+                 "x":101.333333333333,
+                 "y":36
+                }, 
+                {
+                 "height":40.6667,
+                 "id":210,
+                 "name":"TutorialText",
+                 "rotation":0,
+                 "text":
+                    {
+                     "color":"#ff00ff",
+                     "halign":"center",
+                     "text":"Collect 100 Gems to get an extra life.",
+                     "valign":"center",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":202.666666666667,
+                 "x":392.666666666667,
+                 "y":305.333333333333
+                }, 
+                {
+                 "height":83.3333666666666,
+                 "id":211,
+                 "name":"TutorialText",
+                 "rotation":0,
+                 "text":
+                    {
+                     "color":"#ffaaff",
+                     "text":"Arrow keys to move\nPress D to show hitboxes\nPress ESC to show in-game menu.\nPress C to hide tips'",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":302.666666666667,
+                 "x":336,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -130,7 +202,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":208,
+ "nextobjectid":212,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
