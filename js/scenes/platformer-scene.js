@@ -119,6 +119,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		);
 
 		this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+		this.player.sprite.setDepth(1); //render on top of text
 
 		//get a list of all Objects from the Objects Layer of our Tiled map(s) 
 		var tileMapObjects = map.objects[0].objects;
@@ -149,10 +150,12 @@ export default class PlatformerScene extends Phaser.Scene {
 						font: "18px monospace",
 						fill: tileMapObjects[i].text.color,
 						padding: { x: 20, y: 20 },
-						wordWrap: { width: tileMapObjects[i].width }
+						wordWrap: { width: tileMapObjects[i].width },
+						backgroundColor: "#000"
 					})
 					.setOrigin(0.5)
-					.setScrollFactor(1); //don't move text with player
+					.setScrollFactor(1) //don't move text with player
+					.setDepth(0);
 
 		} else if (tileMapObjects[i].name == "Gem") {
 			this.gems.push(new Gem(this,
