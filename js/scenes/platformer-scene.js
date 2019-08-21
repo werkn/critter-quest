@@ -98,16 +98,22 @@ export default class PlatformerScene extends Phaser.Scene {
 		// Parameters: layer name (or index) from Tiled, tileset, x, y
 		this.belowLayer = map.createStaticLayer("BackgroundDecorator", tileset, 0, 0);
 		this.worldLayer = map.createStaticLayer("Collision", tileset, 0, 0);
+		this.hiddenWorldLayer = map.createStaticLayer("HiddenCollision", tileset, 0, 0);
 		this.aboveLayer = map.createStaticLayer("ForegroundDecorator", tileset, 0, 0);
 
 		//property is set internal to the Tiled tilemap (In Tiled, Edit Tileset, Set Custom Properties).
 		this.worldLayer.setCollisionByProperty({ collides: true });
+
+		//used for non-visible collision,
+		//ie: things like hidden walls
+		this.hiddenWorldLayer.setCollisionByProperty({ collides: true }); 
 
 		// By default, everything gets depth sorted on the screen in the order we created things. Here, we
 		// want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
 		// Higher depths will sit on top of lower depth objects.
 		this.belowLayer.setDepth(0);
 		this.worldLayer.setDepth(2);
+		this.hiddenWorldLayer.setDepth(2);
 		this.aboveLayer.setDepth(3);
 
 		// Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map.
@@ -266,6 +272,7 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	// Watch the player and worldLayer for collisions, for the duration of the scene:
 	this.physics.world.addCollider(this.player.sprite, this.worldLayer);
+	this.physics.world.addCollider(this.player.sprite, this.hiddenWorldLayer);
 
 	// Phaser supports multiple cameras, but you can access the default camera like this:
 	this.cameras.main.startFollow(this.player.sprite);
