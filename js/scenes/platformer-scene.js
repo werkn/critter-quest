@@ -3,7 +3,7 @@ import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
-import FrogSpringboard from "../units/frog-springboard.js";
+import FrogSpringboard from "../physicsObjects/frog-springboard.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
 import EnemyManager from "../managers/enemy-manager.js";
