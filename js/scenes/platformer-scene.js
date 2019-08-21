@@ -3,7 +3,7 @@ import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
-import SpringBoard from "../physicsObjects/springBoard.js";
+import FrogSpringboard from "../physicsObjects/frog-springboard.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
 import EnemyManager from "../managers/enemy-manager.js";
@@ -125,6 +125,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		var tileMapObjects = map.objects[0].objects;
 		this.gems = [];
 		this.extraLives = [];
+		this.physicsObjects = [];
 		this.exitCoords = {};
 		this.enemyManager = new EnemyManager(this);
 
@@ -163,6 +164,13 @@ export default class PlatformerScene extends Phaser.Scene {
 				tileMapObjects[i].y - tileMapObjects[i].height/2));
 			this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 				this.player.sprite, this.hitCollectable, null, this);
+		} else if (tileMapObjects[i].name == "FrogSpringboard") {
+			this.physicsObjects.push(new FrogSpringboard(this, 
+				tileMapObjects[i].x, 
+				tileMapObjects[i].y, 
+				"frog_springboard_"+i));
+			this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
+				this.worldLayer);
 		} else if (tileMapObjects[i].name == "FrogBossEnemy") {
 			tempEnemy = new FrogBossEnemy(this, 
 				tileMapObjects[i].x, 
@@ -363,6 +371,11 @@ update(time, delta) {
 			this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
 
 		}
+	}
+
+	//update all physicsObjects in scene
+	for (var i = this.physicsObjects.length-1; i >= 0; i--) {
+			this.physicsObjects[i].update();
 	}
 
 	//update all gems in scene, we iterate backwards so we can do
