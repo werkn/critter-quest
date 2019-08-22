@@ -183,7 +183,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				tileMapObjects[i].y, 
 				"frog_boss_"+i,
 				2, 
-				1);
+				3);
 			this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 			this.enemyManager.add(tempEnemy);
 		} else if (tileMapObjects[i].name == "EagleEnemy") {
