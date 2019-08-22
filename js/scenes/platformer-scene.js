@@ -355,7 +355,7 @@ update(time, delta) {
 					//save progress
 					SaveManager.saveGame(this.sys.game.levelState)
 
-					this.scene.start("level" + ++this.currentLevel)
+					this.scene.start("level" + (this.currentLevel + 1))
 
 					//there is no next level, show credits
 				} else {
