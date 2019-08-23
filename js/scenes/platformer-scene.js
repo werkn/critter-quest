@@ -79,6 +79,9 @@ export default class PlatformerScene extends Phaser.Scene {
 		//max time before player is killed (in seconds)
 		this.sys.game.maxLevelTime = 180;
 
+		//wipe any frogBossEnemy settings
+		this.sys.game.frogBossEnemy = undefined;
+
 		//setup tilemap
 		const map = this.make.tilemap({ key: "map"+this.currentLevel });
 
@@ -369,7 +372,7 @@ update(time, delta) {
 					this.scene.start('credits');
 				}
 			}
-		} else if (this.levelExit == undefined && FrogBossEnemy.frogsRemaining == 0) {
+		} else if (this.levelExit == undefined && this.sys.game.frogBossEnemy.frogsRemaining == 0) {
 
 			this.levelExit = new Exit(this,
 				this.exitCoords.x, 
