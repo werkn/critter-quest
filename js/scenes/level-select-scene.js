@@ -1,9 +1,17 @@
+/**
+ * User: werkn-development
+ * Date: Fri Aug 23 14:36:04 MST 2019
+ * 
+ * LevelSelectScene is used to list the available levels for play.
+ * 
+ * Level save states can also be reset from the scene by pressing 'r'.
+ */
+
 import TextButton from "../ui/button.js";
 import SaveManager from "../managers/save-manager.js";
 
 /**
  * A class that extends Phaser.Scene and provides our level selection screen.
- *
  */
 export default class LevelSelectScene extends Phaser.Scene {
 	constructor(config) {
@@ -18,7 +26,6 @@ export default class LevelSelectScene extends Phaser.Scene {
 
 	create() {
 		console.log(this.sceneManager);
-		// You can access the game's config to read the width & height
 		const { width, height } = this.sys.game.config;
 
 		const lockedStyle = { fill: '#f00', align: 'center' };
@@ -39,8 +46,6 @@ export default class LevelSelectScene extends Phaser.Scene {
 			unlockedStyle, 
 			lockedStyle, 
 			this.sys.game.levelState["1"].unlocked,
-			//key:'game' = platformer-scene.js
-			//we provide scene data (level to load) that can be read from init(data) { ... }
 			this.startLevel, "1");
 
 		this.level2Button = new TextButton(this,
@@ -116,10 +121,13 @@ export default class LevelSelectScene extends Phaser.Scene {
 		});
 	}
 
+	//setup our levelStateText (what the text button should say)
+	//ex:  '(1) Level 1: Unlocked / Time: NOT ATTEMPTED'
 	levelStateText(scene, level, keyBinding) {
 		const levelState = scene.sys.game.levelState[level];
-		//'(1) Level 1: Unlocked / Time: NOT ATTEMPTED',
 		const unlocked = (levelState.unlocked) ? "UNLOCKED" : "LOCKED";
+		//levelState.time is initially set to -1, so if its this value
+		//we know the level hasn't been attempted
 		const time = (levelState.time != -1) ? "Time: " + levelState.time + " seconds" : "Time: NOT COMPLETED";
 		const levelText = "(" + keyBinding + ")" 
 			+ " Level " + level 
@@ -131,7 +139,9 @@ export default class LevelSelectScene extends Phaser.Scene {
 		return levelText;
 	}
 
+	//try to start the provided level
 	startLevel(scene, level) {
+		//only load the levle if it's not locked
 		if (scene.sys.game.levelState[level].unlocked) {
 			scene.scene.start("level"+level);
 		} else {
