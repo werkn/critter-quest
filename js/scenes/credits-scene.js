@@ -1,45 +1,54 @@
+/**
+ * User: werkn-development
+ * Date: Fri Aug 23 13:23:37 MST 2019
+ * 
+ * CreditsScene is part of our Menu system and displayed after
+ * the player has completed the game.
+ *
+ * The player can return to the title screen by hitting ENTER.
+ */
+
 export default class CreditsScene extends Phaser.Scene {
-    constructor(config) {
-        if (config) {
-            super(config);
-        } else {
-            super({key: 'credits'});
-        }
-    }
+	constructor(config) {
+		if (config) {
+			super(config);
+		} else {
+			super({key: 'credits'});
+		}
+	}
 
-    preload() {
-    }
+	preload() {
+	}
 
-    create() {
-        // You can access the game's config to read the width & height
-        const { width, height } = this.sys.game.config;
+	create() {
+		const { width, height } = this.sys.game.config;
 
-        // In v3, you can chain many methods, so you can create text and configure it in one "line"
-        this.add
-            .text(width / 2, height / 2, "Game Completed!\nThanks for playing!", {
-                font: "23px monospace",
-                color: "white"
-            })
-            .setOrigin(0.5, 0.5)
-            .setShadow(5, 5, "#5588EE", 0, true, true);
+		//add game completed text
+		this.add
+			.text(width / 2, height / 2, "Game Completed!\nThanks for playing!", {
+				font: "23px monospace",
+				color: "white",
+				align: "center"
+			})
+			.setOrigin(0.5, 0.5)
+			.setShadow(5, 5, "#5588EE", 0, true, true);
 
-        // Help text that has a "fixed" position on the screen
-        this.add
-            .text(16, 16, 'Press Enter to return to Title Screen.', {
-                font: "18px monospace",
-                fill: "#ffffff",
-                padding: { x: 20, y: 10 },
-                backgroundColor: "#000000"
-            })
-            .setScrollFactor(0);
+		this.add
+			.text(16, 16, 'Press Enter to return to Title Screen.', {
+				font: "18px monospace",
+				fill: "#ffffff",
+				padding: { x: 20, y: 10 },
+				backgroundColor: "#000000"
+			})
+			.setScrollFactor(0);
 
-        this.input.keyboard.once("keydown_ENTER", event => {
-//            this.scene.start('title_screen');
+		this.input.keyboard.once("keydown_ENTER", event => {
+			//restart the entire game by forcing a page reload
 			window.location.reload(false); 
-        });
-    }
+		});
+	}
 
-    update(time, delta) {
-    }
+	update(time, delta) {
+	}
 }
 

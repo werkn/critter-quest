@@ -1,15 +1,26 @@
 /**
- * A class that wraps up our eagle-enemy logic.
- */
+* User: werkn-development
+* Date: Fri Aug 23 12:36:22 MST 2019
+* 
+* EagleEnemy moves left/right across the screen in each scene and can have its 
+* movement bounded by placing appropriate collision layer widges in Tiled map.
+*
+* Collision layer widgets must have the custom property "collides=true, widget=true".
+*
+* Note:  Distance between collision layer widgets needs to be tweaked by also adjusting
+* the delayedCall in update.  This is because we use the delayed call to ignore repeat
+* collisions when the widget collider overlaps before the enemy reverses direction and
+* moves out of the collider.
+*
+*/
+
 export default class EagleEnemy {
 
 	constructor(scene, x, y, name) {
 		this.scene = scene;
 
-		// Create the enemy's idle animations from the texture atlas. These are stored in the global
-		// animation manager so any sprite can access them.
 		const anims = scene.anims;
-		//FROG IDLE ANIMATION
+		//IDLE ANIMATION
 		anims.create({
 			key: "eagle-idle",
 			frames: anims.generateFrameNames("atlas", {
@@ -39,10 +50,9 @@ export default class EagleEnemy {
 		this.sprite = scene.physics.add
 			.sprite(x, y, "atlas", "eagle-attack-1.png")
 			.setDrag(1000, 0)
-			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
-		this.sprite.body.setAllowGravity(false);	
+			.setMaxVelocity(300, 1000);  //max horiz. speed as well as max jump height!
+		this.sprite.body.setAllowGravity(false); //stop eagle from faling from sky	
 			
-
 		//listen for animation complete callback on enemy death animation,
 		//as soon as the animation completes kill the enemy and allow it to be 
 		//removed from EnemyManager
@@ -54,27 +64,12 @@ export default class EagleEnemy {
 			}
 		}, this);
 
-		//we use this.sprite.name to check if the class FrogEnemy has been killed
-		//when it changes to 'dead' we know the enemy has been killed
-		//and can be removed from the scene
-		//
-		//~~~Why not just set a field on the FrogEnemy class? ~~~ 
-		//Phaser3 as far as I can tell attaches our physics collider to the 
-		//sprite object and offers no nice built-in way to go from
-		//the sprite collider (provided in collision callbacks) to the
-		//class it is associated with... this essentially means when we use ANY
-		//of the physics callbacks that we cannot get a reference to the class of the
-		//sprite involved in the collision and subsequently have no nice way to call methods
-		//in response.  By change this.sprite.name we can loop through a collection of FrogEnemy
-		//class instances, and check this.sprite.name to call methods.  This is how we handle 
-		//it in PlatformerScene.  Hacky, less then ideal technique but Phaser3 documentation and
-		//examples don't really show a nicer way to do this.
 		this.sprite.name = name;
 		this.sprite.state = "normal";
 		this.direction = -1;
 		this.dead = false;
 
-		this.canCollideWithWidget = true;
+		this.canCollideWithWidget = true; //enemy is bound by tilemap widgets
 	}
 
 	die() {
@@ -87,10 +82,13 @@ export default class EagleEnemy {
 
 			this.sprite.x += (1*this.direction);
 
+			//we've collided with a collision layer widget, reverse direction
 			if (this.canCollideWithWidget && this.sprite.state == "flip_direction") {
 				sprite.flipX = !sprite.flipX;
 				this.direction *= -1;
 				this.canCollideWithWidget = false;
+
+				//wait 1500 seconds before allow widget collisions/direction reverseal again
 	    		this.scene.time.delayedCall(1500, function() { 
 					this.sprite.state = "normal";
 					this.canCollideWithWidget = true; 

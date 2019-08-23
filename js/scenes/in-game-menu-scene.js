@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Fri Aug 23 14:04:22 MST 2019
+* 
+*
+*/
+
 import TextButton from "../ui/button.js";
 
 export default class InGameMenuScene extends Phaser.Scene {

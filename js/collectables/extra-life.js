@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Fri Aug 23 12:56:35 MST 2019
+* 
+* Class representing our 1-Up/Extra Life.
+*/
+
 export default class ExtraLife {
 	constructor(scene, x, y) {
 		this.scene = scene;
@@ -12,7 +19,9 @@ export default class ExtraLife {
 		this.sprite.name = "extra-life";
 	}
 
-	update() {}
+	update() {
+		//add sin/cos vertical movement
+	}
 
 	destroy() {
 		this.sprite.destroy();
