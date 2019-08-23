@@ -3,13 +3,14 @@
  */
 export default class FrogBossEnemy {
 
-	static frogsRemaining = 0;
-
 	constructor(scene, x, y, name, scale=3, health=3, direction=1) {
 		this.scene = scene;
 
-		FrogBossEnemy.frogsRemaining++;
-		console.log(FrogBossEnemy.frogsRemaining);
+		if (this.scene.sys.game.frogBossEnemy == undefined) {
+			this.scene.sys.game.frogBossEnemy = {};
+			this.scene.sys.game.frogBossEnemy.frogsRemaining = 0;
+		} 
+		this.scene.sys.game.frogBossEnemy.frogsRemaining++;
 
 		// Create the enemy's idle animations from the texture atlas. These are stored in the global
 		// animation manager so any sprite can access them.
@@ -156,8 +157,8 @@ export default class FrogBossEnemy {
 	}
 
 	destroy() {
-		FrogBossEnemy.frogsRemaining--;
-		console.log(FrogBossEnemy.frogsRemaining);
+		this.scene.sys.game.frogBossEnemy.frogsRemaining--;
+		console.log(this.scene.sys.game.frogBossEnemy.frogsRemaining);
 		this.sprite.destroy();
 		this.jumpTimer.remove();
 	}
