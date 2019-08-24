@@ -50,8 +50,6 @@ export default class FrogEnemy {
 		//as soon as the animation completes kill the enemy and allow it to be 
 		//removed from EnemyManager
 		this.sprite.on('animationcomplete', function (animation, frame) {
-			console.log(this);
-			console.log(animation);
 			if (animation.key == "enemy-die") {
 				//kill enemy after animation has played
 				//this.dead state is checked in EnemyManager

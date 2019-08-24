@@ -178,7 +178,6 @@ export default class FrogBossEnemy {
 
 	destroy() {
 		this.scene.sys.game.frogBossEnemy.frogsRemaining--;
-		console.log(this.scene.sys.game.frogBossEnemy.frogsRemaining);
 		this.sprite.destroy();
 		this.jumpTimer.remove();
 	}

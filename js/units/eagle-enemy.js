@@ -57,8 +57,6 @@ export default class EagleEnemy {
 		//as soon as the animation completes kill the enemy and allow it to be 
 		//removed from EnemyManager
 		this.sprite.on('animationcomplete', function (animation, frame) {
-			console.log(this);
-			console.log(animation);
 		    if (animation.key == "enemy-die") {
 				this.dead = true;
 			}
