@@ -1,3 +1,11 @@
+/**
+* User: werkn-development
+* Date: Fri Aug 23 12:20:25 MST 2019
+*
+* Entry point for our Critter Quest App.
+*/
+
+//imports
 import TitleScreenScene from "./scenes/title-screen-scene.js";
 import LevelSelectScene from "./scenes/level-select-scene.js";
 import Level1 from "./scenes/levels/level1.js";
@@ -10,8 +18,8 @@ import HudOverlayScene from "./scenes/hud-overlay-scene.js";
 import GameOverScene from "./scenes/game-over-scene.js";
 import CreditsScene from "./scenes/credits-scene.js";
 
+//phaser3 game setup
 const config = {
-	// eslint-disable-next-line no-undef
 	type: Phaser.AUTO,
 	width: 640,
 	height: 480,
@@ -21,12 +29,15 @@ const config = {
 	audio: {
     	disableWebAudio: true
 	},
+	//set physics system
 	physics: {
 		default: "arcade",
 		arcade: {
 			gravity: { y: 1000.0 }
 		}
 	},
+
+	//scenes to load when app is started
 	scene: [
 		TitleScreenScene,
 		LevelSelectScene,

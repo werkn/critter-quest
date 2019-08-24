@@ -1,4 +1,7 @@
 /**
+ * User: werkn-development
+ * Date: Fri Aug 23 12:53:00 MST 2019
+ *
  * A class that wraps up our 2D platforming player logic. It creates, animates and moves a sprite in
  * response to WASD/arrow keys. Call its update method from the scene's update and call its destroy
  * method when you're done with the player.
@@ -67,7 +70,7 @@ export default class Player {
 		this.sprite = scene.physics.add
 			.sprite(x, y, "atlas", "idle/player-idle-1.png")
 			.setDrag(1000, 0)
-			.setMaxVelocity(300, 1000);  //this controls our maximum horizontal speed as well as maximum jump height!
+			.setMaxVelocity(300, 1000);   //max horiz. speed as well as max jump height
 
 		//we need to capture the original normal body because we modify it
 		//when crouching the player (so they can move into smaller spaces)
@@ -87,9 +90,6 @@ export default class Player {
 			"offsetY": this.normalBody.offsetY + this.normalBody.height / 2,
 		}
 
-		console.log(this.normalBody);
-		console.log(this.crouchedBody);
-
 		// Track the arrow keys & WASD
 		const { LEFT, RIGHT, UP, DOWN, W, A, S, D } = Phaser.Input.Keyboard.KeyCodes;
 		this.keys = scene.input.keyboard.addKeys({
@@ -105,15 +105,6 @@ export default class Player {
 
 		this.sprite.name = "player";
 		this.sprite.state = "normal";
-	}
-
-	/**TODO: REMOVE WHEN DONE */
-	jumpSpringBoard(sprite, body) {
-		body.setVelocityY(-600);
-		//note here that we use
-		//this.sys.game... instead of this.scene.sys.game... this
-		//method is provided context from the calling scene
-		this.sys.game.soundManager.sfx.jump.play();
 	}
 
 	update() {
@@ -163,7 +154,7 @@ export default class Player {
 						this.normalBody.height, 
 						true);
 				}
-				
+
 			} else {
 				sprite.anims.stop();
 				//start of jump is one sprite, once @ apex of jump switch to falling sprite.
@@ -188,7 +179,7 @@ export default class Player {
 		this.scene.time.delayedCall(850, function() { 
 			this.sprite.state = "dead"; 
 		}, null, this);
-		
+
 		//remove collisions (note: if we manually handle collisions in update() or 
 		//another class we need to also check in that class whether collision has
 		//been disabled.  For instance, refer to update() in EnemyManager

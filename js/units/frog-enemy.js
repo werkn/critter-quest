@@ -1,6 +1,11 @@
 /**
- * A class that wraps up our frog-enemy logic.
+ * User: werkn-development
+ * Date: Fri Aug 23 12:44:30 MST 2019
+ * 
+ * FrogEnemy does nothing more then periodically jump within the scene.  If the player
+ * collides with them (other then jumping on their head) they will be killed.
  */
+
 export default class FrogEnemy {
 
 	constructor(scene, x, y, name) {
@@ -47,7 +52,9 @@ export default class FrogEnemy {
 		this.sprite.on('animationcomplete', function (animation, frame) {
 			console.log(this);
 			console.log(animation);
-		    if (animation.key == "enemy-die") {
+			if (animation.key == "enemy-die") {
+				//kill enemy after animation has played
+				//this.dead state is checked in EnemyManager
 				this.dead = true;
 			}
 		}, this);
@@ -61,6 +68,7 @@ export default class FrogEnemy {
 			loop: true
 		});
 
+		//NOTE:
 		//we use this.sprite.name to check if the class FrogEnemy has been killed
 		//when it changes to 'dead' we know the enemy has been killed
 		//and can be removed from the scene
@@ -81,10 +89,14 @@ export default class FrogEnemy {
 		this.dead = false;
 	}
 
+	//plays enemy death animation
 	die() {
 		this.sprite.anims.play("enemy-die", true);
 	}
 
+	//jump callback is used in this.jumpTimer to 
+	//periodicaly make the sprite body jump up and in
+	//the current direction it is moving
 	jump() {
 		const onGround = this.sprite.body.blocked.down;
 		if (onGround) {

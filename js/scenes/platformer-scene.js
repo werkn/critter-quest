@@ -1,3 +1,20 @@
+/**
+ * User: werkn-development
+ * Date: Fri Aug 23 14:41:24 MST 2019
+ * 
+ * PlatformerScene is where to core functionality of Critter Quest is
+ * setup.
+ *
+ * PlatformerScene does the following:
+ *  - Loads all texture
+ *  - Sets up player
+ *  - Loads/renders tilemaps
+ *  - From tilemaps gets enemy and object spawn locations
+ *  - Spawns said enemy and objects at these locations
+ *  - Sets up collision between all game objects
+ *  - Show/hide in-game menu
+ */
+
 import Player from "../units/player.js";
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
@@ -31,9 +48,11 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	preload() {
 		//"this" === Phaser.Scene
+
 		//load repeating background image
 		this.load.image("background-repeat", "./assets/tilesets/environment/back.png");
 		this.load.image("middleground-repeat", "./assets/tilesets/environment/middle.png");
+		//
 		//load tileset image
 		this.load.image("tiles", "./assets/tilesets/environment/tileset-extruded.png");
 		this.load.image("props", "./assets/tilesets/environment/props.png");
@@ -51,6 +70,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.load.audio("music", "./assets/audio/music.ogg");
 	}
 
+	//player has hit a collectable object
 	hitCollectable(sprite) {
 		this.sys.game.soundManager.sfx.coinCollected.play();
 		if (sprite.name == "gem") {
@@ -73,19 +93,16 @@ export default class PlatformerScene extends Phaser.Scene {
 	}
 
 	create() {
-		// You can access the game's config to read the width & height
+		//get game display width and height 
 		const { width, height } = this.sys.game.config;
 
 		//max time before player is killed (in seconds)
 		this.sys.game.maxLevelTime = 180;
 
-		//wipe any frogBossEnemy settings
-		this.sys.game.frogBossEnemy = undefined;
-
 		//setup tilemap
 		const map = this.make.tilemap({ key: "map"+this.currentLevel });
 
-		// Creating a repeating background sprite
+		//create a repeating background sprite
 		const bg = this.add.tileSprite(0, 0, map.widthInPixels, height/2, "background-repeat");
 		bg.setOrigin(0, 0);
 		const mg = this.add.tileSprite(0, height/4, map.widthInPixels, height/2, "middleground-repeat");
@@ -121,14 +138,17 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		// Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map.
 		// Note: instead of storing the player in a global variable, it's stored as a property of the
-		// scene	var logTiles = map..
+		// scene
 		const spawnPoint = map.findObject(
 			"Objects",
 			obj => obj.name === "Spawn Point"
 		);
 
+		//create our player instance
 		this.player = new Player(this, spawnPoint.x, spawnPoint.y);
-		this.player.sprite.setDepth(1); //render on top of text
+		//we adjust depth to 1 so the player is rendered on top of the text instances, 
+		//this is a quickfix until I figure out how to change the text instances depth
+		this.player.sprite.setDepth(1); 
 
 		//get a list of all Objects from the Objects Layer of our Tiled map(s) 
 		var tileMapObjects = map.objects[0].objects;
@@ -141,19 +161,22 @@ export default class PlatformerScene extends Phaser.Scene {
 		// Setup all objects from our tilemap for the current level
 		var tempEnemy;
 		for (var i = 0; i < tileMapObjects.length; i++) {
+
 			if (tileMapObjects[i].name == "ExtraLife") {
 				this.extraLives.push(new ExtraLife(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
 					tileMapObjects[i].y - tileMapObjects[i].height/2));
 				this.physics.world.addOverlap(this.extraLives[this.extraLives.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
-			} else if (tileMapObjects[i].name == "TutorialText") { //pull text objects from tiled map
-				console.log(tileMapObjects[i]);
+
+				//pull text objects from tiled map
+			} else if (tileMapObjects[i].name == "TutorialText") {
+
 				this.tipText = this.add.text(
 					tileMapObjects[i].x,
 					tileMapObjects[i].y, 
 					tileMapObjects[i].text.text, 
-					{ //style
+					{ //style config for our Tiled text objects
 						align: tileMapObjects[i].text.halign,
 						fixedWidth: tileMapObjects[i].width,
 						fixedHeight: tileMapObjects[i].height,
@@ -167,257 +190,280 @@ export default class PlatformerScene extends Phaser.Scene {
 					.setScrollFactor(1) //don't move text with player
 					.setDepth(0);
 
-		} else if (tileMapObjects[i].name == "Gem") {
-			this.gems.push(new Gem(this,
-				tileMapObjects[i].x + tileMapObjects[i].width/2, 
-				tileMapObjects[i].y - tileMapObjects[i].height/2));
-			this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
-				this.player.sprite, this.hitCollectable, null, this);
-		} else if (tileMapObjects[i].name == "FrogSpringboard") {
-			this.physicsObjects.push(new FrogSpringboard(this, 
-				tileMapObjects[i].x, 
-				tileMapObjects[i].y, 
-				"frog_springboard_"+i));
-			this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
-				this.worldLayer);
-		} else if (tileMapObjects[i].name == "FrogBossEnemy") {
-			tempEnemy = new FrogBossEnemy(this, 
-				tileMapObjects[i].x, 
-				tileMapObjects[i].y, 
-				"frog_boss_"+i,
-				2, 
-				3);
-			this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
-			this.enemyManager.add(tempEnemy);
-		} else if (tileMapObjects[i].name == "EagleEnemy") {
-			tempEnemy = new EagleEnemy(this, 
-				tileMapObjects[i].x, 
-				tileMapObjects[i].y, 
-				"eagle_"+i);
-			this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
-			this.enemyManager.add(tempEnemy);
-		} else if (tileMapObjects[i].name == "OpossumEnemy") {
-			tempEnemy = new OpossumEnemy(this, 
-				tileMapObjects[i].x, 
-				tileMapObjects[i].y, 
-				"opossum_"+i);
-			this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
-			this.enemyManager.add(tempEnemy);
-		} else if (tileMapObjects[i].name == "FrogEnemy") {
-			tempEnemy = new FrogEnemy(this, 
-				tileMapObjects[i].x, 
-				tileMapObjects[i].y, 
-				"frog_"+i);
-			this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
-			this.enemyManager.add(tempEnemy);
-		} else if (tileMapObjects[i].name == "Exit") {
+			} else if (tileMapObjects[i].name == "Gem") {
 
-			if (!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
-				this.levelExit = new Exit(this,
+				this.gems.push(new Gem(this,
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y - tileMapObjects[i].height/2));
+				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
+					this.player.sprite, this.hitCollectable, null, this);
+
+			} else if (tileMapObjects[i].name == "FrogSpringboard") {
+
+				this.physicsObjects.push(new FrogSpringboard(this, 
 					tileMapObjects[i].x, 
 					tileMapObjects[i].y, 
+					"frog_springboard_"+i));
+				this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
+					this.worldLayer);
+
+			} else if (tileMapObjects[i].name == "FrogBossEnemy") {
+
+				tempEnemy = new FrogBossEnemy(this, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"frog_boss_"+i,
+					2, 
+					3);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "EagleEnemy") {
+
+				tempEnemy = new EagleEnemy(this, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"eagle_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "OpossumEnemy") {
+
+				tempEnemy = new OpossumEnemy(this, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"opossum_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+			} else if (tileMapObjects[i].name == "FrogEnemy") {
+
+				tempEnemy = new FrogEnemy(this, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y, 
+					"frog_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "Exit") {
+
+				if (!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
+					this.levelExit = new Exit(this,
+						tileMapObjects[i].x, 
+						tileMapObjects[i].y, 
+						"exit"+i);
+					this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
+				} else {
+					this.exitCoords.x = tileMapObjects[i].x;
+					this.exitCoords.y = tileMapObjects[i].y;
+				}
+			}
+		}
+
+
+		//iterate over every tile in the tilemap and find tiles with
+		//custom properties
+		this.tileIdsWithCollideDmg = [];
+		this.worldLayer.layer.data.forEach((row) => {
+			row.forEach((Tile) => {
+
+				//turn all tiles with custom property collide_top_only 
+				//(Set in Tiled editor for Tileset) into collision top only
+				//allowing the player to jump through these tiles 
+				if (Tile.properties.collide_top_only) { 
+					Tile.collideDown = false;
+					Tile.collideLeft = false;
+					Tile.collideRight = false;
+				} 
+
+				//get all tiles with collide_dmg (ie: spikes)
+				if (Tile.properties.collide_dmg) {
+					// This will add Tile ID XX to list tileIdsWithCollideDmg
+					// where we will then call:
+					//     this.collectableLayer.setTileIndexCallback(tileIdsWithCollideDmg[i], 
+					//         this.methodToCall(), this);
+					if (this.tileIdsWithCollideDmg.indexOf(Tile.index) == -1) {
+						this.tileIdsWithCollideDmg.push(Tile.index);
+					}
+				} 
+
+				//get all widget tiles used for scene control of enemy movement
+				if (Tile.properties.widget) {
+					//Tile.setVisible(false);
+					//make a callback to detect when enemy hit the widget tile
+					Tile.setCollisionCallback(function(collidingSprite, tile) { 
+						if (collidingSprite.name != "player" &&
+							collidingSprite.state == "normal") {
+							collidingSprite.state = "flip_direction";
+						}
+					}, this);
+				}
+			})
+		});
+
+		//add callbacks for each tile.id in tileIdsWithCollideDmg
+		this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function(collidingSprite, tile) { 
+			//for now try to kill whatever touches a tile with 'collide_dmg'
+			//this is hacky, but should only kill enemies and the player,
+			//ie: GameObjects that watch for state 'dying'
+			collidingSprite.state = "dying";
+		}, this); 
+
+		//setup game and level stats
+		//check that we haven't already set these stats
+		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
+		this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
+		this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
+
+		// Watch the player and worldLayer for collisions, for the duration of the scene:
+		this.physics.world.addCollider(this.player.sprite, this.worldLayer);
+		// Watch the player and hiddenWorldLayer for collisions, for the duration of the scene:
+		this.physics.world.addCollider(this.player.sprite, this.hiddenWorldLayer);
+
+		//get the default camera
+		this.cameras.main.startFollow(this.player.sprite);
+
+		//constrain the camera so that it isn't allowed to move outside the width/height of tilemap
+		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+		//show in-game menu when ESC is pressed
+		this.input.keyboard.on("keydown_ESC", event => {
+			console.log("Launching in_game_menu...");
+			this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
+		});
+
+		//enable debug graphics when the player hits 'p'
+		this.input.keyboard.once("keydown_P", event => {
+
+			//turn on physics debugging to show player's hitbox
+			this.physics.world.createDebugGraphic();
+
+			const graphics = this.add
+				.graphics()
+				.setAlpha(0.75)
+				.setDepth(20);
+			this.worldLayer.renderDebug(graphics, {
+				tileColor: null, // Color of non-colliding tiles
+				collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+				faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+			});
+		});
+
+		//start the level timer
+		this.sys.game.gameTimer = this.time.addEvent({
+			delay: this.sys.game.maxLevelTime * 1000,                // 3 min 
+			callback: function() { this.player.sprite.state = "dying"; },
+			callbackScope: this,
+			loop: false,
+			repeat: 0,
+			startAt: 0,
+			timeScale: 1,
+			paused: false
+		});
+
+		this.inGame = true;
+
+		//start hud-overlay
+		//we control our hud as a standalone scene and simply draw it overtop of the platformer scene,
+		//this seems to be the easiest way to abstract out the hud and not clutter up
+		//the platformer scene	  
+		this.scene.launch("hud_overlay", { sceneName: "level"+this.currentLevel});
+	}
+
+	update(time, delta) {
+		//allow the player to respond to key presses and move itself
+		if (this.inGame === true) {
+
+			this.player.update();
+			this.enemyManager.update();
+
+			//check if the level has an exit...
+			//for instance levels with end bosses don't have exits spawned until
+			//the boss has been defeated
+			if (this.levelExit != undefined) {
+				this.levelExit.update();
+
+				//check if player has made it to the exit yet
+				if (this.levelExit.sprite.state == "exit_touched") {
+					const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
+					this.scene.stop("hud_overlay");
+
+					//check if there is another level after this one and unlock it
+					if (this.sys.game.levelState[this.currentLevel+1+""] != undefined) {
+
+						this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
+
+						//record the time taken for this level
+						this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
+
+						//save progress
+						SaveManager.saveGame(this.sys.game.levelState)
+
+						this.scene.start("level" + (this.currentLevel + 1))
+
+					} else { //there is no next level, show credits
+						//remove hud overlay
+						this.scene.stop('hud_overlay');
+
+						//record the time taken for this level
+						this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
+
+						//save progress
+						SaveManager.saveGame(this.sys.game.levelState)
+
+						//show credits
+						this.scene.start('credits');
+					}
+				}
+
+				//level doesn't have an exit which means its a boss level, check if boss is dead and then spawn exit
+			} else if (this.levelExit == undefined && this.sys.game.frogBossEnemy.frogsRemaining == 0) {
+
+				this.levelExit = new Exit(this,
+					this.exitCoords.x, 
+					this.exitCoords.y, 
 					"exit"+i);
 				this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
-			} else {
-				this.exitCoords.x = tileMapObjects[i].x;
-				this.exitCoords.y = tileMapObjects[i].y;
+
 			}
 		}
-	}
 
-	//turn all tiles with custom property collide_top_only 
-	//(Set in Tiled editor for Tileset) into collision top only
-	//allowing the player to jump through these tiles 
-	this.tileIdsWithCollideDmg = [];
-	this.worldLayer.layer.data.forEach((row) => { // here we are iterating through each tile.
-		row.forEach((Tile) => {
-			if (Tile.properties.collide_top_only) { 
-				Tile.collideDown = false;
-				Tile.collideLeft = false;
-				Tile.collideRight = false;
-			} 
-
-			if (Tile.properties.collide_dmg) {
-				// This will add Tile ID XX to list tileIdsWithCollideDmg
-				// where we will then call:
-				//     this.collectableLayer.setTileIndexCallback(tileIdsWithCollideDmg[i], 
-				//         this.methodToCall(), this);
-				if (this.tileIdsWithCollideDmg.indexOf(Tile.index) == -1) {
-					this.tileIdsWithCollideDmg.push(Tile.index);
-				}
-			} 
-
-			if (Tile.properties.widget) {
-				//Tile.setVisible(false);
-				//make a callback to detect when enemy hit the widget tile
-				Tile.setCollisionCallback(function(collidingSprite, tile) { 
-					if (collidingSprite.name != "player" &&
-						collidingSprite.state == "normal") {
-						collidingSprite.state = "flip_direction";
-					}
-				}, this);
-			}
-		})
-	});
-
-	//add callbacks for each tile.id in tileIdsWithCollideDmg
-	this.worldLayer.setTileIndexCallback(this.tileIdsWithCollideDmg, function(collidingSprite, tile) { 
-		//for now try to kill whatever touches a tile with 'collide_dmg'
-		//this is hacky, but should only kill enemies and the player,
-		//ie: GameObjects that watch for state 'dying'
-		collidingSprite.state = "dying";
-	}, this); 
-
-	//check that we haven't already set these stats
-	this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
-	this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
-	this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
-
-	// Watch the player and worldLayer for collisions, for the duration of the scene:
-	this.physics.world.addCollider(this.player.sprite, this.worldLayer);
-	this.physics.world.addCollider(this.player.sprite, this.hiddenWorldLayer);
-
-	// Phaser supports multiple cameras, but you can access the default camera like this:
-	this.cameras.main.startFollow(this.player.sprite);
-	// Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
-	this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-	this.input.keyboard.on("keydown_ESC", event => {
-		console.log("Launching in_game_menu...");
-		this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
-	});
-
-	// Debug graphics
-	this.input.keyboard.once("keydown_D", event => {
-
-		// Turn on physics debugging to show player's hitbox
-		this.physics.world.createDebugGraphic();
-
-		// Create worldLayer collision graphic above the player, but below the help text
-		const graphics = this.add
-			.graphics()
-			.setAlpha(0.75)
-			.setDepth(20);
-		this.worldLayer.renderDebug(graphics, {
-			tileColor: null, // Color of non-colliding tiles
-			collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-			faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-		});
-	});
-
-	this.input.keyboard.once("keydown_C", event => {
-		//this.tipText.setText("");
-	});
-
-
-	this.sys.game.gameTimer = this.time.addEvent({
-		delay: this.sys.game.maxLevelTime * 1000,                // 3 min 
-		callback: function() { this.player.sprite.state = "dying"; },
-		callbackScope: this,
-		loop: false,
-		repeat: 0,
-		startAt: 0,
-		timeScale: 1,
-		paused: false
-	});
-
-	this.inGame = true;
-
-	//start hud-overlay
-	//we control our hud as a standalone scene and simply draw it overtop of the platformer scene,
-	//this seems to be the easiest way to abstract out the hud and not clutter up
-	//the platformer scene	  
-	console.log("Launching HudOverlayScene...");
-	this.scene.launch("hud_overlay", { sceneName: "level"+this.currentLevel});
-}
-
-update(time, delta) {
-	// Allow the player to respond to key presses and move itself
-	if (this.inGame === true) {
-
-		this.player.update();
-		this.enemyManager.update();
-
-		//check if the level has an exit...
-		//for instance levels with end bosses don't have exits spawned until
-		//the boss has been defeated
-		if (this.levelExit != undefined) {
-			this.levelExit.update();
-
-			//check if player has made it to the exit yet
-			if (this.levelExit.sprite.state == "exit_touched") {
-				const timeTaken = Math.floor(this.sys.game.gameTimer.getElapsedSeconds()); 
-				this.scene.stop("hud_overlay");
-				//check if there is another level after this one and unlock it
-				if (this.sys.game.levelState[this.currentLevel+1+""] != undefined) {
-
-					this.sys.game.levelState[this.currentLevel+1+""].unlocked = true;
-					//record the time taken for this level
-					this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
-
-					//save progress
-					SaveManager.saveGame(this.sys.game.levelState)
-
-					this.scene.start("level" + (this.currentLevel + 1))
-
-					//there is no next level, show credits
-				} else {
-					//remove hud overlay
-					this.scene.stop('hud_overlay');
-
-					//record the time taken for this level
-					this.sys.game.levelState[this.currentLevel+""].time = timeTaken; 
-					//save progress
-					SaveManager.saveGame(this.sys.game.levelState)
-					this.scene.start('credits');
-				}
-			}
-		} else if (this.levelExit == undefined && this.sys.game.frogBossEnemy.frogsRemaining == 0) {
-
-			this.levelExit = new Exit(this,
-				this.exitCoords.x, 
-				this.exitCoords.y, 
-				"exit"+i);
-			this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
-
-		}
-	}
-
-	//update all physicsObjects in scene
-	for (var i = this.physicsObjects.length-1; i >= 0; i--) {
+		//update all physicsObjects in scene
+		for (var i = this.physicsObjects.length-1; i >= 0; i--) {
 			this.physicsObjects[i].update();
-	}
+		}
 
-	//update all gems in scene, we iterate backwards so we can do
-	//live removal from array (this.gems)
-	for (var i = this.gems.length-1; i >= 0; i--) {
-		if (this.gems[i].sprite.name === "collected") {
-			console.log("Destroying gem");
-			this.gems[i].destroy();
+		//update all gems in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.gems.length-1; i >= 0; i--) {
+			if (this.gems[i].sprite.name === "collected") {
+				console.log("Destroying gem");
+				this.gems[i].destroy();
 
-			//remove the gem from the array, its been collected/destroyed
-			this.gems.splice(i,1);
+				//remove the gem from the array, its been collected/destroyed
+				this.gems.splice(i,1);
+			}
+		}
+
+		//update all extra lives in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.extraLives.length-1; i >= 0; i--) {
+			if (this.extraLives[i].sprite.name === "collected") {
+				this.extraLives[i].destroy();
+				this.extraLives.splice(i,1);
+			}
+		}
+
+		//check if the player has left the game bounds or is dead 
+		if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
+
+			//remove hud overlay
+			this.scene.stop('hud_overlay');
+
+			if (--this.sys.game.lives > 0) {
+				this.scene.start("level"+this.currentLevel);
+			} else {
+				this.scene.start('game_over');
+			}
 		}
 	}
-
-	//update all extra lives in scene, we iterate backwards so we can do
-	//live removal from array (this.gems)
-	for (var i = this.extraLives.length-1; i >= 0; i--) {
-		if (this.extraLives[i].sprite.name === "collected") {
-			this.extraLives[i].destroy();
-			this.extraLives.splice(i,1);
-		}
-	}
-
-	if (this.player.sprite.y > this.worldLayer.height || this.player.sprite.state == "dead") {
-
-		//remove hud overlay
-		this.scene.stop('hud_overlay');
-		if (--this.sys.game.lives > 0) {
-			this.scene.start("level"+this.currentLevel);
-		} else {
-			this.scene.start('game_over');
-		}
-	}
-}
 }

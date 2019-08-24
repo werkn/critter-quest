@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Fri Aug 23 12:57:58 MST 2019
+* 
+* Class representing our version of coins.
+*/
+
 export default class Gem {
 	constructor(scene, x, y) {
 		this.scene = scene;

@@ -1,22 +1,20 @@
 /**
  * User: werkn-development
- * Date: Sun Aug  4 17:52:52 MST 2019
+ * Date: Sun Aug 4 17:52:52 MST 2019
  * HudOverlayScene is used to draw the game HUD system on-top of platformer-scene,
  * it has the following layout:
  *  --------------------------------
- *  | Kit    <3 <3 <3       99xGem |
- *  |   x5                         |
+ *  | Kit                   99xGem |
+ *  |   x5             Time: 300   |
  *  |                              |
  *  |                              |
  *  |                              |
  *  |                              |
  *  --------------------------------
  *  Where top-left = Lives
- *  	 <3       = Cherries / HP
- *  	 99xGem   = # of Gems
+ *  	 99xGem    = # of Gems
+ *  	 Time: 300 = Time remaining in sec
  */
-
-import TextButton from "../ui/button.js";
 
 export default class HudOverlayScene extends Phaser.Scene {
 	constructor(config) {
@@ -27,12 +25,14 @@ export default class HudOverlayScene extends Phaser.Scene {
 		}
 	}
 
-	//get scene init data
+	//get scene init data, specifically we want the name of the current scene
+	//so we can place the HUD on top of it using
+	//this.scene.moveAbove(currentScene)...
 	init(data) {
 		if (data) {
 			this.currentScene = data.sceneName;
 		} else {
-			console.log("Must provide level when loading platformer-scene.js.");
+			console.log("HUDOverlayScene needs sceneName provided as init data.");
 		}
 	}
 
@@ -40,8 +40,7 @@ export default class HudOverlayScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.sys.game.config;
-		
-		// You can access the game's config to read the width & height
+
 		this.gameTimer = this.add
 			.text(width * 0.9, height * 0.08, "Time: 180", {
 				font: "16px monospace",
@@ -73,14 +72,11 @@ export default class HudOverlayScene extends Phaser.Scene {
 	}
 
 	update(time, delta) {
-		this.timeRemaining = this.sys.game.maxLevelTime - Math.floor(this.sys.game.gameTimer.getElapsedSeconds());
+		//get time remaining
+		const elapsedTime = Math.floor(this.sys.game.gameTimer.getElapsedSeconds());
+		this.timeRemaining = this.sys.game.maxLevelTime -elapsedTime; 
 
-//		if (this.timeRemaining == 176) {
-//			const { width, height } = this.sys.game.config;
-//			this.gameTimer.setPosition(width * 0.5, height * 0.5);
-//			this.setFontSize(this.gameTimer.fontSize + 10);
-//		}
-
+		//update all HUD Text
 		this.gameTimer.setText("Time: " + this.timeRemaining);
 		this.livesText.setText("Kit x " + this.sys.game.lives);
 		this.gemsText.setText(this.sys.game.gems + " x Gem");
