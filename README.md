@@ -1,37 +1,36 @@
-## Welcome to GitHub Pages
+## Welcome to Critter Quest
 
-You can use the [editor on GitHub](https://github.com/werkn/critter-quest/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Critter Quest is a basic platformer implementation using Phaser3.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### How to Install Critter Quest
 
-### Markdown
+To install Critter Quest to a server running Apache 2 on Ubuntu follow these instructions:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+ - [How to Install Critter Quest](#)
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+### Game Overview
 
-- Bulleted
-- List
+Level overview and game walkthrough:
 
-1. Numbered
-2. List
+ - [Walkthrough](#)
 
-**Bold** and _Italic_ and `Code` text
+### Tiled / Contributing Maps
 
-[Link](url) and ![Image](src)
-```
+You can easily contribute maps to this repo by downloading Tiled and simply submitting maps as a pull request.  A quick tutorial on making maps for Critter Quest using Tiled can be found here:
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+ - [Using Tiled with Critter Quest](#)
 
-### Jekyll Themes
+### Tileset and Audio Attribution
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/werkn/critter-quest/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+The awesome sprite work for this game was developed by, [ansimuz](https://ansimuz.itch.io/), visit his site here:
 
-### Support or Contact
+ - [https://ansimuz.itch.io/](https://ansimuz.itch.io/)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### Tools Needed
+
+For tilemaps I used Tiled which integrates great with Phaser3.  For an IDE I tend to use Vim, but others may find Visual Studio Code easier to use.
+
+ - [Tiled](https://www.mapeditor.org/) 
+ - [Vim](https://www.vim.org/download.php)
+ - [Visual Studio Code](https://code.visualstudio.com/download)
