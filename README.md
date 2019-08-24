@@ -1,12 +1,17 @@
 ## Welcome to Critter Quest
 
-Critter Quest is a basic platformer implementation using Phaser3.
+Critter Quest is a basic platformer created using Phaser3.
+
+[Live Demo](https://werkn.github.io/critter-quest/)
 
 ### Screenshots
 
-
-
-[Live Demo](https://werkn.github.io/critter-quest/)
+[![alt text](./docs/screenshots/thumbnails/screenshots1_thumb.png "screenshot1")](./docs/screenshots/screenshots1.png)
+[![alt text](./docs/screenshots/thumbnails/screenshots2_thumb.png "screenshot2")](./docs/screenshots/screenshots2.png)
+[![alt text](./docs/screenshots/thumbnails/screenshots3_thumb.png "screenshot3")](./docs/screenshots/screenshots3.png)
+[![alt text](./docs/screenshots/thumbnails/screenshots4_thumb.png "screenshot4")](./docs/screenshots/screenshots4.png)
+[![alt text](./docs/screenshots/thumbnails/screenshots5_thumb.png "screenshot5")](./docs/screenshots/screenshots5.png)
+[![alt text](./docs/screenshots/thumbnails/screenshots6_thumb.png "screenshot6")](./docs/screenshots/screenshots6.png)
 
 ### How to Install Critter Quest
 
