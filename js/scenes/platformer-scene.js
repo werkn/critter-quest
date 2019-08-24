@@ -285,7 +285,10 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				//get all widget tiles used for scene control of enemy movement
 				if (Tile.properties.widget) {
-					//Tile.setVisible(false);
+
+					//hide the tile from the scene, as it should be invisible to player
+					Tile.setVisible(false);
+
 					//make a callback to detect when enemy hit the widget tile
 					Tile.setCollisionCallback(function(collidingSprite, tile) { 
 						if (collidingSprite.name != "player" &&
