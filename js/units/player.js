@@ -75,7 +75,8 @@ export default class Player {
 		//we need to capture the original normal body because we modify it
 		//when crouching the player (so they can move into smaller spaces)
 		this.normalBody = { 
-			"width": this.sprite.body.width,
+			//keep width at least 2 px larger then tile (stops player from sneaking through gaps)
+			"width": 18,
 			"height": this.sprite.body.height,
 			"useGameObjectCenter":true,  //this is true by default
 			"offsetX": this.sprite.body.offset.x,
@@ -86,7 +87,7 @@ export default class Player {
 			"width": this.normalBody.width,
 			"height": this.normalBody.height,
 			"useGameObjectCenter": false, //we customize our offset when crouching, don't use GameObjects
-			"offsetX": this.normalBody.offsetX,
+			"offsetX": this.normalBody.offsetX + this.normalBody.width / 1.5,
 			"offsetY": this.normalBody.offsetY + this.normalBody.height / 2,
 		}
 
