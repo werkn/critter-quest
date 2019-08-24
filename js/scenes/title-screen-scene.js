@@ -59,20 +59,18 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.sys.game.soundManager = {};
 
 		this.sys.game.soundManager.music = {};
-		this.sys.game.soundManager.musicVolume = 0.75;
-		this.sys.game.soundManager.music.inGameMusic = this.sound.add("music", { loop: true });
+		this.sys.game.soundManager.music.inGameMusic = this.sound.add(
+			"music", 
+			{ 
+				loop: true,
+				volume: 0.35 
+			}
+		);
 		this.sys.game.soundManager.music.inGameMusic.play();
 
 		this.sys.game.soundManager.sfx = {};
-		this.sys.game.soundManager.sfxVolume = 0.75;
-		this.sys.game.soundManager.sfx.jump = this.sound.add("jump");
-		this.sys.game.soundManager.sfx.coinCollected = this.sound.add("coinCollected");
-
-		this.sys.game.soundManager.updateSettings = function (scene) {
-			scene.game.soundManager.music.inGameMusic.setVolume(scene.game.soundManager.musicVolume);
-			scene.game.soundManager.sfx.jump.setVolume(scene.game.soundManager.sfxVolume);
-			scene.game.soundManager.sfx.coinCollected.setVolume(scene.game.soundManager.sfxVolume);
-		}
+		this.sys.game.soundManager.sfx.jump = this.sound.add("jump", { volume: 0.35 });
+		this.sys.game.soundManager.sfx.coinCollected = this.sound.add("coinCollected", { volume: 0.2 });
 
 		//if there is local storage saved game load it
 		//if level(s) state isn't set, initialize it
