@@ -25,7 +25,6 @@ export default class LevelSelectScene extends Phaser.Scene {
 	preload() { }
 
 	create() {
-		console.log(this.sceneManager);
 		const { width, height } = this.sys.game.config;
 
 		const lockedStyle = { fill: '#f00', align: 'center' };
@@ -144,8 +143,6 @@ export default class LevelSelectScene extends Phaser.Scene {
 		//only load the levle if it's not locked
 		if (scene.sys.game.levelState[level].unlocked) {
 			scene.scene.start("level"+level);
-		} else {
-			console.log("Level is locked");
 		}
 	}
 

@@ -34,12 +34,9 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	constructor(level) {
 		if (level) {
-			console.log("Using provided level for PlatformerScene constructor...");
-			console.log("Creating level:" + level.key + " with map: map" + level.key);
 			super({ key: level.key });
 			this.currentLevel = level.key;
 		} else {
-			console.log("Using default PlatformerScene constructor...");
 			//always load level 1 by default
 			super({ key: 'level1' });
 			this.currentLevel = 1;
@@ -288,7 +285,10 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				//get all widget tiles used for scene control of enemy movement
 				if (Tile.properties.widget) {
-					//Tile.setVisible(false);
+
+					//hide the tile from the scene, as it should be invisible to player
+					Tile.setVisible(false);
+
 					//make a callback to detect when enemy hit the widget tile
 					Tile.setCollisionCallback(function(collidingSprite, tile) { 
 						if (collidingSprite.name != "player" &&
@@ -327,7 +327,6 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		//show in-game menu when ESC is pressed
 		this.input.keyboard.on("keydown_ESC", event => {
-			console.log("Launching in_game_menu...");
 			this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
 		});
 
@@ -436,7 +435,6 @@ export default class PlatformerScene extends Phaser.Scene {
 		//live removal from array (this.gems)
 		for (var i = this.gems.length-1; i >= 0; i--) {
 			if (this.gems[i].sprite.name === "collected") {
-				console.log("Destroying gem");
 				this.gems[i].destroy();
 
 				//remove the gem from the array, its been collected/destroyed
