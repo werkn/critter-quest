@@ -37,6 +37,9 @@ You can easily contribute maps to this repo by downloading Tiled and simply subm
 The awesome sprite work for this game was developed by, [ansimuz](https://ansimuz.itch.io/), visit his site here:
 
  - [https://ansimuz.itch.io/](https://ansimuz.itch.io/)
+ 
+Demo Music by [Pascal Belisle](mailto:pacethemusician@hotmail.com)
+ - [https://soundcloud.com/pascalbelisle](https://soundcloud.com/pascalbelisle)
 
 ### Tools Needed
 
