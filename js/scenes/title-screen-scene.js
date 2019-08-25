@@ -23,6 +23,32 @@ export default class TitleScreenScene extends Phaser.Scene {
 	}
 
 	preload() {
+		//get game width and height	
+		const { width, height } = this.sys.game.config;
+
+		//loading resources tutorial
+		//src: https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
+		//create loading text
+		this.loadingText = this.make.text({
+			    x: width / 2,
+			    y: height / 2 - 50,
+			    text: 'Loading...',
+			    style: {
+					        font: '20px monospace',
+					        fill: '#ffffff'
+					    }
+		});
+		this.loadingText.setOrigin(0.5, 0.5);
+
+		this.load.on('complete', function (context) {
+			//remove loading text
+			this.scene.loadingText.destroy();
+		});
+
+		this.load.on('progress', function (value) {
+			this.scene.loadingText.setText("Loading: " + parseInt(value * 100) + "%" + "...");
+		});
+
 		//parallax background images
 		this.load.image("background-far", "./assets/background/back.png");
 		this.load.image("background-middle", "./assets/background/middle.png");
@@ -31,7 +57,7 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.load.audio("music", "./assets/audio/music.ogg");
 		this.load.audio("jump", "./assets/audio/jump.wav");
 		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav", {
-		    instances: 4
+			instances: 4
 		});
 	}
 
