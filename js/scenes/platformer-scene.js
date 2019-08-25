@@ -45,6 +45,31 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	preload() {
 		//"this" === Phaser.Scene
+		//get game width and height	
+		const { width, height } = this.sys.game.config;
+
+		//loading resources tutorial
+		//src: https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
+		//create loading text
+		this.loadingText = this.make.text({
+			    x: width / 2,
+			    y: height / 2 - 50,
+			    text: 'Loading...',
+			    style: {
+					        font: '20px monospace',
+					        fill: '#ffffff'
+					    }
+		});
+		this.loadingText.setOrigin(0.5, 0.5);
+
+		this.load.on('complete', function (context) {
+			//remove loading text
+			this.scene.loadingText.destroy();
+		});
+
+		this.load.on('progress', function (value) {
+			this.scene.loadingText.setText("Loading: " + parseInt(value * 100) + "%" + "...");
+		});
 
 		//load repeating background image
 		this.load.image("background-repeat", "./assets/tilesets/environment/back.png");
@@ -60,13 +85,6 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		//note if using a Multi-packed atlas we need to modify our load method to use Multipack
 		this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
-
-		//load audio
-		this.load.audio("jump", "./assets/audio/jump.wav");
-		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav", {
-		    instances: 4
-		});
-		this.load.audio("music", "./assets/audio/music.ogg");
 	}
 
 	//player has hit a collectable object
