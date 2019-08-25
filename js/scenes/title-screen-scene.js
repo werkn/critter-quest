@@ -30,7 +30,9 @@ export default class TitleScreenScene extends Phaser.Scene {
 		//load audio
 		this.load.audio("music", "./assets/audio/music.ogg");
 		this.load.audio("jump", "./assets/audio/jump.wav");
-		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav");
+		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav", {
+		    instances: 4
+		});
 	}
 
 	create() {

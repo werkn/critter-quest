@@ -63,13 +63,21 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		//load audio
 		this.load.audio("jump", "./assets/audio/jump.wav");
-		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav");
+		this.load.audio("coinCollected", "./assets/audio/coin_collected.wav", {
+		    instances: 4
+		});
 		this.load.audio("music", "./assets/audio/music.ogg");
 	}
 
 	//player has hit a collectable object
 	hitCollectable(sprite) {
-		this.sys.game.soundManager.sfx.coinCollected.play();
+//		this.sys.game.soundManager.sfx.coinCollected.play();
+		this.sound.play("coinCollected", 
+			{
+				volume: this.sys.game.soundManager.sfx.coinCollected.volume
+			}
+		
+		);
 		if (sprite.name == "gem") {
 			//update player gem count and add a new life every 100 gems
 			if (++this.sys.game.gems == 100) {
