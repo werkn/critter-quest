@@ -17,20 +17,20 @@ Critter Quest is a basic platformer created using Phaser3.
 
 To install Critter Quest to a server running Apache 2 on Ubuntu follow these instructions:
 
- - [How to Install Critter Quest](#)
+ - [How to Install Critter Quest](https://youtu.be/VJqKIITq30c)
 
 
 ### Game Overview
 
 Level overview and game walkthrough:
 
- - [Walkthrough](#)
+ - [Walkthrough](https://youtu.be/UGg3HrOG6Vo)
 
 ### Tiled / Contributing Maps
 
 You can easily contribute maps to this repo by downloading Tiled and simply submitting maps as a pull request.  A quick tutorial on making maps for Critter Quest using Tiled can be found here:
 
- - [Using Tiled with Critter Quest](#)
+ - [Using Tiled with Critter Quest](https://youtu.be/sGlBn37DqQw)
 
 ### Tileset and Audio Attribution
 
