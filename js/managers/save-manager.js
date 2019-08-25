@@ -10,26 +10,52 @@
 
 export default class SaveManager {
 
+	static supportsLocalStorage() {
+			try {
+				localStorage.setItem('test', 'test');
+				localStorage.removeItem('test');
+				return true;
+			} catch(e) {
+				return false;
+			}
+	}
+
 	static saveGame(levelState) {
-		localStorage.setItem('save', JSON.stringify(levelState));
+		if (SaveManager.supportsLocalStorage()) {
+			localStorage.setItem('save', JSON.stringify(levelState));
+		} else {
+			console.log("No localStorage support.");
+		}
 	}
 
 	static loadGame(scene) {
-		const levelState = JSON.parse(localStorage.getItem('save'));
-		scene.sys.game.levelState = levelState;
+		if (SaveManager.supportsLocalStorage()) {
+			const levelState = JSON.parse(localStorage.getItem('save'));
+			scene.sys.game.levelState = levelState;
+		} else {
+			console.log("No localStorage support.");
+		}
 	}
 
 	static hasSavedGame(scene) {
-		const levelState = JSON.parse(localStorage.getItem('save'));
-		if (levelState != undefined) {
-			return true;
+		if (SaveManager.supportsLocalStorage()) {
+			const levelState = JSON.parse(localStorage.getItem('save'));
+			if (levelState != undefined) {
+				return true;
+			}
+		} else {
+			console.log("No localStorage support.");
 		}
 
 		return false;
 	}
 
 	static eraseSaveGame() {
-		localStorage.removeItem("save");
+		if (SaveManager.supportsLocalStorage()) {
+			localStorage.removeItem("save");
+		} else {
+			console.log("No localStorage support.");
+		}
 	}
 
 }
