@@ -17,7 +17,7 @@ Critter Quest is a basic platformer created using Phaser3.
 
 To install Critter Quest to a server running Apache 2 on Ubuntu follow these instructions:
 
- - [How to Install Critter Quest](https://youtu.be/VJqKIITq30c)
+ - [How to Install Critter Quest](https://youtu.be/b4rpffbao60)
 
 
 ### Game Overview
