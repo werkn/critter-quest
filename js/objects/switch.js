@@ -5,12 +5,15 @@ export default class Switch {
 
 		const anims = scene.anims;
 
+		this.switchSprites = [ "crank-up.png", "crank-down.png" ];
+		this.switchSpriteIndex = 0;
+
 		this.switchToggleKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 		this.delayBetweenToggles = 250; //ms
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
-			.sprite(x, y, "props_atlas", "crank-up.png")
+			.sprite(x, y, "props_atlas", this.switchSprites[this.switchSpriteIndex]);
 		this.sprite.setImmovable(true);	
 		this.sprite.body.setAllowGravity(false); //sprite should be immobile
 
@@ -32,6 +35,12 @@ export default class Switch {
 			for (var i = 0; i < this.toggleTiles.length; i++) {
 				this.toggleTiles[i].toggle();
 			}
+
+			this.switchSpriteIndex = (this.switchSpriteIndex + 1) % this.switchSprites.length;
+			
+			//change the sprite state to second switch 
+			this.sprite.setTexture("props_atlas",
+				this.switchSprites[this.switchSpriteIndex]);
 
 			this.allowToggle = false;
 			this.scene.time.delayedCall(this.delayBetweenToggles, function() {

@@ -29,12 +29,14 @@ export default class ToggleTile {
 
 	enable() {
 		this.sprite.body.setEnable(true);
-		this.sprite.setTint(0x00ff00);
+		this.sprite.setTint(0xffffff);
+		this.sprite.setAlpha(1.0);
 	}
 
 	disable() {
 		this.sprite.body.setEnable(false);
-		this.sprite.setTint(0xff0000);
+		this.sprite.setTint(0xefefef);
+		this.sprite.setAlpha(0.5);
 	}
 
 	destroy() {
