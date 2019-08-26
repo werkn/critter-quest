@@ -112,7 +112,10 @@ export default class Player {
 
 		if (this.sprite.state == "normal") {
 			const sprite = this.sprite;
-			const onGround = sprite.body.blocked.down;
+			//sprite.body.blocked is used with world bounds (tilemap)
+			//while sprite.body.touching... is used with all other gameobject colliders
+			//check that we are touching either one
+			const onGround = (sprite.body.blocked.down || sprite.body.touching.down);
 			const acceleration = onGround ? 600 : 300;
 
 
