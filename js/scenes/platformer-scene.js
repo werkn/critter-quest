@@ -224,7 +224,9 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].name));
 				this.physics.world.addOverlap(this.switches[this.switches.length-1].sprite,
 					this.player.sprite, function(activeSwitch, player) {
-						activeSwitch.state = "toggle";
+						if (activeSwitch.owner.switchToggleKey.isDown) {
+							activeSwitch.owner.toggleAllTiles();
+						}
 					}, null, this);
 
 			} else if (tileMapObjects[i].name.includes("ToggleTile")) {
@@ -387,7 +389,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.input.keyboard.on("keydown_ESC", event => {
 			this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
 		});
-
+		
 		//enable debug graphics when the player hits 'p'
 		this.input.keyboard.once("keydown_P", event => {
 
