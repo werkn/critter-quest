@@ -21,6 +21,7 @@ import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import FrogSpringboard from "../physicsObjects/frog-springboard.js";
+import Crate from "../physicsObjects/crate.js";
 import ToggleTile from "../physicsObjects/toggle-tile.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
@@ -183,6 +184,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.exitCoords = {};
 		this.toggleTiles = [];
 		this.switches = [];
+		this.crates = [];
 		this.enemyManager = new EnemyManager(this);
 
 		// Setup all objects from our tilemap for the current level
@@ -217,6 +219,27 @@ export default class PlatformerScene extends Phaser.Scene {
 					.setScrollFactor(1) //don't move text with player
 					.setDepth(0);
 
+			} else if (tileMapObjects[i].name == ("Crate")) {
+
+				this.crates.push(new Crate(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					tileMapObjects[i].name));
+
+				//make this crate collide with the player
+				this.physics.world.addCollider(this.crates[this.crates.length-1].sprite,
+					this.player.sprite, function(crate, player) {
+						//only allow jumping when on the top of a ToggleTile
+						if (crate.body.touching.up) {
+							player.owner.onStandableObject = true;
+						} else {
+							crate.owner.move();
+						}
+					}, null, this);
+
+				//make this crate collide with the world layer
+				this.physics.world.addCollider(this.crates[this.crates.length-1].sprite, this.worldLayer);
+
 			} else if (tileMapObjects[i].name.includes("Switch")) {
 
 				this.switches.push(new Switch(this, 
@@ -237,7 +260,12 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					tileMapObjects[i].name));
 				this.physics.world.addCollider(this.toggleTiles[this.toggleTiles.length-1].sprite,
-					this.player.sprite, function() { console.log("Hit toggle tile")}, null, this);
+					this.player.sprite, function(toggleTile, player) { 
+						//only allow jumping when on the top of a ToggleTile
+						if (toggleTile.body.touching.up) {
+							player.owner.onStandableObject = true;
+						}
+					}, null, this);
 
 			} else if (tileMapObjects[i].name == "Gem") {
 
