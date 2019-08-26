@@ -192,7 +192,7 @@ export default class PlatformerScene extends Phaser.Scene {
 			if (tileMapObjects[i].name == "ExtraLife") {
 				this.extraLives.push(new ExtraLife(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
-					tileMapObjects[i].y - tileMapObjects[i].height/2));
+					tileMapObjects[i].y + tileMapObjects[i].height/2));
 				this.physics.world.addOverlap(this.extraLives[this.extraLives.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
 
@@ -200,8 +200,8 @@ export default class PlatformerScene extends Phaser.Scene {
 			} else if (tileMapObjects[i].name == "TutorialText") {
 
 				this.tipText = this.add.text(
-					tileMapObjects[i].x,
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x, 
+					tileMapObjects[i].y,
 					tileMapObjects[i].text.text, 
 					{ //style config for our Tiled text objects
 						align: tileMapObjects[i].text.halign,
@@ -221,7 +221,7 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				this.switches.push(new Switch(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
-					tileMapObjects[i].y - tileMapObjects[i].height/2,
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					tileMapObjects[i].name));
 				this.physics.world.addOverlap(this.switches[this.switches.length-1].sprite,
 					this.player.sprite, function(activeSwitch, player) {
@@ -234,7 +234,7 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				this.toggleTiles.push(new ToggleTile(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
-					tileMapObjects[i].y - tileMapObjects[i].height/2,
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					tileMapObjects[i].name));
 				this.physics.world.addCollider(this.toggleTiles[this.toggleTiles.length-1].sprite,
 					this.player.sprite, function() { console.log("Hit toggle tile")}, null, this);
@@ -243,15 +243,15 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				this.gems.push(new Gem(this,
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
-					tileMapObjects[i].y - tileMapObjects[i].height/2));
+					tileMapObjects[i].y + tileMapObjects[i].height/2));
 				this.physics.world.addOverlap(this.gems[this.gems.length-1].sprite,
 					this.player.sprite, this.hitCollectable, null, this);
 
 			} else if (tileMapObjects[i].name == "FrogSpringboard") {
 
 				this.physicsObjects.push(new FrogSpringboard(this, 
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"frog_springboard_"+i));
 				this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
 					this.worldLayer);
@@ -259,8 +259,8 @@ export default class PlatformerScene extends Phaser.Scene {
 			} else if (tileMapObjects[i].name == "FrogBossEnemy") {
 
 				tempEnemy = new FrogBossEnemy(this, 
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"frog_boss_"+i,
 					2, 
 					3);
@@ -270,8 +270,8 @@ export default class PlatformerScene extends Phaser.Scene {
 			} else if (tileMapObjects[i].name == "EagleEnemy") {
 
 				tempEnemy = new EagleEnemy(this, 
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"eagle_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
@@ -279,16 +279,16 @@ export default class PlatformerScene extends Phaser.Scene {
 			} else if (tileMapObjects[i].name == "OpossumEnemy") {
 
 				tempEnemy = new OpossumEnemy(this, 
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"opossum_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "FrogEnemy") {
 
 				tempEnemy = new FrogEnemy(this, 
-					tileMapObjects[i].x, 
-					tileMapObjects[i].y, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"frog_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
@@ -297,8 +297,8 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				if (!this.sys.game.levelState[this.currentLevel+""].hasEndBoss) {
 					this.levelExit = new Exit(this,
-						tileMapObjects[i].x, 
-						tileMapObjects[i].y, 
+						tileMapObjects[i].x + tileMapObjects[i].width/2, 
+						tileMapObjects[i].y + tileMapObjects[i].height/2,
 						"exit"+i);
 					this.physics.world.addCollider(this.levelExit.sprite, this.worldLayer);
 				} else {
