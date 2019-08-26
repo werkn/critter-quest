@@ -22,6 +22,7 @@ import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import FrogSpringboard from "../physicsObjects/frog-springboard.js";
 import Crate from "../physicsObjects/crate.js";
+import MovingPlatform from "../physicsObjects/moving-platform.js";
 import ToggleTile from "../physicsObjects/toggle-tile.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
@@ -185,6 +186,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.toggleTiles = [];
 		this.switches = [];
 		this.crates = [];
+		this.platforms = [];
 		this.enemyManager = new EnemyManager(this);
 
 		// Setup all objects from our tilemap for the current level
@@ -239,6 +241,29 @@ export default class PlatformerScene extends Phaser.Scene {
 
 				//make this crate collide with the world layer
 				this.physics.world.addCollider(this.crates[this.crates.length-1].sprite, this.worldLayer);
+
+			} else if (tileMapObjects[i].name == "MovingPlatform") {
+
+				this.platforms.push(new MovingPlatform(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					tileMapObjects[i].name));
+				this.physics.world.addCollider(this.platforms[this.platforms.length-1].sprite,
+					this.player.sprite, function(platform, player) {
+						//only allow jumping when on the top of a ToggleTile
+						if (platform.body.touching.up) {
+							player.owner.onStandableObject = true;
+
+							//lock player motion to platform motion (we no longer using
+							//the built in physics to move the player/platform)
+							//src:  https://phaser.io/tutorials/coding-tips-004
+							player.owner.sprite.x += (1*platform.direction);
+						}
+					}, null, this);
+
+				//add a widget collider
+				this.physics.world.addCollider(this.platforms[this.platforms.length-1].sprite,
+					this.worldLayer);
 
 			} else if (tileMapObjects[i].name.includes("Switch")) {
 
@@ -518,6 +543,11 @@ export default class PlatformerScene extends Phaser.Scene {
 		//update all physicsObjects in scene
 		for (var i = this.physicsObjects.length-1; i >= 0; i--) {
 			this.physicsObjects[i].update();
+		}
+		
+		//update all platforms in scene
+		for (var i = this.platforms.length-1; i >= 0; i--) {
+			this.platforms[i].update();
 		}
 		
 		//update all switches in scene
