@@ -7,7 +7,7 @@ export default class ToggleTile {
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
-			.sprite(x, y, "atlas", "cherry-1.png")
+			.sprite(x, y, "props_atlas", "block.png")
 		this.sprite.setImmovable(true);	
 		this.sprite.body.setAllowGravity(false); //sprite should be immobile
 

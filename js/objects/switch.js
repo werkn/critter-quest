@@ -10,7 +10,7 @@ export default class Switch {
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
-			.sprite(x, y, "atlas", "item-pickup-1.png")
+			.sprite(x, y, "props_atlas", "crank-up.png")
 		this.sprite.setImmovable(true);	
 		this.sprite.body.setAllowGravity(false); //sprite should be immobile
 
