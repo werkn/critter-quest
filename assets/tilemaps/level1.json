@@ -2010,6 +2010,17 @@
                  "width":16,
                  "x":592,
                  "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":496,
+                 "name":"Crate",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":816,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2018,7 +2029,7 @@
          "y":0
         }],
  "nextlayerid":26,
- "nextobjectid":496,
+ "nextobjectid":497,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

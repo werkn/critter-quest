@@ -106,6 +106,8 @@ export default class Player {
 
 		this.sprite.name = "player";
 		this.sprite.state = "normal";
+		this.onToggleTile = false;
+		this.sprite.owner = this;
 	}
 
 	update() {
@@ -115,8 +117,8 @@ export default class Player {
 			//sprite.body.blocked is used with world bounds (tilemap)
 			//while sprite.body.touching... is used with all other gameobject colliders
 			//check that we are touching either one
-			const onGround = (sprite.body.blocked.down || sprite.body.touching.down);
-			const acceleration = onGround ? 600 : 300;
+			this.onGround = (sprite.body.blocked.down || this.onStandableObject);
+			const acceleration = this.onGround ? 600 : 300;
 
 
 			// Apply horizontal acceleration when left/a or right/d are applied
@@ -133,13 +135,13 @@ export default class Player {
 			}
 
 			// Only allow the player to jump if they are on the ground
-			if (onGround && (this.keys.up.isDown || this.keys.w.isDown)) {
+			if (this.onGround && (this.keys.up.isDown || this.keys.w.isDown)) {
 				sprite.setVelocityY(-500);
 				this.scene.sys.game.soundManager.sfx.jump.play();
 			}
 
 			// Update the animation/texture based on the state of the player
-			if (onGround) {
+			if (this.onGround) {
 
 				if (this.keys.down.isDown || this.keys.s.isDown) { 
 					sprite.anims.play("player-crouch", true);
@@ -171,6 +173,9 @@ export default class Player {
 		} else if (this.sprite.state == "dying") {
 			this.die();
 		} 
+
+		//turn off onStandable object so it can be set again by the callback
+		this.onStandableObject = false;
 	}
 
 	die() {
