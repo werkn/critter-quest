@@ -1878,6 +1878,72 @@
                  "width":16,
                  "x":160,
                  "y":880
+                }, 
+                {
+                 "height":16,
+                 "id":481,
+                 "name":"ToggleTile_0",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":482,
+                 "name":"ToggleTile_0",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":672,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":486,
+                 "name":"Switch_0",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":487,
+                 "name":"ToggleTile_1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":720,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":488,
+                 "name":"ToggleTile_1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":64
+                }, 
+                {
+                 "height":16,
+                 "id":489,
+                 "name":"Switch_1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":720,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1886,7 +1952,7 @@
          "y":0
         }],
  "nextlayerid":25,
- "nextobjectid":480,
+ "nextobjectid":490,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
@@ -1961,15 +2027,6 @@
                 }, 
                 {
                  "id":2,
-                 "properties":[
-                        {
-                         "name":"widget",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":3,
                  "properties":[
                         {
                          "name":"widget",

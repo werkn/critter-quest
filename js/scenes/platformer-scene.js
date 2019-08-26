@@ -21,11 +21,13 @@ import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import FrogSpringboard from "../physicsObjects/frog-springboard.js";
+import ToggleTile from "../physicsObjects/toggle-tile.js";
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
 import EnemyManager from "../managers/enemy-manager.js";
 import SaveManager from "../managers/save-manager.js";
 import Exit from "../objects/exit.js";
+import Switch from "../objects/switch.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -89,7 +91,6 @@ export default class PlatformerScene extends Phaser.Scene {
 
 	//player has hit a collectable object
 	hitCollectable(sprite) {
-//		this.sys.game.soundManager.sfx.coinCollected.play();
 		this.sound.play("coinCollected", 
 			{
 				volume: this.sys.game.soundManager.sfx.coinCollected.volume
@@ -179,6 +180,8 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.extraLives = [];
 		this.physicsObjects = [];
 		this.exitCoords = {};
+		this.toggleTiles = [];
+		this.switches = [];
 		this.enemyManager = new EnemyManager(this);
 
 		// Setup all objects from our tilemap for the current level
@@ -212,6 +215,26 @@ export default class PlatformerScene extends Phaser.Scene {
 					.setOrigin(0.5)
 					.setScrollFactor(1) //don't move text with player
 					.setDepth(0);
+
+			} else if (tileMapObjects[i].name.includes("Switch")) {
+
+				this.switches.push(new Switch(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y - tileMapObjects[i].height/2,
+					tileMapObjects[i].name));
+				this.physics.world.addOverlap(this.switches[this.switches.length-1].sprite,
+					this.player.sprite, function(activeSwitch, player) {
+						activeSwitch.state = "toggle";
+					}, null, this);
+
+			} else if (tileMapObjects[i].name.includes("ToggleTile")) {
+
+				this.toggleTiles.push(new ToggleTile(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y - tileMapObjects[i].height/2,
+					tileMapObjects[i].name));
+				this.physics.world.addCollider(this.toggleTiles[this.toggleTiles.length-1].sprite,
+					this.player.sprite, function() { console.log("Hit toggle tile")}, null, this);
 
 			} else if (tileMapObjects[i].name == "Gem") {
 
@@ -282,6 +305,15 @@ export default class PlatformerScene extends Phaser.Scene {
 			}
 		}
 
+		//assign toggleTiles to associated switch
+		for (var i = 0; i < this.switches.length; i++) {
+			for (var j = 0; j < this.toggleTiles.length; j++) {
+				if (this.switches[i].switchId == 
+						this.toggleTiles[j].switchControlledById) {
+					this.switches[i].toggleTiles.push(this.toggleTiles[j]);
+				}
+			}
+		}
 
 		//iterate over every tile in the tilemap and find tiles with
 		//custom properties
@@ -456,6 +488,12 @@ export default class PlatformerScene extends Phaser.Scene {
 		for (var i = this.physicsObjects.length-1; i >= 0; i--) {
 			this.physicsObjects[i].update();
 		}
+		
+		//update all switches in scene
+		for (var i = this.switches.length-1; i >= 0; i--) {
+			this.switches[i].update();
+		}
+
 
 		//update all gems in scene, we iterate backwards so we can do
 		//live removal from array (this.gems)
