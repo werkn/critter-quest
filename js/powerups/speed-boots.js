@@ -17,6 +17,19 @@ export default class SpeedBootsPowerup{
 			repeat: -1
 		});
 
+		this.nameText = this.scene.make.text({
+			    x: x,
+			    y: y - 20,
+			    text: '+Speed Boots',
+			    style: {
+					        font: '14px monospace',
+					        fill: '#ffffff',
+							stroke: '#000',
+							strokeThickness: 4
+					    }
+		});
+		this.nameText.setOrigin(0.5, 0.5);
+
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
 			.sprite(x, y, "atlas", "cherry-1.png")
@@ -31,6 +44,7 @@ export default class SpeedBootsPowerup{
 	update() {}
 
 	destroy() {
+		this.nameText.destroy();
 		this.sprite.destroy();
 	}
 

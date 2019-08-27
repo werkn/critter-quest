@@ -197,7 +197,11 @@ export default class Player {
 
 				if (this.scene.sys.game.hasJumpPowerup
 					&& !this.usedDoubleJump && (this.keys.up.isDown || this.keys.w.isDown)) {
-					sprite.setVelocityY(-275);
+					//only use existing velocity if we're moving up
+					//if the player is falling we don't want to add that to our current velocity
+					//as it reduces the jump height to a inconsistent amount
+					var velocityY = (sprite.body.velocity.y < 0) ? sprite.body.velocity.y : 0;
+					sprite.setVelocityY(velocityY + -275);
 					this.scene.sys.game.soundManager.sfx.jump.play();
 					this.usedDoubleJump = true;
 				}

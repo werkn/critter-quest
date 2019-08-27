@@ -4,6 +4,7 @@ export default class DoubleJumpPowerup {
 
 		const anims = scene.anims;
 
+
 		//ANIMATION
 		anims.create({
 			key: "cherry-idle",
@@ -16,6 +17,19 @@ export default class DoubleJumpPowerup {
 			frameRate: 3,
 			repeat: -1
 		});
+		
+		this.nameText = this.scene.make.text({
+			    x: x,
+			    y: y - 20,
+			    text: '+Double Jump',
+			    style: {
+					        font: '14px monospace',
+					        fill: '#ffffff',
+							stroke: '#000',
+							strokeThickness: 4
+					    }
+		});
+		this.nameText.setOrigin(0.5, 0.5);
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
@@ -31,6 +45,7 @@ export default class DoubleJumpPowerup {
 	update() {}
 
 	destroy() {
+		this.nameText.destroy();
 		this.sprite.destroy();
 	}
 
