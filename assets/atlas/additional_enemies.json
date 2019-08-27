@@ -4,179 +4,11 @@
 			"image": "additional_enemies.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 64,
-				"h": 450
+				"w": 388,
+				"h": 64
 			},
 			"scale": 1,
 			"frames": [
-				{
-					"filename": "piranha-plant-attack-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 11,
-						"w": 43,
-						"h": 34
-					},
-					"frame": {
-						"x": 1,
-						"y": 1,
-						"w": 43,
-						"h": 34
-					}
-				},
-				{
-					"filename": "enemy-death-1-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 31,
-						"h": 29
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 7,
-						"w": 15,
-						"h": 15
-					},
-					"frame": {
-						"x": 46,
-						"y": 1,
-						"w": 15,
-						"h": 15
-					}
-				},
-				{
-					"filename": "enemy-death-1-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 31,
-						"h": 29
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 7,
-						"w": 15,
-						"h": 15
-					},
-					"frame": {
-						"x": 46,
-						"y": 18,
-						"w": 15,
-						"h": 15
-					}
-				},
-				{
-					"filename": "gator-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 46,
-						"h": 49
-					},
-					"spriteSourceSize": {
-						"x": 5,
-						"y": 12,
-						"w": 39,
-						"h": 32
-					},
-					"frame": {
-						"x": 1,
-						"y": 37,
-						"w": 39,
-						"h": 32
-					}
-				},
-				{
-					"filename": "piranha-plant-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 21,
-						"y": 14,
-						"w": 21,
-						"h": 31
-					},
-					"frame": {
-						"x": 42,
-						"y": 37,
-						"w": 21,
-						"h": 31
-					}
-				},
-				{
-					"filename": "enemy-death-2-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 28,
-						"h": 26
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 3,
-						"w": 21,
-						"h": 21
-					},
-					"frame": {
-						"x": 42,
-						"y": 70,
-						"w": 21,
-						"h": 21
-					}
-				},
-				{
-					"filename": "gator-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 46,
-						"h": 49
-					},
-					"spriteSourceSize": {
-						"x": 6,
-						"y": 12,
-						"w": 37,
-						"h": 31
-					},
-					"frame": {
-						"x": 1,
-						"y": 71,
-						"w": 37,
-						"h": 31
-					}
-				},
-				{
-					"filename": "piranha-plant-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 21,
-						"y": 11,
-						"w": 23,
-						"h": 34
-					},
-					"frame": {
-						"x": 40,
-						"y": 93,
-						"w": 23,
-						"h": 34
-					}
-				},
 				{
 					"filename": "gator-1.png",
 					"rotated": false,
@@ -193,7 +25,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 104,
+						"y": 1,
 						"w": 36,
 						"h": 45
 					}
@@ -214,55 +46,76 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 104,
+						"y": 1,
 						"w": 36,
 						"h": 45
 					}
 				},
 				{
-					"filename": "piranha-plant-2.png",
+					"filename": "enemy-death-1-1.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 61,
-						"h": 45
+						"w": 31,
+						"h": 29
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 10,
-						"w": 24,
-						"h": 35
+						"x": 8,
+						"y": 7,
+						"w": 15,
+						"h": 15
 					},
 					"frame": {
-						"x": 39,
-						"y": 129,
-						"w": 24,
-						"h": 35
+						"x": 1,
+						"y": 48,
+						"w": 15,
+						"h": 15
 					}
 				},
 				{
-					"filename": "piranha-plant-attack-2.png",
+					"filename": "enemy-death-1-2.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 61,
-						"h": 45
+						"w": 31,
+						"h": 29
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 10,
-						"w": 24,
-						"h": 35
+						"x": 8,
+						"y": 7,
+						"w": 15,
+						"h": 15
 					},
 					"frame": {
-						"x": 39,
-						"y": 129,
-						"w": 24,
-						"h": 35
+						"x": 18,
+						"y": 48,
+						"w": 15,
+						"h": 15
 					}
 				},
 				{
-					"filename": "gator-3.png",
+					"filename": "star-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 13
+					},
+					"frame": {
+						"x": 35,
+						"y": 48,
+						"w": 13,
+						"h": 13
+					}
+				},
+				{
+					"filename": "gator-2.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -270,79 +123,16 @@
 						"h": 49
 					},
 					"spriteSourceSize": {
-						"x": 7,
-						"y": 13,
-						"w": 35,
-						"h": 35
+						"x": 5,
+						"y": 12,
+						"w": 39,
+						"h": 32
 					},
 					"frame": {
-						"x": 1,
-						"y": 151,
-						"w": 35,
-						"h": 35
-					}
-				},
-				{
-					"filename": "piranha-plant-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 10,
-						"w": 25,
-						"h": 35
-					},
-					"frame": {
-						"x": 38,
-						"y": 166,
-						"w": 25,
-						"h": 35
-					}
-				},
-				{
-					"filename": "piranha-plant-attack-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 10,
-						"w": 25,
-						"h": 35
-					},
-					"frame": {
-						"x": 38,
-						"y": 166,
-						"w": 25,
-						"h": 35
-					}
-				},
-				{
-					"filename": "enemy-death-1-5.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 31,
-						"h": 29
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 31,
-						"h": 29
-					},
-					"frame": {
-						"x": 1,
-						"y": 188,
-						"w": 31,
-						"h": 29
+						"x": 39,
+						"y": 1,
+						"w": 39,
+						"h": 32
 					}
 				},
 				{
@@ -360,10 +150,52 @@
 						"h": 27
 					},
 					"frame": {
-						"x": 34,
-						"y": 203,
+						"x": 50,
+						"y": 35,
 						"w": 29,
 						"h": 27
+					}
+				},
+				{
+					"filename": "gator-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 46,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 12,
+						"w": 37,
+						"h": 31
+					},
+					"frame": {
+						"x": 80,
+						"y": 1,
+						"w": 37,
+						"h": 31
+					}
+				},
+				{
+					"filename": "enemy-death-1-5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 31,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 31,
+						"h": 29
+					},
+					"frame": {
+						"x": 81,
+						"y": 34,
+						"w": 31,
+						"h": 29
 					}
 				},
 				{
@@ -381,31 +213,10 @@
 						"h": 29
 					},
 					"frame": {
-						"x": 1,
-						"y": 219,
+						"x": 114,
+						"y": 34,
 						"w": 31,
 						"h": 29
-					}
-				},
-				{
-					"filename": "bee-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 37,
-						"h": 39
-					},
-					"spriteSourceSize": {
-						"x": 5,
-						"y": 8,
-						"w": 29,
-						"h": 27
-					},
-					"frame": {
-						"x": 34,
-						"y": 232,
-						"w": 29,
-						"h": 27
 					}
 				},
 				{
@@ -423,8 +234,8 @@
 						"h": 30
 					},
 					"frame": {
-						"x": 1,
-						"y": 250,
+						"x": 119,
+						"y": 1,
 						"w": 30,
 						"h": 30
 					}
@@ -444,8 +255,8 @@
 						"h": 29
 					},
 					"frame": {
-						"x": 33,
-						"y": 261,
+						"x": 147,
+						"y": 33,
 						"w": 30,
 						"h": 29
 					}
@@ -465,8 +276,8 @@
 						"h": 29
 					},
 					"frame": {
-						"x": 1,
-						"y": 282,
+						"x": 151,
+						"y": 1,
 						"w": 30,
 						"h": 29
 					}
@@ -486,14 +297,14 @@
 						"h": 29
 					},
 					"frame": {
-						"x": 33,
-						"y": 292,
+						"x": 179,
+						"y": 32,
 						"w": 30,
 						"h": 29
 					}
 				},
 				{
-					"filename": "bee-2.png",
+					"filename": "bee-8.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -501,37 +312,16 @@
 						"h": 39
 					},
 					"spriteSourceSize": {
-						"x": 4,
-						"y": 9,
+						"x": 5,
+						"y": 8,
 						"w": 29,
-						"h": 26
+						"h": 27
 					},
 					"frame": {
-						"x": 1,
-						"y": 313,
+						"x": 183,
+						"y": 1,
 						"w": 29,
-						"h": 26
-					}
-				},
-				{
-					"filename": "piranha-plant-attack-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 61,
-						"h": 45
-					},
-					"spriteSourceSize": {
-						"x": 21,
-						"y": 10,
-						"w": 27,
-						"h": 35
-					},
-					"frame": {
-						"x": 32,
-						"y": 323,
-						"w": 27,
-						"h": 35
+						"h": 27
 					}
 				},
 				{
@@ -549,10 +339,31 @@
 						"h": 32
 					},
 					"frame": {
-						"x": 1,
-						"y": 341,
+						"x": 211,
+						"y": 30,
 						"w": 27,
 						"h": 32
+					}
+				},
+				{
+					"filename": "bee-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 37,
+						"h": 39
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 9,
+						"w": 29,
+						"h": 26
+					},
+					"frame": {
+						"x": 214,
+						"y": 1,
+						"w": 29,
+						"h": 26
 					}
 				},
 				{
@@ -570,8 +381,8 @@
 						"h": 27
 					},
 					"frame": {
-						"x": 30,
-						"y": 360,
+						"x": 240,
+						"y": 29,
 						"w": 27,
 						"h": 27
 					}
@@ -591,10 +402,31 @@
 						"h": 25
 					},
 					"frame": {
-						"x": 1,
-						"y": 375,
+						"x": 245,
+						"y": 1,
 						"w": 26,
 						"h": 25
+					}
+				},
+				{
+					"filename": "gator-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 46,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 13,
+						"w": 35,
+						"h": 35
+					},
+					"frame": {
+						"x": 269,
+						"y": 28,
+						"w": 35,
+						"h": 35
 					}
 				},
 				{
@@ -612,8 +444,8 @@
 						"h": 25
 					},
 					"frame": {
-						"x": 29,
-						"y": 389,
+						"x": 273,
+						"y": 1,
 						"w": 26,
 						"h": 25
 					}
@@ -633,31 +465,73 @@
 						"h": 23
 					},
 					"frame": {
-						"x": 1,
-						"y": 402,
+						"x": 301,
+						"y": 1,
 						"w": 26,
 						"h": 23
 					}
 				},
 				{
-					"filename": "piranha-plant-5.png",
+					"filename": "slug-4.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 61,
-						"h": 45
+						"w": 32,
+						"h": 21
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 12,
-						"w": 25,
-						"h": 33
+						"x": 1,
+						"y": 4,
+						"w": 29,
+						"h": 17
 					},
 					"frame": {
-						"x": 29,
-						"y": 416,
-						"w": 25,
-						"h": 33
+						"x": 306,
+						"y": 26,
+						"w": 29,
+						"h": 17
+					}
+				},
+				{
+					"filename": "slug-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 26,
+						"h": 17
+					},
+					"frame": {
+						"x": 306,
+						"y": 45,
+						"w": 26,
+						"h": 17
+					}
+				},
+				{
+					"filename": "slug-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 3,
+						"w": 24,
+						"h": 18
+					},
+					"frame": {
+						"x": 334,
+						"y": 45,
+						"w": 24,
+						"h": 18
 					}
 				},
 				{
@@ -675,10 +549,157 @@
 						"h": 22
 					},
 					"frame": {
-						"x": 1,
-						"y": 427,
+						"x": 329,
+						"y": 1,
 						"w": 22,
 						"h": 22
+					}
+				},
+				{
+					"filename": "star-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 13
+					},
+					"frame": {
+						"x": 337,
+						"y": 25,
+						"w": 13,
+						"h": 13
+					}
+				},
+				{
+					"filename": "star-6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 13
+					},
+					"frame": {
+						"x": 352,
+						"y": 25,
+						"w": 13,
+						"h": 13
+					}
+				},
+				{
+					"filename": "slug-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 2,
+						"w": 24,
+						"h": 19
+					},
+					"frame": {
+						"x": 360,
+						"y": 40,
+						"w": 24,
+						"h": 19
+					}
+				},
+				{
+					"filename": "enemy-death-2-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 28,
+						"h": 26
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 21,
+						"h": 21
+					},
+					"frame": {
+						"x": 353,
+						"y": 1,
+						"w": 21,
+						"h": 21
+					}
+				},
+				{
+					"filename": "star-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 11,
+						"h": 13
+					},
+					"frame": {
+						"x": 367,
+						"y": 24,
+						"w": 11,
+						"h": 13
+					}
+				},
+				{
+					"filename": "star-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 11,
+						"h": 13
+					},
+					"frame": {
+						"x": 376,
+						"y": 1,
+						"w": 11,
+						"h": 13
+					}
+				},
+				{
+					"filename": "star-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 7,
+						"h": 13
+					},
+					"frame": {
+						"x": 380,
+						"y": 16,
+						"w": 7,
+						"h": 13
 					}
 				}
 			]
@@ -687,6 +708,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:d8f508baf2180fa4af15f98e0f8c79b9:2e24d1f68444b3f8b3f22a4463a5b167:4d7fa3aec0255005d53feab359e99c6b$"
+		"smartupdate": "$TexturePacker:SmartUpdate:4e5d3f541ef2a1451e73e3787491ae69:27a94125f6e9f904ac0606f5b16a2e3b:4d7fa3aec0255005d53feab359e99c6b$"
 	}
 }

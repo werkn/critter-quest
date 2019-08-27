@@ -16,20 +16,35 @@
  */
 
 import Player from "../units/player.js";
+
+//enemies
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
+import SnailEnemy from "../units/snail-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
+import BeeEnemy from "../units/bee-enemy.js";
+import CrocEnemy from "../units/croc-enemy.js";
+
+//bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
+
+//objects
+import Exit from "../objects/exit.js";
+import Switch from "../objects/switch.js";
+
+//physics objects
 import FrogSpringboard from "../physicsObjects/frog-springboard.js";
 import Crate from "../physicsObjects/crate.js";
 import MovingPlatform from "../physicsObjects/moving-platform.js";
 import ToggleTile from "../physicsObjects/toggle-tile.js";
+
+//collectables
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
+
+//managers
 import EnemyManager from "../managers/enemy-manager.js";
 import SaveManager from "../managers/save-manager.js";
-import Exit from "../objects/exit.js";
-import Switch from "../objects/switch.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -56,13 +71,13 @@ export default class PlatformerScene extends Phaser.Scene {
 		//src: https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
 		//create loading text
 		this.loadingText = this.make.text({
-			    x: width / 2,
-			    y: height / 2 - 50,
-			    text: 'Loading...',
-			    style: {
-					        font: '20px monospace',
-					        fill: '#ffffff'
-					    }
+			x: width / 2,
+			y: height / 2 - 50,
+			text: 'Loading...',
+			style: {
+				font: '20px monospace',
+				fill: '#ffffff'
+			}
 		});
 		this.loadingText.setOrigin(0.5, 0.5);
 
@@ -99,7 +114,7 @@ export default class PlatformerScene extends Phaser.Scene {
 			{
 				volume: this.sys.game.soundManager.sfx.coinCollected.volume
 			}
-		
+
 		);
 		if (sprite.name == "gem") {
 			//update player gem count and add a new life every 100 gems
@@ -321,12 +336,21 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
-			} else if (tileMapObjects[i].name == "EagleEnemy") {
+			} else if (tileMapObjects[i].name == "CrocEnemy") {
 
-				tempEnemy = new EagleEnemy(this, 
+				tempEnemy = new CrocEnemy(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
 					tileMapObjects[i].y + tileMapObjects[i].height/2,
-					"eagle_"+i);
+					"croc_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "BeeEnemy") {
+
+				tempEnemy = new BeeEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"bee_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
@@ -338,6 +362,30 @@ export default class PlatformerScene extends Phaser.Scene {
 					"opossum_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
+			} else if (tileMapObjects[i].name == "EagleEnemy") {
+
+				tempEnemy = new EagleEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"eagle_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "SnailEnemy") {
+
+				tempEnemy = new SnailEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"snail_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.physics.world.addCollider(tempEnemy.sprite,
+					this.player.sprite, function(snailBody, player) { 
+						if (snailBody.body.touching.up) {
+							player.owner.onStandableObject = true;
+						}
+					}, null, this);
+				this.enemyManager.add(tempEnemy);
+
 			} else if (tileMapObjects[i].name == "FrogEnemy") {
 
 				tempEnemy = new FrogEnemy(this, 
@@ -366,7 +414,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		for (var i = 0; i < this.switches.length; i++) {
 			for (var j = 0; j < this.toggleTiles.length; j++) {
 				if (this.switches[i].switchId == 
-						this.toggleTiles[j].switchControlledById) {
+					this.toggleTiles[j].switchControlledById) {
 					this.switches[i].toggleTiles.push(this.toggleTiles[j]);
 				}
 			}
@@ -444,7 +492,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.input.keyboard.on("keydown_ESC", event => {
 			this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
 		});
-		
+
 		//enable debug graphics when the player hits 'p'
 		this.input.keyboard.once("keydown_P", event => {
 
@@ -545,12 +593,12 @@ export default class PlatformerScene extends Phaser.Scene {
 		for (var i = this.physicsObjects.length-1; i >= 0; i--) {
 			this.physicsObjects[i].update();
 		}
-		
+
 		//update all platforms in scene
 		for (var i = this.platforms.length-1; i >= 0; i--) {
 			this.platforms[i].update();
 		}
-		
+
 		//update all switches in scene
 		for (var i = this.switches.length-1; i >= 0; i--) {
 			this.switches[i].update();
