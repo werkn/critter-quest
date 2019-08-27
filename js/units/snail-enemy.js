@@ -57,6 +57,26 @@ export default class SnailEnemy {
 		this.sprite.anims.play("enemy-die", true);
 	}
 
+	update() {
+			if (this.sprite.state == "normal") {
+				//manually check for crate and enemy collisions, as we check each crate against
+				//each enemy we should keep the number of crates to 2 or 3
+				for (var i = 0; i < this.scene.crates.length; i++) {
+					this.scene.physics.world.overlap(this.scene.crates[i].sprite, this.sprite, function(crate, enemy) {
+						if(enemy.body.touching.up && crate.body.touching.down) {	
+							enemy.state = "dying"; 
+							//disable enemy body so we don't hit it again
+							enemy.body.setEnable(false);
+							//make player jump off enemy 
+						}
+					}, null, this);
+				}
+			} else {
+				this.die();
+			}
+	
+	}
+
 	destroy() {
 		this.sprite.destroy();
 	}

@@ -71,13 +71,13 @@ export default class PlatformerScene extends Phaser.Scene {
 		//src: https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
 		//create loading text
 		this.loadingText = this.make.text({
-			    x: width / 2,
-			    y: height / 2 - 50,
-			    text: 'Loading...',
-			    style: {
-					        font: '20px monospace',
-					        fill: '#ffffff'
-					    }
+			x: width / 2,
+			y: height / 2 - 50,
+			text: 'Loading...',
+			style: {
+				font: '20px monospace',
+				fill: '#ffffff'
+			}
 		});
 		this.loadingText.setOrigin(0.5, 0.5);
 
@@ -114,7 +114,7 @@ export default class PlatformerScene extends Phaser.Scene {
 			{
 				volume: this.sys.game.soundManager.sfx.coinCollected.volume
 			}
-		
+
 		);
 		if (sprite.name == "gem") {
 			//update player gem count and add a new life every 100 gems
@@ -202,7 +202,6 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.toggleTiles = [];
 		this.switches = [];
 		this.crates = [];
-		this.snails = [];
 		this.platforms = [];
 		this.enemyManager = new EnemyManager(this);
 
@@ -374,17 +373,18 @@ export default class PlatformerScene extends Phaser.Scene {
 
 			} else if (tileMapObjects[i].name == "SnailEnemy") {
 
-				this.snails.push(new SnailEnemy(this, 
+				tempEnemy = new SnailEnemy(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
 					tileMapObjects[i].y + tileMapObjects[i].height/2,
-					"snail_"+i));
-				this.physics.world.addCollider(this.snails[this.snails.length-1].sprite, this.worldLayer);
-				this.physics.world.addCollider(this.snails[this.snails.length-1].sprite,
+					"snail_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.physics.world.addCollider(tempEnemy.sprite,
 					this.player.sprite, function(snailBody, player) { 
 						if (snailBody.body.touching.up) {
 							player.owner.onStandableObject = true;
 						}
 					}, null, this);
+				this.enemyManager.add(tempEnemy);
 
 			} else if (tileMapObjects[i].name == "FrogEnemy") {
 
@@ -414,7 +414,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		for (var i = 0; i < this.switches.length; i++) {
 			for (var j = 0; j < this.toggleTiles.length; j++) {
 				if (this.switches[i].switchId == 
-						this.toggleTiles[j].switchControlledById) {
+					this.toggleTiles[j].switchControlledById) {
 					this.switches[i].toggleTiles.push(this.toggleTiles[j]);
 				}
 			}
@@ -492,7 +492,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.input.keyboard.on("keydown_ESC", event => {
 			this.scene.launch("in_game_menu", { sceneName: "level"+this.currentLevel});
 		});
-		
+
 		//enable debug graphics when the player hits 'p'
 		this.input.keyboard.once("keydown_P", event => {
 
@@ -593,12 +593,12 @@ export default class PlatformerScene extends Phaser.Scene {
 		for (var i = this.physicsObjects.length-1; i >= 0; i--) {
 			this.physicsObjects[i].update();
 		}
-		
+
 		//update all platforms in scene
 		for (var i = this.platforms.length-1; i >= 0; i--) {
 			this.platforms[i].update();
 		}
-		
+
 		//update all switches in scene
 		for (var i = this.switches.length-1; i >= 0; i--) {
 			this.switches[i].update();

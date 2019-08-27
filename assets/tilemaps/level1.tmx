@@ -431,6 +431,6 @@
   <object id="497" name="MovingPlatform" x="1040" y="64" width="16" height="16"/>
   <object id="498" name="BeeEnemy" x="1152" y="16" width="16" height="16"/>
   <object id="499" name="CrocEnemy" x="512" y="64" width="16" height="16"/>
-  <object id="501" name="SnailEnemy" x="1024" y="144" width="16" height="16"/>
+  <object id="501" name="SnailEnemy" x="896" y="144" width="16" height="16"/>
  </objectgroup>
 </map>
