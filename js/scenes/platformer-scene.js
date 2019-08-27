@@ -25,6 +25,10 @@ import OpossumEnemy from "../units/opossum-enemy.js";
 import BeeEnemy from "../units/bee-enemy.js";
 import CrocEnemy from "../units/croc-enemy.js";
 
+//powerups
+import SpeedBootsPowerup from "../powerups/speed-boots.js";
+import DoubleJumpPowerup from "../powerups/double-jump.js";
+
 //bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 
@@ -114,16 +118,28 @@ export default class PlatformerScene extends Phaser.Scene {
 			{
 				volume: this.sys.game.soundManager.sfx.coinCollected.volume
 			}
-
 		);
+
 		if (sprite.name == "gem") {
+			
 			//update player gem count and add a new life every 100 gems
 			if (++this.sys.game.gems == 100) {
 				this.sys.game.lives += 1;
 				this.sys.game.gems = 0;
 			}
+
+		} else if (sprite.name == "double-jump-powerup") {
+
+			this.game.hasJumpPowerup =  true;
+
+		} else if (sprite.name == "speed-boots-powerup") {
+
+			this.game.hasSpeedPowerup =  true;
+
 		} else if (sprite.name == "extra-life") {
+
 			this.game.lives += 1;
+
 		}
 
 		//change the sprite name to collected, this flag allows us to
@@ -202,6 +218,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.toggleTiles = [];
 		this.switches = [];
 		this.crates = [];
+		this.powerups = [];
 		this.platforms = [];
 		this.enemyManager = new EnemyManager(this);
 
@@ -307,6 +324,22 @@ export default class PlatformerScene extends Phaser.Scene {
 							player.owner.onStandableObject = true;
 						}
 					}, null, this);
+
+			} else if (tileMapObjects[i].name == "DoubleJumpPowerup") {
+
+				this.powerups.push(new DoubleJumpPowerup(this,
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2));
+				this.physics.world.addOverlap(this.powerups[this.powerups.length-1].sprite,
+					this.player.sprite, this.hitCollectable, null, this);
+
+			} else if (tileMapObjects[i].name == "SpeedBootsPowerup") {
+
+				this.powerups.push(new SpeedBootsPowerup(this,
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2));
+				this.physics.world.addOverlap(this.powerups[this.powerups.length-1].sprite,
+					this.player.sprite, this.hitCollectable, null, this);
 
 			} else if (tileMapObjects[i].name == "Gem") {
 
@@ -473,6 +506,8 @@ export default class PlatformerScene extends Phaser.Scene {
 
 		//setup game and level stats
 		//check that we haven't already set these stats
+		this.sys.game.hasSpeedPowerup = (this.sys.game.hasSpeedPowerup == undefined) ? false : this.sys.game.hasSpeedPowerup;
+		this.sys.game.hasJumpPowerup = (this.sys.game.hasJumpPowerup == undefined) ? false : this.sys.game.hasJumpPowerup;
 		this.sys.game.hp = (this.sys.game.hp == undefined) ? 1 : this.sys.game.hp;
 		this.sys.game.gems = (this.sys.game.gems == undefined) ? 0 : this.sys.game.gems;
 		this.sys.game.lives = (this.sys.game.lives == undefined) ? 5 : this.sys.game.lives;
@@ -604,6 +639,17 @@ export default class PlatformerScene extends Phaser.Scene {
 			this.switches[i].update();
 		}
 
+
+		//update all powerups in scene, we iterate backwards so we can do
+		//live removal from array (this.gems)
+		for (var i = this.powerups.length-1; i >= 0; i--) {
+			if (this.powerups[i].sprite.name === "collected") {
+				this.powerups[i].destroy();
+
+				//remove the gem from the array, its been collected/destroyed
+				this.powerups.splice(i,1);
+			}
+		}
 
 		//update all gems in scene, we iterate backwards so we can do
 		//live removal from array (this.gems)

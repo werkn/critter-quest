@@ -66,6 +66,28 @@ export default class HudOverlayScene extends Phaser.Scene {
 			})
 			.setOrigin(0.5, 0.5)
 			.setShadow(1, 1, "#5588EE", 0, true, true);
+		
+		//add hud text for powerups 
+		this.powerupsJumpText = this.add
+			.text(width * 0.5, height * 0.08, 
+				(this.sys.game.hasJumpPowerup) ? "Powerup: Double Jump": "",
+				{
+					font: "16px monospace",
+					color: "white"
+				})
+			.setOrigin(0.5, 0.5)
+			.setShadow(1, 1, "#5588EE", 0, true, true);
+
+		//add hud text for powerups 
+		this.powerupsSpeedText = this.add
+			.text(width * 0.5, height * 0.05, 
+				(this.sys.game.hasSpeedPowerup) ? "Powerup: Speed (Press Shift)": "",
+				{
+					font: "16px monospace",
+					color: "white"
+				})
+			.setOrigin(0.5, 0.5)
+			.setShadow(1, 1, "#5588EE", 0, true, true);
 
 		//move the HudOverlayScene over top of the currentScene (likely platformer-scene)
 		this.scene.moveAbove(this.currentScene);
@@ -80,6 +102,8 @@ export default class HudOverlayScene extends Phaser.Scene {
 		this.gameTimer.setText("Time: " + this.timeRemaining);
 		this.livesText.setText("Kit x " + this.sys.game.lives);
 		this.gemsText.setText(this.sys.game.gems + " x Gem");
+		this.powerupsSpeedText.setText((this.sys.game.hasSpeedPowerup) ? "Powerup: Speed (Press Shift)": "");
+		this.powerupsJumpText.setText((this.sys.game.hasJumpPowerup) ? "Powerup: Double Jump" : "");
 	}
 
 }
