@@ -16,20 +16,33 @@
  */
 
 import Player from "../units/player.js";
+
+//enemies
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
+import BeeEnemy from "../units/bee-enemy.js";
+
+//bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
+
+//objects
+import Exit from "../objects/exit.js";
+import Switch from "../objects/switch.js";
+
+//physics objects
 import FrogSpringboard from "../physicsObjects/frog-springboard.js";
 import Crate from "../physicsObjects/crate.js";
 import MovingPlatform from "../physicsObjects/moving-platform.js";
 import ToggleTile from "../physicsObjects/toggle-tile.js";
+
+//collectables
 import Gem from "../collectables/gem.js";
 import ExtraLife from "../collectables/extra-life.js";
+
+//managers
 import EnemyManager from "../managers/enemy-manager.js";
 import SaveManager from "../managers/save-manager.js";
-import Exit from "../objects/exit.js";
-import Switch from "../objects/switch.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the platformer level.
@@ -321,6 +334,23 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
+			} else if (tileMapObjects[i].name == "BeeEnemy") {
+
+				tempEnemy = new BeeEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"bee_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "OpossumEnemy") {
+
+				tempEnemy = new OpossumEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"opossum_"+i);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
 			} else if (tileMapObjects[i].name == "EagleEnemy") {
 
 				tempEnemy = new EagleEnemy(this, 
