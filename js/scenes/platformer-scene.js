@@ -90,6 +90,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		//note if using a Multi-packed atlas we need to modify our load method to use Multipack
 		this.load.atlas("atlas", "./assets/atlas/items_and_characters_atlas.png", "./assets/atlas/items_and_characters_atlas.json");
 		this.load.atlas("props_atlas", "./assets/atlas/props.png", "./assets/atlas/props.json");
+		this.load.atlas("additional_enemies_atlas", "./assets/atlas/additional_enemies.png", "./assets/atlas/additional_enemies.json");
 	}
 
 	//player has hit a collectable object
