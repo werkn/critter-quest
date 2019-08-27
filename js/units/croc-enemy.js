@@ -1,19 +1,4 @@
-/**
-* User: werkn-development
-* Date: Fri Aug 23 12:48:56 MST 2019
-* 
-* OpossumEnemy moves left/right across the ground in each scene and can have its 
-* movement bounded by placing appropriate collision layer widges in Tiled map.
-*
-* Collision layer widgets must have the custom property "collides=true, widget=true".
-*
-* Note:  Distance between collision layer widgets needs to be tweaked by also adjusting
-* the delayedCall in update.  This is because we use the delayed call to ignore repeat
-* collisions when the widget collider overlaps before the enemy reverses direction and
-* moves out of the collider.
-*
-*/
-export default class OpossumEnemy {
+export default class CrocEnemy {
 
 	constructor(scene, x, y, name) {
 		this.scene = scene;
@@ -23,9 +8,9 @@ export default class OpossumEnemy {
 		const anims = scene.anims;
 		//IDLE ANIMATION
 		anims.create({
-			key: "opossum-walk",
-			frames: anims.generateFrameNames("atlas", {
-				prefix: "opossum-",
+			key: "croc-idle",
+			frames: anims.generateFrameNames("additional_enemies_atlas", {
+				prefix: "gator-",
 				suffix: '.png',
 				start: 1,
 				end: 4
@@ -49,7 +34,7 @@ export default class OpossumEnemy {
 
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
-			.sprite(x, y, "atlas", "opossum-1.png")
+			.sprite(x, y, "additional_enemies_atlas", "gator-1.png")
 			.setDrag(1000, 0)
 			.setMaxVelocity(300, 1000);  //max horiz. speed as well as max jump height
 			
@@ -65,7 +50,7 @@ export default class OpossumEnemy {
 
 		this.sprite.name = name;
 		this.sprite.state = "normal";
-		this.direction = -1;
+		this.direction = -2; //move 2x faster then opossum
 		this.dead = false;
 
 		this.canCollideWithWidget = true; //enemy is bound by tilemap widgets
@@ -88,12 +73,12 @@ export default class OpossumEnemy {
 				this.canCollideWithWidget = false;
 				
 				//wait 1500 seconds before allow widget collisions/direction reverseal again
-	    		this.scene.time.delayedCall(1500, function() { 
+	    		this.scene.time.delayedCall(1000, function() { 
 					this.sprite.state = "normal";
 					this.canCollideWithWidget = true; 
 				}, null, this);
 			}
-			sprite.anims.play("opossum-walk", true);
+			sprite.anims.play("croc-idle", true);
 			
 		} else {
 			this.die();

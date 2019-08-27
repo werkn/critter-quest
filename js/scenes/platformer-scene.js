@@ -22,6 +22,7 @@ import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import BeeEnemy from "../units/bee-enemy.js";
+import CrocEnemy from "../units/croc-enemy.js";
 
 //bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
@@ -331,6 +332,15 @@ export default class PlatformerScene extends Phaser.Scene {
 					"frog_boss_"+i,
 					2, 
 					3);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
+			} else if (tileMapObjects[i].name == "CrocEnemy") {
+
+				tempEnemy = new CrocEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"croc_"+i);
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
