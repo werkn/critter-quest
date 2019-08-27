@@ -20,6 +20,7 @@ import Player from "../units/player.js";
 //enemies
 import FrogEnemy from "../units/frog-enemy.js";
 import EagleEnemy from "../units/eagle-enemy.js";
+import SnailEnemy from "../units/snail-enemy.js";
 import OpossumEnemy from "../units/opossum-enemy.js";
 import BeeEnemy from "../units/bee-enemy.js";
 import CrocEnemy from "../units/croc-enemy.js";
@@ -201,6 +202,7 @@ export default class PlatformerScene extends Phaser.Scene {
 		this.toggleTiles = [];
 		this.switches = [];
 		this.crates = [];
+		this.snails = [];
 		this.platforms = [];
 		this.enemyManager = new EnemyManager(this);
 
@@ -370,14 +372,20 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
-			} else if (tileMapObjects[i].name == "OpossumEnemy") {
+			} else if (tileMapObjects[i].name == "SnailEnemy") {
 
-				tempEnemy = new OpossumEnemy(this, 
+				this.snails.push(new SnailEnemy(this, 
 					tileMapObjects[i].x + tileMapObjects[i].width/2, 
 					tileMapObjects[i].y + tileMapObjects[i].height/2,
-					"opossum_"+i);
-				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
-				this.enemyManager.add(tempEnemy);
+					"snail_"+i));
+				this.physics.world.addCollider(this.snails[this.snails.length-1].sprite, this.worldLayer);
+				this.physics.world.addCollider(this.snails[this.snails.length-1].sprite,
+					this.player.sprite, function(snailBody, player) { 
+						if (snailBody.body.touching.up) {
+							player.owner.onStandableObject = true;
+						}
+					}, null, this);
+
 			} else if (tileMapObjects[i].name == "FrogEnemy") {
 
 				tempEnemy = new FrogEnemy(this, 
