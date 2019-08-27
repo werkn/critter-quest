@@ -42,6 +42,7 @@ export default class EnemyManager {
 							enemy.body.setEnable(false);
 							//make player jump off enemy 
 							player.setVelocityY(-350);
+							player.owner.usedDoubleJump = false; //reset double jump
 						} else  {
 							player.state = "dying";
 						}

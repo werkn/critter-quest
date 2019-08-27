@@ -49,6 +49,7 @@ export default class FrogSpringboard {
 				if(frogSpringboard.body.touching.up && player.body.touching.down) {	
 					//launch player in the air
 					player.setVelocityY(-850);
+					player.owner.usedDoubleJump = false; //reset double jump
 				} 
 			}
 		}, null, this);

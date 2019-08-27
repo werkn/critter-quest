@@ -92,7 +92,7 @@ export default class Player {
 		}
 
 		// Track the arrow keys & WASD
-		const { LEFT, RIGHT, UP, DOWN, W, A, S, D } = Phaser.Input.Keyboard.KeyCodes;
+		const { LEFT, RIGHT, UP, DOWN, W, A, S, D, SHIFT } = Phaser.Input.Keyboard.KeyCodes;
 		this.keys = scene.input.keyboard.addKeys({
 			left: LEFT,
 			right: RIGHT,
@@ -101,8 +101,15 @@ export default class Player {
 			w: W,
 			a: A,
 			s: S,
-			d: D
+			d: D,
+			shift: SHIFT
 		});
+
+		this.groundAcceleration = 300;
+		this.airAcceleration = 300;
+		this.speedMultiplier = 1;
+
+		this.usedDoubleJump = false; //has the player used their second jump?
 
 		this.sprite.name = "player";
 		this.sprite.state = "normal";
@@ -114,11 +121,22 @@ export default class Player {
 
 		if (this.sprite.state == "normal") {
 			const sprite = this.sprite;
+		
+			//check for speed powerups
+			if (this.scene.sys.game.hasSpeedPowerup && this.keys.shift.isDown) {
+				this.sprite.setTint(0x00ff00);
+				this.speedMultiplier = 2;
+			} else {
+				this.sprite.setTint(0xffffff);
+				this.speedMultiplier = 1;
+			}
+
 			//sprite.body.blocked is used with world bounds (tilemap)
 			//while sprite.body.touching... is used with all other gameobject colliders
 			//check that we are touching either one
 			this.onGround = (sprite.body.blocked.down || this.onStandableObject);
-			const acceleration = this.onGround ? 600 : 300;
+			var acceleration = (this.onGround) ? this.groundAcceleration * this.speedMultiplier : this.airAcceleration * this.speedMultiplier;
+			this.sprite.setMaxVelocity(acceleration, 1000);
 
 
 			// Apply horizontal acceleration when left/a or right/d are applied
@@ -138,7 +156,14 @@ export default class Player {
 			if (this.onGround && (this.keys.up.isDown || this.keys.w.isDown)) {
 				sprite.setVelocityY(-500);
 				this.scene.sys.game.soundManager.sfx.jump.play();
+				//setup double jump delay, initially disable doubleJump so if the player is
+				//holding down jump it doesn't fire instantly
+				this.usedDoubleJump = true;
+				this.scene.time.delayedCall(500, function() {
+					this.usedDoubleJump = false;	
+				}, null, this);  // delay in ms
 			}
+
 
 			// Update the animation/texture based on the state of the player
 			if (this.onGround) {
@@ -168,6 +193,13 @@ export default class Player {
 					sprite.setTexture("atlas", "jump/player-jump-1.png");
 				} else {
 					sprite.setTexture("atlas", "jump/player-jump-2.png");
+				}
+
+				if (this.scene.sys.game.hasJumpPowerup
+					&& !this.usedDoubleJump && (this.keys.up.isDown || this.keys.w.isDown)) {
+					sprite.setVelocityY(-275);
+					this.scene.sys.game.soundManager.sfx.jump.play();
+					this.usedDoubleJump = true;
 				}
 			}
 		} else if (this.sprite.state == "dying") {
