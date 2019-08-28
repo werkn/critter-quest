@@ -40,7 +40,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 					//end boss levels do not have a prespawned exit, 
 					//the exit is spawned after boss is defeated
 					"5": { unlocked: false, time: -1, hasEndBoss: true },
-					"6": { unlocked: false, time: -1, hasEndBoss: false },
+					"6": { unlocked: true, time: -1, hasEndBoss: false },
 					"7": { unlocked: false, time: -1, hasEndBoss: false },
 					"8": { unlocked: false, time: -1, hasEndBoss: false },
 					"9": { unlocked: false, time: -1, hasEndBoss: false },
@@ -109,7 +109,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 		this.input.keyboard.on("keydown_THREE", event => { this.startLevel(this, "3"); });
 		this.input.keyboard.on("keydown_FOUR", event => { this.startLevel(this, "4"); });
 		this.input.keyboard.on("keydown_FIVE", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_SIX", event => { this.startLevel(this, "5"); });
+		this.input.keyboard.on("keydown_SIX", event => { this.startLevel(this, "6"); });
 		this.input.keyboard.on("keydown_SEVEN", event => { this.startLevel(this, "5"); });
 		this.input.keyboard.on("keydown_EIGHT", event => { this.startLevel(this, "5"); });
 		this.input.keyboard.on("keydown_NINE", event => { this.startLevel(this, "5"); });
