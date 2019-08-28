@@ -23,6 +23,10 @@ export default class LevelSelectScene extends Phaser.Scene {
 
 		this.levelButtons = [];
 		this.numOfLevels = 15;
+		this.keyBindings = {
+			1: "ONE", 2: "TWO", 3: "THREE", 4: "FOUR", 5: "FIVE", 6: "SIX", 7: "SEVEN",
+			8: "EIGHT", 9: "NINE", 10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"
+		};
 	}
 
 	preload() {
@@ -41,15 +45,15 @@ export default class LevelSelectScene extends Phaser.Scene {
 					//the exit is spawned after boss is defeated
 					"5": { unlocked: false, time: -1, hasEndBoss: true },
 					"6": { unlocked: true, time: -1, hasEndBoss: false },
-					"7": { unlocked: false, time: -1, hasEndBoss: false },
-					"8": { unlocked: false, time: -1, hasEndBoss: false },
-					"9": { unlocked: false, time: -1, hasEndBoss: false },
-					"10": { unlocked: false, time: -1, hasEndBoss: true },
-					"11": { unlocked: false, time: -1, hasEndBoss: false },
-					"12": { unlocked: false, time: -1, hasEndBoss: false },
-					"13": { unlocked: false, time: -1, hasEndBoss: false },
-					"14": { unlocked: false, time: -1, hasEndBoss: false },
-					"15": { unlocked: false, time: -1, hasEndBoss: true }
+					"7": { unlocked: true, time: -1, hasEndBoss: false },
+					"8": { unlocked: true, time: -1, hasEndBoss: false },
+					"9": { unlocked: true, time: -1, hasEndBoss: false },
+					"10": { unlocked: true, time: -1, hasEndBoss: true },
+					"11": { unlocked: true, time: -1, hasEndBoss: false },
+					"12": { unlocked: true, time: -1, hasEndBoss: false },
+					"13": { unlocked: true, time: -1, hasEndBoss: false },
+					"14": { unlocked: true, time: -1, hasEndBoss: false },
+					"15": { unlocked: true, time: -1, hasEndBoss: true }
 				};
 
 				//perform initial save
@@ -70,10 +74,18 @@ export default class LevelSelectScene extends Phaser.Scene {
 		//create our levelButtons
 		for (var i = 1; i <= this.numOfLevels; i++) {
 			console.log(i);
+
+			var shortcutText;
+			if (i > 9) {
+				shortcutText = this.keyBindings[i];
+			} else {
+				shortcutText = i;
+			}
+
 			this.levelButtons.push(new TextButton(this,
 				this.sys.canvas.width * 0.5, 
 				this.sys.canvas.height * (0.15 + (i*0.05)),
-				this.levelStateText(this, i+"", i+""),
+				this.levelStateText(this, i+"", shortcutText),
 				unlockedStyle, 
 				lockedStyle, 
 				this.sys.game.levelState[i+""].unlocked,
@@ -110,15 +122,15 @@ export default class LevelSelectScene extends Phaser.Scene {
 		this.input.keyboard.on("keydown_FOUR", event => { this.startLevel(this, "4"); });
 		this.input.keyboard.on("keydown_FIVE", event => { this.startLevel(this, "5"); });
 		this.input.keyboard.on("keydown_SIX", event => { this.startLevel(this, "6"); });
-		this.input.keyboard.on("keydown_SEVEN", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_EIGHT", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_NINE", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_A", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_B", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_C", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_D", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_E", event => { this.startLevel(this, "5"); });
-		this.input.keyboard.on("keydown_F", event => { this.startLevel(this, "5"); });
+		this.input.keyboard.on("keydown_SEVEN", event => { this.startLevel(this, "7"); });
+		this.input.keyboard.on("keydown_EIGHT", event => { this.startLevel(this, "8"); });
+		this.input.keyboard.on("keydown_NINE", event => { this.startLevel(this, "9"); });
+		this.input.keyboard.on("keydown_A", event => { this.startLevel(this, "10"); });
+		this.input.keyboard.on("keydown_B", event => { this.startLevel(this, "11"); });
+		this.input.keyboard.on("keydown_C", event => { this.startLevel(this, "12"); });
+		this.input.keyboard.on("keydown_D", event => { this.startLevel(this, "13"); });
+		this.input.keyboard.on("keydown_E", event => { this.startLevel(this, "14"); });
+		this.input.keyboard.on("keydown_F", event => { this.startLevel(this, "15"); });
 		this.input.keyboard.on("keydown_R", event => {
 			SaveManager.eraseSaveGame(); 
 			window.location.reload(false);
