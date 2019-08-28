@@ -284,7 +284,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(this.platforms[this.platforms.length-1].sprite,
 					this.player.sprite, function(platform, player) {
 						//only allow jumping when on the top of a ToggleTile
-						if (platform.body.touching.up) {
+						if (platform.body.touching.up && player.body.touching.down) {
 							player.owner.onStandableObject = true;
 
 							//lock player motion to platform motion (we no longer using
