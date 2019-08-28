@@ -8,7 +8,6 @@
  */
 
 import ParallaxBackground from "../effects/parallax-background.js";
-import SaveManager from "../managers/save-manager.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the Title Screen.
@@ -100,29 +99,6 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.sys.game.soundManager.sfx.jump = this.sound.add("jump", { volume: 0.35 });
 		this.sys.game.soundManager.sfx.coinCollected = this.sound.add("coinCollected", { volume: 0.2 });
 
-		//if there is local storage saved game load it
-		//if level(s) state isn't set, initialize it
-		if (this.sys.game.levelState == undefined) {
-
-			if (!SaveManager.hasSavedGame()) {
-				//true = unlocked, false = locked
-				this.sys.game.levelState = {
-					"1": { unlocked: true, time: -1, hasEndBoss: false },
-					"2": { unlocked: false, time: -1, hasEndBoss: false },
-					"3": { unlocked: false, time: -1, hasEndBoss: false },
-					"4": { unlocked: false, time: -1, hasEndBoss: false },
-					//end boss levels do not have a prespawned exit, 
-					//the exit is spawned after boss is defeated
-					"5": { unlocked: false, time: -1, hasEndBoss: true }
-				};
-
-				//perform initial save
-				SaveManager.saveGame(this.sys.game.levelState);
-			} else {
-				SaveManager.loadGame(this);
-			}
-
-		}
 
 		this.add
 			.text(16, 16, 'Press Enter to visit Level Select.', {
