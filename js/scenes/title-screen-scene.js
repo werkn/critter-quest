@@ -8,6 +8,7 @@
  */
 
 import ParallaxBackground from "../effects/parallax-background.js";
+import SaveManager from "../managers/save-manager.js";
 
 /**
  * A class that extends Phaser.Scene and wraps up the core logic for the Title Screen.
@@ -113,6 +114,11 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown_ENTER", event => {
 
 			this.scene.start('level_select');
+		});
+
+		//TODO: remove in final version this is used to wipe save files
+		this.input.keyboard.once("keydown_R", event => {
+			SaveManager.eraseSaveGame();
 		});
 	}
 
