@@ -66,11 +66,15 @@ export default class Player {
 			repeat: -1
 		});
 
+		this.groundAcceleration = 300;
+		this.airAcceleration = 300;
+		this.speedMultiplier = 1;
+
 		// Create the physics-based sprite that we will move around and animate
 		this.sprite = scene.physics.add
 			.sprite(x, y, "atlas", "idle/player-idle-1.png")
 			.setDrag(1000, 0)
-			.setMaxVelocity(300, 1000);   //max horiz. speed as well as max jump height
+			.setMaxVelocity(this.groundAcceleration, this.airAcceleration);   //max horiz. speed as well as max jump height
 
 		//we need to capture the original normal body because we modify it
 		//when crouching the player (so they can move into smaller spaces)
@@ -105,9 +109,6 @@ export default class Player {
 			shift: SHIFT
 		});
 
-		this.groundAcceleration = 300;
-		this.airAcceleration = 300;
-		this.speedMultiplier = 1;
 
 		this.usedDoubleJump = false; //has the player used their second jump?
 
@@ -115,6 +116,8 @@ export default class Player {
 		this.sprite.state = "normal";
 		this.onToggleTile = false;
 		this.sprite.owner = this;
+		this.onStandableObject = false;
+		
 	}
 
 	update() {
@@ -136,7 +139,7 @@ export default class Player {
 			//check that we are touching either one
 			this.onGround = (sprite.body.blocked.down || this.onStandableObject);
 			var acceleration = (this.onGround) ? this.groundAcceleration * this.speedMultiplier : this.airAcceleration * this.speedMultiplier;
-			this.sprite.setMaxVelocity(acceleration, 1000);
+			this.sprite.setMaxVelocity(acceleration, 800);
 
 
 			// Apply horizontal acceleration when left/a or right/d are applied
