@@ -15,7 +15,7 @@ export default class EnemyManager {
 
 		//some enemies need to have their static count reset between scenes
 		//do that here
-		this.scene.sys.game.frogBossEnemy = undefined;
+		this.scene.sys.game.bossEnemy = undefined;
 	}
 
 	update() {
