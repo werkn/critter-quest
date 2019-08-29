@@ -32,6 +32,7 @@ import DoubleJumpPowerup from "../powerups/double-jump.js";
 //bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
 import CrocBossEnemy from "../units/bosses/croc-boss-enemy.js";
+import OpossumBossEnemy from "../units/bosses/opossum-boss-enemy.js";
 
 //objects
 import Exit from "../objects/exit.js";
@@ -363,6 +364,17 @@ export default class PlatformerScene extends Phaser.Scene {
 					"frog_springboard_"+i));
 				this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
 					this.worldLayer);
+
+			} else if (tileMapObjects[i].name == "OpossumBossEnemy") {
+
+				tempEnemy = new OpossumBossEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"opossum_boss"+i,
+					2, 
+					2);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
 
 			} else if (tileMapObjects[i].name == "CrocBossEnemy") {
 
