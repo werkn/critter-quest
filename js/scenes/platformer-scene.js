@@ -383,7 +383,7 @@ export default class PlatformerScene extends Phaser.Scene {
 					tileMapObjects[i].y + tileMapObjects[i].height/2,
 					"croc_boss"+i,
 					2, 
-					3);
+					1); //TODO: change this back to 3 before release
 				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
 				this.enemyManager.add(tempEnemy);
 
