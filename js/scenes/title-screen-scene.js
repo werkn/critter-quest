@@ -20,23 +20,26 @@ export default class TitleScreenScene extends Phaser.Scene {
 		} else {
 			super({key: 'title_screen'});
 		}
+
 	}
 
 	preload() {
 		//get game width and height	
 		const { width, height } = this.sys.game.config;
 
+		this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+
 		//loading resources tutorial
 		//src: https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
 		//create loading text
 		this.loadingText = this.make.text({
-			    x: width / 2,
-			    y: height / 2 - 50,
-			    text: 'Loading...',
-			    style: {
-					        font: '20px monospace',
-					        fill: '#ffffff'
-					    }
+			x: width / 2,
+			y: height / 2 - 50,
+			text: 'Loading...',
+			style: {
+				font: '20px monospace',
+				fill: '#ffffff'
+			}
 		});
 		this.loadingText.setOrigin(0.5, 0.5);
 
@@ -61,9 +64,73 @@ export default class TitleScreenScene extends Phaser.Scene {
 		});
 	}
 
+
 	create() {
 		//get game width and height	
 		const { width, height } = this.sys.game.config;
+
+		this.titleTextAdded = { added: false, loadFailed: false };
+
+		//setup default text style(s)
+		this.sys.game.defaultStyle = {
+			fontFamily: '"Press Start 2P", Courier',
+			fontSize: 12, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fill: "white"
+		}
+
+		this.sys.game.headingStyle = {
+			fontFamily: '"Press Start 2P", Courier',
+			fontSize: 18, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fill: "yellow"
+		}
+
+		var add = this.add;
+		var titleTextAdded = this.titleTextAdded;
+		var defaultStyle = this.sys.game.defaultStyle;
+		var headingStyle = this.sys.game.headingStyle;
+
+		//attempt to load our google fonts
+		//src:  https://github.com/typekit/webfontloader#events
+		if (typeof WebFont !== 'undefined') {
+			WebFont.load({
+				google: {
+					families: [ 'Press Start 2P' ]
+				},
+				active: function () //active fires if 1 or more fonts load
+				{ 
+					//setup title text @ center screen
+					add
+						.text(width / 2, height / 2, "Critter Quest", headingStyle)
+						.setOrigin(0.5, 0.5);
+
+					add
+						.text(width / 2, height * 0.8, '<Press Enter>', defaultStyle)
+						.setOrigin(0.5, 0.5);
+
+					//fonts loaded
+					titleTextAdded.added = true;
+
+					console.log("Fonts loaded.");
+				},
+				//default timeout: 3000ms
+				inactive: function() {  //inactive fires if font could not load/not supported
+					//setup title text @ center screen
+					
+					titleTextAdded.added = false;
+					titleTextAdded.loadFailed = true;
+
+					console.log("API call with WebFont succeeded but font was not loaded.  Check font name.");
+				}
+			});
+		} else {
+			titleTextAdded.added = false;
+			titleTextAdded.loadFailed = true;
+
+		}
 
 		//add parallax background
 		this.parallaxBackground = new ParallaxBackground(
@@ -73,15 +140,6 @@ export default class TitleScreenScene extends Phaser.Scene {
 			0.6,
 			0.3
 		);
-
-		//setyp title text @ center screen
-		this.add
-			.text(width / 2, height / 2, "Critter Quest", {
-				font: "32px monospace",
-				color: "white"
-			})
-			.setOrigin(0.5, 0.5)
-			.setShadow(5, 5, "#5588EE", 0, true, true);
 
 		//setup audio on the game object, this allows me to access it in any scene
 		this.sys.game.soundManager = {};
@@ -100,19 +158,8 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.sys.game.soundManager.sfx.jump = this.sound.add("jump", { volume: 0.35 });
 		this.sys.game.soundManager.sfx.coinCollected = this.sound.add("coinCollected", { volume: 0.2 });
 
-
-		this.add
-			.text(16, 16, 'Press Enter to visit Level Select.', {
-				font: "18px monospace",
-				fill: "#ffffff",
-				padding: { x: 20, y: 10 },
-				backgroundColor: "#000000"
-			})
-			.setScrollFactor(0);
-
 		//start LevelSelectScene when ENTER is pressed
 		this.input.keyboard.once("keydown_ENTER", event => {
-
 			this.scene.start('level_select');
 		});
 
@@ -122,7 +169,31 @@ export default class TitleScreenScene extends Phaser.Scene {
 		});
 	}
 
+	addTitleText() {
+		//get game width and height	
+		const { width, height } = this.sys.game.config;
+
+		console.log("WebFont not loaded.  Use default font.");
+		//setup title text @ center screen
+		this.add
+			.text(width / 2, height / 2, "Critter Quest", this.sys.game.headingStyle)
+			.setOrigin(0.5, 0.5);
+
+		this.add
+			.text(width / 2, height * 0.8, '<Press Enter>', this.sys.game.defaultStyle)
+			.setOrigin(0.5, 0.5);
+	}
+
 	update(time, delta) {
 		this.parallaxBackground.update();
+
+		//add title text if it was not added using WebFont (ie: likely
+		//no internet)
+		if (!this.titleTextAdded.added) {
+			if (this.titleTextAdded.loadFailed) {
+				this.addTitleText();
+				this.titleTextAdded.added = true;
+			}
+		}
 	}
 }

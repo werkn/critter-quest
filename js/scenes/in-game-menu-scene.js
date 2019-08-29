@@ -34,20 +34,31 @@ export default class InGameMenuScene extends Phaser.Scene {
 	create() {
 		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
 		const background = this.add.rectangle(this.sys.canvas.width / 2,
-			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x6666ff, 0.5);
+			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
 
 		const { width, height } = this.sys.game.config;
 
-		const lockedStyle = { fill: '#f00', align: 'center' };
-		const unlockedStyle = { fill: '#0f0', align: 'center' };
+		const lockedStyle = { 
+			fill: '#f00', 
+			align: 'center', 
+			fontSize: 10, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fontFamily: '"Press Start 2P"'
+		};
+
+		const unlockedStyle = { 
+			fill: '#0f0', 
+			align: 'center', 
+			fontSize: 10, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fontFamily: '"Press Start 2P"' 
+		};
 
 		this.add
-			.text(width / 2, height * 0.2, "In-Game Menu", {
-				font: "64px monospace",
-				color: "white"
-			})
-			.setOrigin(0.5, 0.5)
-			.setShadow(5, 5, "#5588EE", 0, true, true);
+			.text(width / 2, height * 0.2, "In-Game Menu", this.sys.game.headingStyle)
+			.setOrigin(0.5, 0.5);
 
 		this.muteButton = new TextButton(this,
 			this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
@@ -79,15 +90,6 @@ export default class InGameMenuScene extends Phaser.Scene {
 		this.scene.pause(this.currentScene);
 		this.scene.moveAbove(this.currentScene);
 
-		this.add
-			.text(16, 16, 'Press ESC to dismiss window.', {
-				font: "18px monospace",
-				fill: "#ffffff",
-				padding: { x: 20, y: 10 },
-				backgroundColor: "#000000"
-			})
-			.setScrollFactor(0);
-
 		// keybindings
 		this.input.keyboard.on("keydown_ESC", event => {
 			this.returnToGame();
@@ -117,7 +119,6 @@ export default class InGameMenuScene extends Phaser.Scene {
 		//remove HUD overlay
 		this.scene.stop('hud_overlay');
 		this.scene.stop(this.currentScene);
-
 
 		//launch level select
 		this.scene.start("level_select")
