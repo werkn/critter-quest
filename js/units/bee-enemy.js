@@ -62,11 +62,10 @@ export default class BeeEnemy {
 		if (this.sprite.state != "dying") {
 			const sprite = this.sprite;
 
-			this.sprite.x += (1*this.direction);
+			this.sprite.y += (1*this.direction);
 
 			//we've collided with a collision layer widget, reverse direction
 			if (this.canCollideWithWidget && this.sprite.state == "flip_direction") {
-				sprite.flipX = !sprite.flipX;
 				this.direction *= -1;
 				this.canCollideWithWidget = false;
 
