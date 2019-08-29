@@ -31,6 +31,7 @@ import DoubleJumpPowerup from "../powerups/double-jump.js";
 
 //bosses
 import FrogBossEnemy from "../units/bosses/frog-boss-enemy.js";
+import CrocBossEnemy from "../units/bosses/croc-boss-enemy.js";
 
 //objects
 import Exit from "../objects/exit.js";
@@ -363,6 +364,17 @@ export default class PlatformerScene extends Phaser.Scene {
 				this.physics.world.addCollider(this.physicsObjects[this.physicsObjects.length-1].sprite, 
 					this.worldLayer);
 
+			} else if (tileMapObjects[i].name == "CrocBossEnemy") {
+
+				tempEnemy = new CrocBossEnemy(this, 
+					tileMapObjects[i].x + tileMapObjects[i].width/2, 
+					tileMapObjects[i].y + tileMapObjects[i].height/2,
+					"croc_boss"+i,
+					2, 
+					3);
+				this.physics.world.addCollider(tempEnemy.sprite, this.worldLayer);
+				this.enemyManager.add(tempEnemy);
+
 			} else if (tileMapObjects[i].name == "FrogBossEnemy") {
 
 				tempEnemy = new FrogBossEnemy(this, 
@@ -618,7 +630,7 @@ export default class PlatformerScene extends Phaser.Scene {
 				}
 
 				//level doesn't have an exit which means its a boss level, check if boss is dead and then spawn exit
-			} else if (this.levelExit == undefined && this.sys.game.frogBossEnemy.frogsRemaining == 0) {
+			} else if (this.levelExit == undefined && this.sys.game.bossEnemy.enemiesRemaining == 0) {
 
 				this.levelExit = new Exit(this,
 					this.exitCoords.x, 
