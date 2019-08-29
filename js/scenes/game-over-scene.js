@@ -30,21 +30,18 @@ export default class GameOverScene extends Phaser.Scene {
 		const { width, height } = this.sys.game.config;
 
 		this.add
-			.text(width / 2, height / 2, "Game Over", {
-				font: "64px monospace",
-				color: "white"
-			})
-			.setOrigin(0.5, 0.5)
-			.setShadow(5, 5, "#5588EE", 0, true, true);
+			.text(width / 2, height * 0.2, "Game Over", this.sys.game.headingStyle)
+			.setOrigin(0.5, 0.5);
 
 		this.add
-			.text(16, 16, 'Press Enter to return to Title Screen.', {
-				font: "18px monospace",
-				fill: "#ffffff",
-				padding: { x: 20, y: 10 },
-				backgroundColor: "#000000"
+			.text(width / 2, height * 0.5, '<Press Enter>', {
+				fontFamily: '"Press Start 2P", Courier',
+				fontSize: 18, 
+				strokeThickness: 4,
+				stroke: '#fff',
+				fill: "grey"
 			})
-			.setScrollFactor(0);
+			.setOrigin(0.5, 0.5);
 
 		this.input.keyboard.once("keydown_ENTER", event => {
 

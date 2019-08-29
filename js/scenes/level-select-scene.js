@@ -9,6 +9,7 @@
 
 import TextButton from "../ui/button.js";
 import SaveManager from "../managers/save-manager.js";
+import ParallaxBackground from "../effects/parallax-background.js";
 
 /**
  * A class that extends Phaser.Scene and provides our level selection screen.
@@ -30,6 +31,10 @@ export default class LevelSelectScene extends Phaser.Scene {
 	}
 
 	preload() {
+		//parallax background images
+		this.load.image("background-far", "./assets/background/back.png");
+		this.load.image("background-middle", "./assets/background/middle.png");
+
 		//if there is local storage saved game load it
 		//if level(s) state isn't set, initialize it
 		if (this.sys.game.levelState == undefined) {
@@ -63,13 +68,38 @@ export default class LevelSelectScene extends Phaser.Scene {
 			}
 
 		}
+		
+		//add parallax background
+		this.parallaxBackground = new ParallaxBackground(
+			this,
+			"background-far",
+			"background-middle",
+			0.6,
+			0.3
+		);
 	}
 
 	create() {
 		const { width, height } = this.sys.game.config;
 
-		const lockedStyle = { fill: '#f00', align: 'center' };
-		const unlockedStyle = { fill: '#0f0', align: 'center' };
+		var add = this.add;
+		const lockedStyle = { 
+			fill: '#f00', 
+			align: 'center', 
+			fontSize: 10, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fontFamily: '"Press Start 2P"'
+		};
+
+		const unlockedStyle = { 
+			fill: '#0f0', 
+			align: 'center', 
+			fontSize: 10, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fontFamily: '"Press Start 2P"' 
+		};
 
 		//create our levelButtons
 		for (var i = 1; i <= this.numOfLevels; i++) {
@@ -97,11 +127,13 @@ export default class LevelSelectScene extends Phaser.Scene {
 
 		this.add
 			.text(width / 2, height * 0.1, "Level Select", {
-				font: "64px monospace",
-				color: "white"
+				fontFamily: '"Press Start 2P", Courier',
+				fontSize: 18, 
+				strokeThickness: 4,
+				stroke: '#000000',
+				fill: "yellow"
 			})
-			.setOrigin(0.5, 0.5)
-			.setShadow(5, 5, "#5588EE", 0, true, true);
+			.setOrigin(0.5, 0.5);
 
 		this.resetButton = new TextButton(this,
 			this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95,
@@ -163,5 +195,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 		}
 	}
 
-	update(time, delta) { }
+	update(time, delta) { 
+		this.parallaxBackground.update();
+	}
 }

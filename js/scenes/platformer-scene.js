@@ -78,10 +78,11 @@ export default class PlatformerScene extends Phaser.Scene {
 			x: width / 2,
 			y: height / 2 - 50,
 			text: 'Loading...',
-			style: {
-				font: '20px monospace',
-				fill: '#ffffff'
-			}
+			fontFamily: '"Press Start 2P", Courier',
+			fontSize: 18, 
+			strokeThickness: 4,
+			stroke: '#000000',
+			fill: "white"
 		});
 		this.loadingText.setOrigin(0.5, 0.5);
 
@@ -154,6 +155,10 @@ export default class PlatformerScene extends Phaser.Scene {
 	create() {
 		//get game display width and height 
 		const { width, height } = this.sys.game.config;
+
+		//set background color to match our scrolling background 
+		//color (so when texture ends we can't tell in game
+		this.cameras.main.setBackgroundColor("#325762");
 
 		//max time before player is killed (in seconds)
 		this.sys.game.maxLevelTime = 180;
