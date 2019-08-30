@@ -82,6 +82,10 @@ export default class LevelSelectScene extends Phaser.Scene {
 	create() {
 		const { width, height } = this.sys.game.config;
 
+		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
+		const background = this.add.rectangle(this.sys.canvas.width / 2,
+			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
+
 		var add = this.add;
 		const lockedStyle = { 
 			fill: '#f00', 
@@ -167,13 +171,14 @@ export default class LevelSelectScene extends Phaser.Scene {
 			SaveManager.eraseSaveGame(); 
 			window.location.reload(false);
 		});
+		
 	}
 
 	//setup our levelStateText (what the text button should say)
 	//ex:  '(1) Level 1: Unlocked / Time: NOT ATTEMPTED'
 	levelStateText(scene, level, keyBinding) {
 		const levelState = scene.sys.game.levelState[level];
-		const unlocked = (levelState.unlocked) ? "UNLOCKED" : "LOCKED";
+		const unlocked = ((typeof levelState !== undefined) && levelState.unlocked) ? "UNLOCKED" : "LOCKED";
 		//levelState.time is initially set to -1, so if its this value
 		//we know the level hasn't been attempted
 		const time = (levelState.time != -1) ? "Time: " + levelState.time + " seconds" : "Time: NOT COMPLETED";

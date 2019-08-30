@@ -43,9 +43,28 @@ export default class TitleScreenScene extends Phaser.Scene {
 		});
 		this.loadingText.setOrigin(0.5, 0.5);
 
+		//we use a second fontLoadingText here because we 
+		//have a loading delay when loading our google fonts
+		//which exists outside of the callbacks for phaser3 project loading
+		//so we need to display a custom font loading indicator
+		this.fontLoadingText = this.make.text({
+			x: width / 2,
+			y: height / 2 - 50,
+			text: '',
+			style: {
+				font: '20px monospace',
+				fill: '#ffffff'
+			}
+		});
+		this.fontLoadingText.setOrigin(0.5, 0.5);
+		this.fontLoadingText.setDepth(10);
+
 		this.load.on('complete', function (context) {
-			//remove loading text
+			//remove loading text for phaser3 data
 			this.scene.loadingText.destroy();
+
+			//show the font loading text for Google fonts now
+			this.scene.fontLoadingText.setText("Loading fonts...");
 		});
 
 		this.load.on('progress', function (value) {
@@ -63,7 +82,6 @@ export default class TitleScreenScene extends Phaser.Scene {
 			instances: 4
 		});
 	}
-
 
 	create() {
 		//get game width and height	
@@ -92,6 +110,7 @@ export default class TitleScreenScene extends Phaser.Scene {
 		var titleTextAdded = this.titleTextAdded;
 		var defaultStyle = this.sys.game.defaultStyle;
 		var headingStyle = this.sys.game.headingStyle;
+		var fontLoadingText = this.fontLoadingText;
 
 		//attempt to load our google fonts
 		//src:  https://github.com/typekit/webfontloader#events
@@ -113,6 +132,9 @@ export default class TitleScreenScene extends Phaser.Scene {
 
 					//fonts loaded
 					titleTextAdded.added = true;
+
+					//destory our fontLoadingText, as our fonts loaded succesfully
+					fontLoadingText.destroy();
 
 					console.log("Fonts loaded.");
 				},
@@ -167,6 +189,10 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown_R", event => {
 			SaveManager.eraseSaveGame();
 		});
+
+		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
+		const background = this.add.rectangle(this.sys.canvas.width / 2,
+			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
 	}
 
 	addTitleText() {
@@ -193,6 +219,8 @@ export default class TitleScreenScene extends Phaser.Scene {
 			if (this.titleTextAdded.loadFailed) {
 				this.addTitleText();
 				this.titleTextAdded.added = true;
+				//destroy out fontLoadingText
+				this.fontLoadingText.destroy();
 			}
 		}
 	}

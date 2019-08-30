@@ -8,6 +8,7 @@
  * The player can return to the title screen by hitting ENTER.
  */
 
+import ParallaxBackground from "../effects/parallax-background.js";
 import TextButton from "../ui/button.js";
 
 export default class CreditsScene extends Phaser.Scene {
@@ -24,6 +25,19 @@ export default class CreditsScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.sys.game.config;
+
+		//add parallax background
+		this.parallaxBackground = new ParallaxBackground(
+			this,
+			"background-far",
+			"background-middle",
+			0.6,
+			0.3
+		);
+
+		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
+		const background = this.add.rectangle(this.sys.canvas.width / 2,
+			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
 
 		const linkStyle = { 
 			align: 'center', 
@@ -51,7 +65,7 @@ export default class CreditsScene extends Phaser.Scene {
 		this.werknSiteLink = new TextButton(this,
 			this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.35,
 			'werkn.github.io', 
-			linkStyle,
+			this.sys.game.defaultStyle,
 			lockedStyle,
 			true,
 			() => window.open('https://werkn.github.io','_blank'));
@@ -65,7 +79,7 @@ export default class CreditsScene extends Phaser.Scene {
 		this.ansimuzLink = new TextButton(this,
 			this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.45,
 			'ansimuz.itch.io', 
-			linkStyle,
+			this.sys.game.defaultStyle,
 			lockedStyle,
 			true,
 			() => window.open('https://ansimuz.itch.io/','_blank'));
@@ -79,7 +93,7 @@ export default class CreditsScene extends Phaser.Scene {
 		this.pascalLink = new TextButton(this,
 			this.sys.canvas.width * 0.5, this.sys.canvas.height * 0.55,
 			'soundcloud.com/pascalbelisle', 
-			linkStyle,
+			this.sys.game.defaultStyle,
 			lockedStyle,
 			true,
 			() => window.open('https://soundcloud.com/pascalbelisle','_blank'));
@@ -87,13 +101,7 @@ export default class CreditsScene extends Phaser.Scene {
 		this.add.existing(this.pascalLink);
 
 		this.add
-			.text(width / 2, height * 0.75, '<Press Enter>', {
-				fontFamily: '"Press Start 2P", Courier',
-				fontSize: 14, 
-				strokeThickness: 4,
-				stroke: 'yellow',
-				fill: "black"
-			})
+			.text(width / 2, height * 0.75, '<Press Enter>', this.sys.game.defaultStyle)
 			.setOrigin(0.5, 0.5);
 
 		this.input.keyboard.once("keydown_ENTER", event => {
@@ -103,6 +111,7 @@ export default class CreditsScene extends Phaser.Scene {
 	}
 
 	update(time, delta) {
+		this.parallaxBackground.update();
 	}
 }
 
