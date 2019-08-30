@@ -173,7 +173,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 	//ex:  '(1) Level 1: Unlocked / Time: NOT ATTEMPTED'
 	levelStateText(scene, level, keyBinding) {
 		const levelState = scene.sys.game.levelState[level];
-		const unlocked = (levelState.unlocked) ? "UNLOCKED" : "LOCKED";
+		const unlocked = ((typeof levelState !== undefined) && levelState.unlocked) ? "UNLOCKED" : "LOCKED";
 		//levelState.time is initially set to -1, so if its this value
 		//we know the level hasn't been attempted
 		const time = (levelState.time != -1) ? "Time: " + levelState.time + " seconds" : "Time: NOT COMPLETED";
