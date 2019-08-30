@@ -71,7 +71,7 @@
                  "y":1152
                 }, 
                 {
-                 "height":108.6667,
+                 "height":108.667,
                  "id":229,
                  "name":"TutorialText",
                  "rotation":0,
@@ -109,50 +109,6 @@
                  "width":16,
                  "x":720,
                  "y":1216
-                }, 
-                {
-                 "height":16,
-                 "id":513,
-                 "name":"MovingPlatform",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":272,
-                 "y":-64
-                }, 
-                {
-                 "height":16,
-                 "id":514,
-                 "name":"MovingPlatform",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":240,
-                 "y":-64
-                }, 
-                {
-                 "height":16,
-                 "id":550,
-                 "name":"FrogEnemy",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":-112
-                }, 
-                {
-                 "height":16,
-                 "id":554,
-                 "name":"Gem",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":96,
-                 "y":-112
                 }, 
                 {
                  "height":16,
@@ -279,8 +235,8 @@
                  "type":"",
                  "visible":true,
                  "width":242.167,
-                 "x":65.5831666666666,
-                 "y":905.91665
+                 "x":65.5832,
+                 "y":905.917
                 }, 
                 {
                  "height":16,
