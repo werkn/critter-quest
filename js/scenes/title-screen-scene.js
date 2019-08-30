@@ -189,6 +189,7 @@ export default class TitleScreenScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown_R", event => {
 			SaveManager.eraseSaveGame();
 		});
+
 		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
 		const background = this.add.rectangle(this.sys.canvas.width / 2,
 			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
@@ -218,6 +219,7 @@ export default class TitleScreenScene extends Phaser.Scene {
 			if (this.titleTextAdded.loadFailed) {
 				this.addTitleText();
 				this.titleTextAdded.added = true;
+				//destroy out fontLoadingText
 				this.fontLoadingText.destroy();
 			}
 		}

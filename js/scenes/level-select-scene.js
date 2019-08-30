@@ -82,6 +82,10 @@ export default class LevelSelectScene extends Phaser.Scene {
 	create() {
 		const { width, height } = this.sys.game.config;
 
+		//https://rexrainbow.github.io/phaser3-rex-notes/docs/site/shape-rectangle/
+		const background = this.add.rectangle(this.sys.canvas.width / 2,
+			this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.8);
+
 		var add = this.add;
 		const lockedStyle = { 
 			fill: '#f00', 
@@ -167,6 +171,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 			SaveManager.eraseSaveGame(); 
 			window.location.reload(false);
 		});
+		
 	}
 
 	//setup our levelStateText (what the text button should say)
