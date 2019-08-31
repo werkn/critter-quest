@@ -43,22 +43,22 @@ export default class LevelSelectScene extends Phaser.Scene {
 				//true = unlocked, false = locked
 				this.sys.game.levelState = {
 					"1": { unlocked: true, time: -1, hasEndBoss: false },
-					"2": { unlocked: true, time: -1, hasEndBoss: false },
-					"3": { unlocked: true, time: -1, hasEndBoss: false },
-					"4": { unlocked: true, time: -1, hasEndBoss: false },
+					"2": { unlocked: false, time: -1, hasEndBoss: false },
+					"3": { unlocked: false, time: -1, hasEndBoss: false },
+					"4": { unlocked: false, time: -1, hasEndBoss: false },
 					//end boss levels do not have a prespawned exit, 
 					//the exit is spawned after boss is defeated
-					"5": { unlocked: true, time: -1, hasEndBoss: true },
-					"6": { unlocked: true, time: -1, hasEndBoss: false },
-					"7": { unlocked: true, time: -1, hasEndBoss: false },
-					"8": { unlocked: true, time: -1, hasEndBoss: false },
-					"9": { unlocked: true, time: -1, hasEndBoss: false },
-					"10": { unlocked: true, time: -1, hasEndBoss: true },
-					"11": { unlocked: true, time: -1, hasEndBoss: false },
-					"12": { unlocked: true, time: -1, hasEndBoss: false },
-					"13": { unlocked: true, time: -1, hasEndBoss: false },
+					"5": { unlocked: false, time: -1, hasEndBoss: true },
+					"6": { unlocked: false, time: -1, hasEndBoss: false },
+					"7": { unlocked: false, time: -1, hasEndBoss: false },
+					"8": { unlocked: false, time: -1, hasEndBoss: false },
+					"9": { unlocked: false, time: -1, hasEndBoss: false },
+					"10": { unlocked: false, time: -1, hasEndBoss: true },
+					"11": { unlocked: false, time: -1, hasEndBoss: false },
+					"12": { unlocked: false, time: -1, hasEndBoss: false },
+					"13": { unlocked: false, time: -1, hasEndBoss: false },
 					"14": { unlocked: true, time: -1, hasEndBoss: false },
-					"15": { unlocked: true, time: -1, hasEndBoss: true }
+					"15": { unlocked: false, time: -1, hasEndBoss: true }
 				};
 
 				//perform initial save
