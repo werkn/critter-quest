@@ -33,9 +33,9 @@
          "height":80,
          "id":28,
          "name":"HiddenCollision",
-         "opacity":1,
+         "opacity":0,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":120,
          "x":0,
          "y":0
@@ -299,7 +299,7 @@
                  "visible":true,
                  "width":16,
                  "x":280,
-                 "y":429.333333333333
+                 "y":429.333
                 }, 
                 {
                  "height":16,
@@ -320,8 +320,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":1864.66666666667,
-                 "y":511.333333333333
+                 "x":1864.67,
+                 "y":511.333
                 }, 
                 {
                  "height":16,

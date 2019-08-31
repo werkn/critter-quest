@@ -71,35 +71,6 @@
                  "y":448
                 }, 
                 {
-                 "height":44.1667,
-                 "id":229,
-                 "name":"TutorialText",
-                 "rotation":0,
-                 "text":
-                    {
-                     "color":"#ffffff",
-                     "halign":"center",
-                     "text":"Moving platforms like this one can be used to move throughout the level. ",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":301.167,
-                 "x":-73,
-                 "y":-266
-                }, 
-                {
-                 "height":16,
-                 "id":479,
-                 "name":"ExtraLife",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":-48
-                }, 
-                {
                  "height":16,
                  "id":513,
                  "name":"MovingPlatform",
@@ -450,17 +421,6 @@
                  "width":16,
                  "x":1600,
                  "y":1072
-                }, 
-                {
-                 "height":16,
-                 "id":589,
-                 "name":"Gem",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":91,
-                 "y":-112
                 }, 
                 {
                  "height":16,
