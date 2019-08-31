@@ -57,7 +57,7 @@ export default class LevelSelectScene extends Phaser.Scene {
 					"11": { unlocked: false, time: -1, hasEndBoss: false },
 					"12": { unlocked: false, time: -1, hasEndBoss: false },
 					"13": { unlocked: false, time: -1, hasEndBoss: false },
-					"14": { unlocked: true, time: -1, hasEndBoss: false },
+					"14": { unlocked: false, time: -1, hasEndBoss: false },
 					"15": { unlocked: false, time: -1, hasEndBoss: true }
 				};
 
