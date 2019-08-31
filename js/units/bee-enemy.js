@@ -1,3 +1,11 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:45:28 MST 2019
+* 
+* BeeEnemy is similar to EagleEnemy but moves vertically up and down within the level instead
+* of horizontally.
+*/
+
 export default class BeeEnemy {
 
 	constructor(scene, x, y, name) {

@@ -1,3 +1,17 @@
+/**
+ * User: werkn-development
+ * Date: Fri Aug 23 12:23:41 MST 2019
+ * 
+ * CrocBossEnemy is a base CrocEnemy adapted to spawn multiple other CrocEnemy
+ * until it's health reaches zero.  
+ *
+ * Initiallly CrocBossEnemy will start as a largely upscaled CrocEnemy.  After it
+ * has been initially jumped on and killed it will spawn 2 more enemies, reducing 
+ * their scale, and health.
+ *
+ * The effect created is that 2^health instances of the initial CrocBossEnemy are created.
+ */
+
 export default class CrocBossEnemy {
 
 	//health here refers to the amount of cycles to create scaled down clones,
@@ -5,7 +19,7 @@ export default class CrocBossEnemy {
 	constructor(scene, x, y, name, scale=3, health=3, direction=1) {
 		this.scene = scene;
 
-		//add a field to track the number of FrogBossEnemy remaining
+		//add a field to track the number of CrocBossEnemy remaining
 		//so we can spawn the exit once they are all killed (This happens in PlatformerScene).
 		if (this.scene.sys.game.bossEnemy == undefined) {
 			this.scene.sys.game.bossEnemy = {};
@@ -73,7 +87,7 @@ export default class CrocBossEnemy {
 	hit() {
 		this.sprite.anims.play("enemy-die", true);
 
-		//if the FrogBossEnemy is not dead, spawn 2x additional clones at
+		//if the CrocBossEnemy is not dead, spawn 2x additional clones at
 		//center screen
 		if (this.health != 0) {
 			if (!this.enemySpawned) {

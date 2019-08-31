@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:44:55 MST 2019
+* 
+* CrocEnemy is similar to OpossumEnemy but is much larger and moves much faster across the screen.
+*/
+
 export default class CrocEnemy {
 
 	constructor(scene, x, y, name) {
