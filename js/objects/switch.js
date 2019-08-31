@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:38:56 MST 2019
+* 
+* Switch is used to manage and toggle the state of ToggleTiles loaded
+* from Tiled maps.
+*/
 export default class Switch {
 
 	constructor(scene, x, y, name) {
@@ -19,6 +26,7 @@ export default class Switch {
 
 		this.toggleTiles = []; //tiles that are controlled by this switch
 		this.sprite.name = name;
+
 		//from Tiled our switch object has the name 'Switch_N' grab
 		//the N portion which is the id use to toggle tiles on and off.
 		this.switchId = name.split("_")[1]; 

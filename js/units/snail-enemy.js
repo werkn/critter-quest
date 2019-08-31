@@ -1,3 +1,12 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:46:12 MST 2019
+* 
+* SnailEnemy is an enemy that does not damage the player (unless they try to crouch near it).
+* The purpose of SnailEnemy is to block entrances to areas.  The SnailEnemy can be killed by 
+* dropping crates on them.
+*/
+
 export default class SnailEnemy {
 
 	constructor(scene, x, y, name) {

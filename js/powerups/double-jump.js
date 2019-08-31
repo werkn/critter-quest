@@ -1,3 +1,11 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:42:59 MST 2019
+* 
+* DoubleJumpPowerup is a collectable powerup that once collected allows the player
+* to jump twice consecutively.
+*/
+
 export default class DoubleJumpPowerup {
 	constructor(scene, x, y) {
 		this.scene = scene;

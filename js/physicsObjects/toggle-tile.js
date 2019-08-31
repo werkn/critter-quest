@@ -1,3 +1,12 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:42:04 MST 2019
+* 
+* ToggleTile(s) are Game Objects that mimic tile behaviour but
+* have the ability to be toggled on and off when the associated/owning switch
+* is toggled.
+*/
+
 export default class ToggleTile {
 
 	constructor(scene, x, y, name) {

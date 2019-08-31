@@ -1,3 +1,11 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:41:13 MST 2019
+* 
+* MovingPlatform(s) are used to create standable platforms that move left 
+* to right on the screen.
+*/
+
 export default class MovingPlatform {
 
 	constructor(scene, x, y, name) {

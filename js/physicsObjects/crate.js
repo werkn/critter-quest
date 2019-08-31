@@ -1,3 +1,10 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:40:17 MST 2019
+* 
+* Crate is used to kill enemy snails obstructing paths within the game.
+*/
+
 export default class Crate {
 
 	constructor(scene, x, y, name) {
@@ -21,9 +28,9 @@ export default class Crate {
 	move() {
 		//which direction is the crate being hit from?
 		if (this.sprite.body.touching.left) {
-			this.sprite.setVelocityX(50);
+			this.sprite.setVelocityX(50); //move crate right
 		} else if (this.sprite.body.touching.right) {
-			this.sprite.setVelocityX(-50);
+			this.sprite.setVelocityX(-50); //move crate left
 		}
 
 	}

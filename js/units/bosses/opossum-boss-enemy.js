@@ -1,3 +1,19 @@
+/**
+ * User: werkn-development
+ * Date: Fri Aug 23 12:23:41 MST 2019
+ * 
+ * OpossumBossEnemy is a base OpossumEnemy adapted to spawn multiple other OpossumEnemy
+ * until it's health reaches zero.  
+ *
+ * Initiallly OpossumBossEnemy will start as a largely upscaled OpossumEnemy.  After it
+ * has been initially jumped on and killed it will spawn 2 more enemies, reducing 
+ * their scale, and health.
+ *
+ * The effect created is that 2^health instances of the initial OpossumBossEnemy are created.
+ */
+
+
+
 export default class OpossumBossEnemy {
 
 	//health here refers to the amount of cycles to create scaled down clones,
@@ -7,7 +23,7 @@ export default class OpossumBossEnemy {
 
 		const anims = scene.anims;
 
-		//add a field to track the number of FrogBossEnemy remaining
+		//add a field to track the number of OpossumBossEnemy remaining
 		//so we can spawn the exit once they are all killed (This happens in PlatformerScene).
 		if (this.scene.sys.game.bossEnemy == undefined) {
 			this.scene.sys.game.bossEnemy = {};
@@ -75,7 +91,7 @@ export default class OpossumBossEnemy {
 	hit() {
 		this.sprite.anims.play("enemy-die", true);
 
-		//if the FrogBossEnemy is not dead, spawn 2x additional clones at
+		//if the OpossumBossEnemy is not dead, spawn 2x additional clones at
 		//center screen
 		if (this.health != 0) {
 			if (!this.enemySpawned) {

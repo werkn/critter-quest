@@ -1,3 +1,11 @@
+/**
+* User: werkn-development
+* Date: Sat Aug 31 12:43:32 MST 2019
+* 
+* SpeedBootsPowerup is a collectable powerup that once collected allows the player to run much faster
+* while holding down the shift key.
+*/
+
 export default class SpeedBootsPowerup{
 	constructor(scene, x, y) {
 		this.scene = scene;
